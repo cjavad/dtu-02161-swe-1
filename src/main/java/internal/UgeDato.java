@@ -1,33 +1,24 @@
 package internal;
 
 public class UgeDato {
+    int årstal;
+    int uge;
 
-    private int år;
-    private int uge;
-
-    public UgeDato() {
-
-    }
-
-    public UgeDato(int år, int uge) {
-        this.år = år;
+    public UgeDato(int årstal, int uge) {
+        this.årstal = årstal;
         this.uge = uge;
     }
 
-    public int ugeDiff(UgeDato dato) {
-        return (this.år - dato.år) * 52 + this.uge - dato.uge;
-    }
-
-    public int getÅr() {
-        return år;
-    }
-
-    public void setÅr(int år) {
-        this.år = år;
+    public int getÅrstal() {
+        return årstal;
     }
 
     public int getUge() {
         return uge;
+    }
+
+    public void setÅrstal(int årstal) {
+        this.årstal = årstal;
     }
 
     public void setUge(int uge) {
