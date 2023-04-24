@@ -24,4 +24,8 @@ public class UgeDato {
     public void setUge(int uge) {
         this.uge = uge;
     }
+
+    public int ugeDiff(UgeDato dato) {
+        return (this.årstal - dato.årstal) * 52 + this.uge - dato.uge;
+    }
 }
