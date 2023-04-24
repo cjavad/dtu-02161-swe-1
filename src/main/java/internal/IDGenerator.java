@@ -8,7 +8,7 @@ public class IDGenerator {
         this.løbenummer = new Løbenummer();
     }
 
-    String getProjektID(UgeDato dato) {
+    public String getProjektID(UgeDato dato) {
         return dato.getÅrstal() + "-" + løbenummer.getLøbenummer();
     }
 
