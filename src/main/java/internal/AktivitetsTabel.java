@@ -7,7 +7,7 @@ public class AktivitetsTabel extends AbstractTabel<Aktivitet> {
     }
 
     public void tilføjMedarbejder(String aktivitet, String medarbejder) {
-
+        this.get(aktivitet).getAnførteMedarbjedere().add(medarbejder);
     }
 
 }
