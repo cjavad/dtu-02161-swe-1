@@ -5,20 +5,26 @@ import java.util.Set;
 
 public class Aktivitet {
 
-    private final String ID;
+    private Projekt projekt;
     private final String navn;
     private int bugetteretTid;
     private UgeDato startDato;
     private UgeDato slutDato;
-    private Set<String> anførteMedarbjedere;
+    private Set<Medarbejder> anførteMedarbjedere;
 
-    public Aktivitet(String navn, String projektID) {
+    public Aktivitet(String navn, Projekt projekt) {
+        if (projekt == null) {
+            throw new NullPointerException();
+        }
+
         this.navn = navn;
-        this.ID = projektID + navn;
+        this.projekt = projekt;
         this.bugetteretTid = 0;
         this.startDato = null;
         this.slutDato = null;
-        this.anførteMedarbjedere = new HashSet<String>();
+        this.anførteMedarbjedere = new HashSet<Medarbejder>();
+
+        projekt.tilføjAktivitet(this);
     }
 
     public int beregnArbejdePerMedarbejder() {
@@ -28,12 +34,48 @@ public class Aktivitet {
         return this.bugetteretTid / (this.anførteMedarbjedere.size() * (this.slutDato.ugeDiff(startDato)));
     }
 
-    public String getID() {
-        return ID;
+    public void tilføjMedarbjeder(Medarbejder medarbejder) {
+        if (this.projekt == null) {
+            return;
+        }
+
+        if (!medarbejder.getProjekter().contains(this.projekt)) {
+            return;
+        }
+
+        if (this.anførteMedarbjedere.contains(medarbejder)) {
+            return;
+        }
+
+        this.anførteMedarbjedere.add(medarbejder);
+    }
+
+    public void fjernMedarbejder(Medarbejder medarbejder) {
+        if (!this.anførteMedarbjedere.contains(medarbejder)) {
+            return;
+        }
+
+        this.anførteMedarbjedere.remove(medarbejder);
+    }
+
+    public void fjernProjekt(Projekt projekt) {
+        if (this.projekt != projekt) {
+            return;
+        }
+
+        this.projekt = null;
     }
 
     public String getNavn() {
         return navn;
+    }
+
+    public Projekt getProjekt() {
+        return projekt;
+    }
+
+    public void setProjekt(Projekt projekt) {
+        this.projekt = projekt;
     }
 
     public int getBugetteretTid() {
@@ -60,11 +102,8 @@ public class Aktivitet {
         this.slutDato = slutDato;
     }
 
-    public Set<String> getAnførteMedarbjedere() {
+    public Set<Medarbejder> getAnførteMedarbjedere() {
         return anførteMedarbjedere;
     }
 
-    public void setAnførteMedarbjedere(Set<String> anførteMedarbjedere) {
-        this.anførteMedarbjedere = anførteMedarbjedere;
-    }
 }

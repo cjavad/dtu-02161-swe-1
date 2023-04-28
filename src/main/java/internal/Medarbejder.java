@@ -1,8 +1,5 @@
 package internal;
 
-import io.cucumber.java.ht.Ak;
-import io.cucumber.java.hu.Ha;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,16 +7,16 @@ import java.util.Set;
 public class Medarbejder {
 
     private final String initial;
-    private Set<String> projekter;
-    private Set<String> projektLederFor;
-    private Set<String> anførteAktiviteter;
+    private Set<Projekt> projekter;
+    private Set<Projekt> projektLederFor;
+    private Set<Aktivitet> anførteAktiviteter;
     private int ugentligeTimer;
 
     public Medarbejder(String initial) {
         this.initial = initial;
-        this.projekter = new HashSet<String>();
-        this.projektLederFor = new HashSet<String>();
-        this.anførteAktiviteter = new HashSet<String>();
+        this.projekter = new HashSet<Projekt>();
+        this.projektLederFor = new HashSet<Projekt>();
+        this.anførteAktiviteter = new HashSet<Aktivitet>();
         this.ugentligeTimer = 0;
     }
 
@@ -57,32 +54,59 @@ public class Medarbejder {
         return fritid;
     }
 
+    public void tilføjAktivitet(Aktivitet aktivitet) {
+        if (!aktivitet.getProjekt().getMedarbejder().contains(this)) {
+            return; // TODO :: fejl
+        }
+        if (this.anførteAktiviteter.contains(aktivitet)) {
+            return;
+        }
+        this.anførteAktiviteter.add(aktivitet);
+    }
+
+    public void tilføjProjekt(Projekt projekt) {
+        if (this.projekter.contains(projekt)) {
+            return;
+        }
+        this.projekter.add(projekt);
+    }
+
+    public void fjernAktivitet(Aktivitet aktivitet) {
+        if (!this.anførteAktiviteter.contains(aktivitet)) {
+            return;
+        }
+        this.anførteAktiviteter.remove(aktivitet);
+    }
+
+    public void fjernProjekt(Projekt projekt) {
+        if (!this.projekter.contains(projekt)) {
+            return;
+        }
+
+        if (this.projektLederFor.contains(projekt)) {
+            this.projektLederFor.remove(projekt);
+        }
+        this.projekter.remove(projekt);
+
+        this.anførteAktiviteter.stream()
+                .filter(a -> a.getProjekt() == projekt)
+                .forEach(a -> this.anførteAktiviteter.remove(a));
+    }
+
     public String getInitial() {
         return initial;
     }
 
-    public Set<String> getProjekter() {
+    public Set<Projekt> getProjekter() {
         return projekter;
     }
 
-    public void setProjekter(Set<String> projekter) {
-        this.projekter = projekter;
-    }
-
-    public Set<String> getProjektLederFor() {
+    public Set<Projekt> getProjektLederFor() {
         return projektLederFor;
     }
 
-    public void setProjektLederFor(Set<String> projektLederFor) {
-        this.projektLederFor = projektLederFor;
-    }
-
-    public Set<String> getAnførteAktiviteter() {
+    public Set<Aktivitet> getAnførteAktiviteter() {
         return anførteAktiviteter;
-    }
-
-    public void setAnførteAktiviteter(Set<String> anførteAktiviteter) {
-        this.anførteAktiviteter = anførteAktiviteter;
     }
 
     public int getUgentligeTimer() {
