@@ -82,18 +82,43 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
         this.datoer = datoer;
     }
 
+    public boolean isA(int[] fritid) {
+        for (int i : fritid) {
+            if (i == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean isB(int[] fritid) {
+        for (int i : fritid) {
+            if (i > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isC(int[] fritid) {
+        for (int i : fritid) {
+            if (i > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public String klassificerSubliste(Medarbejder o) {
         // Find sublisten listen af fritid for medarbejderen tilhører ved at tælle længden af listen
-        AtomicInteger length = new AtomicInteger(0);
         // For at sammenligne med antal af elementer i listen der er større end 0, aka. hvor der er fritid.
-        int count = (int) o.fritidFraDato(datoer).filter(i -> {
-            length.getAndIncrement();
-            return i > 0;
-        }).count();
+        int[] list = o.fritidFraDato(datoer).toArray();
         // Hvis antallet af elementer i listen er det samme som antal uger med fritid, er det liste A.
         // Hvis der er nogen uger med fritid er det liste B.
         // Hvis der ingen uger med fritid er det liste C.
-        return (length.get() == count ? "A" : ((count > 0) ? "B" : "C"));
+        return isA(list) ? "A" : isB(list) ? "B" : isC(list) ? "C" : null; // Null er unreachable.
     }
 
     public void sorterHøjreListe() {
