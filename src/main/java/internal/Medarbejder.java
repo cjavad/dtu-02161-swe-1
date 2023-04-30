@@ -127,23 +127,10 @@ public class Medarbejder {
         return initial;
     }
 
+    // Beregn fritid for medarbejderen i en periode
+    // Retuneres som stream for at gøre det nemmere at arbejde med
     public IntStream fritidFraDato(Pair<UgeDato, UgeDato>  datoer) {
         return Arrays
                 .stream(this.beregnFritid(datoer.getKey(), datoer.getValue(), new ArrayList<>(this.anførteAktiviteter)));
-    }
-
-    public String kategoriser(Pair<UgeDato, UgeDato> datoer) {
-        // Count 0's while counting sum using only one stream
-        IntStream fritid = this.fritidFraDato(datoer);
-        AtomicInteger length = new AtomicInteger();
-        int count = (int) fritid.filter(i -> {
-            length.getAndIncrement();
-            return i > 0;
-        }).count();
-        return length.get() == count ? "A" : ((count > 0) ? "B" : "C");
-    }
-
-    public int compareToAktivitet(Pair<UgeDato, UgeDato> datoer, Medarbejder o) {
-        return o.kategoriser(datoer).compareTo(this.kategoriser(datoer));
     }
 }

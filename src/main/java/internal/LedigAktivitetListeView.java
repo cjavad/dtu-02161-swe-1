@@ -5,8 +5,9 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class LedigAktivitetListeView extends ListeView<Medarbejder> implements SorteretListeView {
+public class LedigAktivitetListeView extends ListeView<Medarbejder> {
     public Pair<UgeDato, UgeDato> datoer;
 
     public static void main(String[] args) {
@@ -26,23 +27,26 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> implements S
         højreListe.add(m2);
         højreListe.add(m3);
 
-        LedigAktivitetListeView lalv = new LedigAktivitetListeView(new Pair<>(new UgeDato(1, 1), new UgeDato(1, 2)), højreListe, venstreListe);
         // Lav projekt og en aktivitet
         // Tilføj aktivitet til projekt
 
         Projekt p = new Projekt("P1");
+
         Aktivitet a = new Aktivitet("A1", p);
         Aktivitet a2 = new Aktivitet("A2", p);
-        a.setBugetteretTid(37);
-        a2.setBugetteretTid(37);
+        a.setBugetteretTid(37 * 2);
+        a2.setBugetteretTid(37 * 2);
         a.setStartDato(new UgeDato(1, 1));
         a.setSlutDato(new UgeDato(1, 2));
         a2.setStartDato(new UgeDato(1, 2));
         a2.setSlutDato(new UgeDato(1, 3));
         p.tilføjAktivitet(a);
+        p.tilføjAktivitet(a2);
+
         p.tilføjMedarbejder(m1);
         p.tilføjMedarbejder(m2);
         p.tilføjMedarbejder(m3);
+
         m1.tilføjProjekt(p);
         m2.tilføjProjekt(p);
         m3.tilføjProjekt(p);
@@ -51,17 +55,19 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> implements S
         m2.tilføjAktivitet(a);
         a.tilføjMedarbjeder(m1);
         a.tilføjMedarbjeder(m2);
+
         m2.tilføjAktivitet(a2);
         a2.tilføjMedarbjeder(m2);
 
+        LedigAktivitetListeView lalv = new LedigAktivitetListeView(new Pair<>(new UgeDato(1, 1), new UgeDato(1, 3)), højreListe, venstreListe);
         lalv.sorterHøjreListe();
 
-        System.out.println("Tid per uge for aktivitet: " + a.beregnArbejdePerMedarbejder());
-        System.out.println("Beregn fritid for m1: " + Arrays.toString(m1.beregnFritid(lalv.datoer.getKey(), lalv.datoer.getValue(), List.of(m1.getAnførteAktiviteter().toArray(new Aktivitet[0])))));
-        System.out.println("Tid for m1: " +  m1.fritidFraDato(lalv.datoer).sum());
+        System.out.println("Tid per uge for aktivitet: " + a2.beregnArbejdePerMedarbejder());
+        System.out.println("Liste af aktiviter for m2: " + List.of(m2.getAnførteAktiviteter().toArray(new Aktivitet[0])));
+        System.out.println("Tid for m2: " + m2.fritidFraDato(lalv.datoer).sum());
 
         for (Medarbejder m : lalv.højreListe) {
-            System.out.println(m.kategoriser(lalv.datoer) + ": " + m);
+            System.out.println(Arrays.toString(m.fritidFraDato(lalv.datoer).toArray()) + ": " + lalv.klassificerSubliste(m) + ": " + m);
         }
 
         lalv.fraHøjreTilVenstre(m1);
@@ -71,13 +77,27 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> implements S
         }
     }
 
-    public LedigAktivitetListeView(Pair<UgeDato, UgeDato>  datoer, ArrayList<Medarbejder> højreListe, ArrayList<Medarbejder> venstreListe) {
+    public LedigAktivitetListeView(Pair<UgeDato, UgeDato> datoer, ArrayList<Medarbejder> højreListe, ArrayList<Medarbejder> venstreListe) {
         super(højreListe, venstreListe);
         this.datoer = datoer;
     }
 
-    @Override
+    public String klassificerSubliste(Medarbejder o) {
+        // Find sublisten listen af fritid for medarbejderen tilhører ved at tælle længden af listen
+        AtomicInteger length = new AtomicInteger(0);
+        // For at sammenligne med antal af elementer i listen der er større end 0, aka. hvor der er fritid.
+        int count = (int) o.fritidFraDato(datoer).filter(i -> {
+            length.getAndIncrement();
+            return i > 0;
+        }).count();
+        // Hvis antallet af elementer i listen er det samme som antal uger med fritid, er det liste A.
+        // Hvis der er nogen uger med fritid er det liste B.
+        // Hvis der ingen uger med fritid er det liste C.
+        return (length.get() == count ? "A" : ((count > 0) ? "B" : "C"));
+    }
+
     public void sorterHøjreListe() {
-        højreListe.sort((o1, o2) -> -o1.compareToAktivitet(datoer, o2));
+        // Sorter listen efter klassificeringen af sublisterne og derefter efter antal timer med fritid.
+        højreListe.sort((o1, o2) -> -Math.max(klassificerSubliste(o1).compareTo(klassificerSubliste(o2)), Integer.compare(o1.fritidFraDato(datoer).sum(), o2.fritidFraDato(datoer).sum())));
     }
 }

@@ -21,9 +21,9 @@ public class ProjektWrapper {
     }
 
     // gjort ind i Aktivitet contructoren, har bruge for projekt object til lave aktivitet
-//    public void tilføjAktivitetTilProjekt(Aktivitet aktivitet, Projekt projekt) {
-//        projekt.tilføjAktivitet(aktivitet);
-//    }
+    //    public void tilføjAktivitetTilProjekt(Aktivitet aktivitet, Projekt projekt) {
+    //        projekt.tilføjAktivitet(aktivitet);
+    //    }
 
     public void fjernMedarbejderFraProjekt(Medarbejder medarbejder, Projekt projekt) {
         if (medarbejder == null || projekt == null) {

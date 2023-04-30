@@ -76,4 +76,7 @@ public class Projekt {
         return aktiviteter;
     }
 
+    public String toString() {
+        return getProjektID();
+    }
 }
