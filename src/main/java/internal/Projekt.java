@@ -52,7 +52,7 @@ public class Projekt {
         }
         this.aktiviteter.remove(aktivitet);
 
-        aktivitet.getAnførteMedarbjedere().stream()
+        aktivitet.getAnførteMedarbejdere().stream()
                 .forEach(m -> m.fjernAktivitet(aktivitet));
     }
 

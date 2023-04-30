@@ -102,7 +102,7 @@ public class Aktivitet {
         this.slutDato = slutDato;
     }
 
-    public Set<Medarbejder> getAnførteMedarbjedere() {
+    public Set<Medarbejder> getAnførteMedarbejdere() {
         return anførteMedarbjedere;
     }
 }

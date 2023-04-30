@@ -4,7 +4,6 @@ import internal.Aktivitet;
 import internal.Medarbejder;
 import internal.Projekt;
 import internal.ProjektWrapper;
-import io.cucumber.java.bs.A;
 
 public class ProjektWrapperTest {
 
@@ -63,7 +62,7 @@ public class ProjektWrapperTest {
             ProjektWrapper.g.tilføjMedarbjederTilAktivitet(m, a);
 
             org.junit.Assert.assertFalse(m.getAnførteAktiviteter().contains(a));
-            org.junit.Assert.assertFalse(a.getAnførteMedarbjedere().contains(m));
+            org.junit.Assert.assertFalse(a.getAnførteMedarbejdere().contains(m));
         }
         // medarbejder in projekt
         {
@@ -75,7 +74,7 @@ public class ProjektWrapperTest {
             ProjektWrapper.g.tilføjMedarbjederTilAktivitet(m, a);
 
             org.junit.Assert.assertTrue(m.getAnførteAktiviteter().contains(a));
-            org.junit.Assert.assertTrue(a.getAnførteMedarbjedere().contains(m));
+            org.junit.Assert.assertTrue(a.getAnførteMedarbejdere().contains(m));
         }
     }
 
@@ -170,7 +169,7 @@ public class ProjektWrapperTest {
             ProjektWrapper.g.fjernMedarbejderFraAktivitet(m, a);
 
             org.junit.Assert.assertFalse(m.getAnførteAktiviteter().contains(a));
-            org.junit.Assert.assertFalse(a.getAnførteMedarbjedere().contains(m));
+            org.junit.Assert.assertFalse(a.getAnførteMedarbejdere().contains(m));
         }
     }
 
