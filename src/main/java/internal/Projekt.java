@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Projekt {
-
     private final String projektID;
     private Medarbejder projektLeder;
     private Set<Medarbejder> medarbejder;
@@ -18,6 +17,10 @@ public class Projekt {
     }
 
     public void tilføjMedarbejder(Medarbejder medarbejder) {
+		// NOTE: hvorfor laver vi detter tjek? 
+		// altså, det er et hashset så dubletter kan ikke eksistere
+		//
+		// sammen kommentar gælder for alle lignende metoder under
         if (this.medarbejder.contains(medarbejder)) {
             return;
         }
@@ -68,6 +71,7 @@ public class Projekt {
         this.projektLeder = projektLeder;
     }
 
+	// FIXME: burde det ikke være getMedarbejdere altså flertal?
     public Set<Medarbejder> getMedarbejder() {
         return medarbejder;
     }
@@ -76,6 +80,7 @@ public class Projekt {
         return aktiviteter;
     }
 
+	// FIXME: er denne metode nødvendig? hvorfor ville man ikke bare bruge getProjektID?
     public String toString() {
         return getProjektID();
     }
