@@ -1,8 +1,10 @@
 package internal;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javafx.util.Pair;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 public class Medarbejder {
 
@@ -23,14 +25,14 @@ public class Medarbejder {
     // TODO :: start / slut uge input
 
     /**
-     *
      * @param start
      * @param slut
      * @param aktiviteter En liste af alle aktiviteter som medarbejderen er anført til, som der har minimum én uge i start og slutdato
      * @return
      */
     public int[] beregnFritid(UgeDato start, UgeDato slut, List<Aktivitet> aktiviteter) {
-        //Precondition, alle aktiviteter har IDer i anførte aktiviterer, og de har alle en start og slut dato, der gør, at de er inde i den valgte start og slutdato
+        // Precondition, alle aktiviteter har IDer i anførte aktiviterer, og de har alle en start og slut dato, der gør, at de er inde i den valgte start og slutdato
+
         aktiviteter.forEach((aktivitet) -> {
             assert this.anførteAktiviteter.contains(aktivitet);
             assert aktivitet.getStartDato() != null;
@@ -42,14 +44,17 @@ public class Medarbejder {
         aktiviteter.forEach((aktivitet) -> {
             int startIndex, endIndex;
 
-            startIndex = Math.max(aktivitet.getStartDato().ugeDiff(start), 0);
+            startIndex = Math.max(aktivitet.getStartDato().ugeDiff(start), 0) - 1;
             endIndex = Math.min(aktivitet.getStartDato().ugeDiff(slut), start.ugeDiff(slut));
 
             for (int i = startIndex; i < endIndex; i++) {
                 fritid[i] += aktivitet.beregnArbejdePerMedarbejder();
             }
-
         });
+
+        for (int i = 0; i < fritid.length; i++) {
+            fritid[i] = this.ugentligeTimer - fritid[i];
+        }
 
         return fritid;
     }
@@ -86,6 +91,7 @@ public class Medarbejder {
         if (this.projektLederFor.contains(projekt)) {
             this.projektLederFor.remove(projekt);
         }
+
         this.projekter.remove(projekt);
 
         this.anførteAktiviteter.stream()
@@ -115,5 +121,29 @@ public class Medarbejder {
 
     public void setUgentligeTimer(int ugentligeTimer) {
         this.ugentligeTimer = ugentligeTimer;
+    }
+
+    public String toString() {
+        return initial;
+    }
+
+    public IntStream fritidFraDato(Pair<UgeDato, UgeDato>  datoer) {
+        return Arrays
+                .stream(this.beregnFritid(datoer.getKey(), datoer.getValue(), new ArrayList<>(this.anførteAktiviteter)));
+    }
+
+    public String kategoriser(Pair<UgeDato, UgeDato> datoer) {
+        // Count 0's while counting sum using only one stream
+        IntStream fritid = this.fritidFraDato(datoer);
+        AtomicInteger length = new AtomicInteger();
+        int count = (int) fritid.filter(i -> {
+            length.getAndIncrement();
+            return i > 0;
+        }).count();
+        return length.get() == count ? "A" : ((count > 0) ? "B" : "C");
+    }
+
+    public int compareToAktivitet(Pair<UgeDato, UgeDato> datoer, Medarbejder o) {
+        return o.kategoriser(datoer).compareTo(this.kategoriser(datoer));
     }
 }
