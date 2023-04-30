@@ -64,10 +64,10 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
 
         System.out.println("Tid per uge for aktivitet: " + a2.beregnArbejdePerMedarbejder());
         System.out.println("Liste af aktiviter for m2: " + List.of(m2.getAnførteAktiviteter().toArray(new Aktivitet[0])));
-        System.out.println("Tid for m2: " + m2.fritidFraDato(lalv.datoer).sum());
+        System.out.println("Tid for m2: " + m2.beregnFritidForPeriode(lalv.datoer).sum());
 
         for (Medarbejder m : lalv.højreListe) {
-            System.out.println(Arrays.toString(m.fritidFraDato(lalv.datoer).toArray()) + ": " + lalv.klassificerSubliste(m) + ": " + m);
+            System.out.println(Arrays.toString(m.beregnFritidForPeriode(lalv.datoer).toArray()) + ": " + lalv.klassificerSubliste(m) + ": " + m);
         }
 
         lalv.fraHøjreTilVenstre(m1);
@@ -114,7 +114,7 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
     public String klassificerSubliste(Medarbejder o) {
         // Find sublisten listen af fritid for medarbejderen tilhører ved at tælle længden af listen
         // For at sammenligne med antal af elementer i listen der er større end 0, aka. hvor der er fritid.
-        int[] list = o.fritidFraDato(datoer).toArray();
+        int[] list = o.beregnFritidForPeriode(datoer).toArray();
         // Hvis antallet af elementer i listen er det samme som antal uger med fritid, er det liste A.
         // Hvis der er nogen uger med fritid er det liste B.
         // Hvis der ingen uger med fritid er det liste C.
@@ -123,6 +123,6 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
 
     public void sorterHøjreListe() {
         // Sorter listen efter klassificeringen af sublisterne og derefter efter antal timer med fritid.
-        højreListe.sort((o1, o2) -> -Math.max(klassificerSubliste(o1).compareTo(klassificerSubliste(o2)), Integer.compare(o1.fritidFraDato(datoer).sum(), o2.fritidFraDato(datoer).sum())));
+        højreListe.sort((o1, o2) -> -Math.max(klassificerSubliste(o1).compareTo(klassificerSubliste(o2)), Integer.compare(o1.beregnFritidForPeriode(datoer).sum(), o2.beregnFritidForPeriode(datoer).sum())));
     }
 }

@@ -27,21 +27,17 @@ public class Medarbejder {
     /**
      * @param start
      * @param slut
-     * @param aktiviteter En liste af alle aktiviteter som medarbejderen er anført til, som der har minimum én uge i start og slutdato
      * @return
      */
-    public int[] beregnFritid(UgeDato start, UgeDato slut, List<Aktivitet> aktiviteter) {
-        // Precondition, alle aktiviteter har IDer i anførte aktiviterer, og de har alle en start og slut dato, der gør, at de er inde i den valgte start og slutdato
-
-        aktiviteter.forEach((aktivitet) -> {
-            assert this.anførteAktiviteter.contains(aktivitet);
-            assert aktivitet.getStartDato() != null;
-            assert aktivitet.getSlutDato() != null;
-        });
+    public IntStream beregnFritidForPeriode(Pair<UgeDato, UgeDato> datoer) {
+        UgeDato start = datoer.getKey();
+        UgeDato slut = datoer.getValue();
 
         int[] fritid = new int[slut.ugeDiff(start)];
 
-        aktiviteter.forEach((aktivitet) -> {
+        this.anførteAktiviteter.forEach((aktivitet) -> {
+            if (aktivitet.getStartDato() == null || aktivitet.getSlutDato() == null) return;
+
             int startIndex, endIndex;
 
             startIndex = Math.max(aktivitet.getStartDato().ugeDiff(start), 0) - 1;
@@ -56,7 +52,7 @@ public class Medarbejder {
             fritid[i] = this.ugentligeTimer - fritid[i];
         }
 
-        return fritid;
+        return Arrays.stream(fritid);
     }
 
     public void tilføjAktivitet(Aktivitet aktivitet) {
@@ -125,12 +121,5 @@ public class Medarbejder {
 
     public String toString() {
         return initial;
-    }
-
-    // Beregn fritid for medarbejderen i en periode
-    // Retuneres som stream for at gøre det nemmere at arbejde med
-    public IntStream fritidFraDato(Pair<UgeDato, UgeDato>  datoer) {
-        return Arrays
-                .stream(this.beregnFritid(datoer.getKey(), datoer.getValue(), new ArrayList<>(this.anførteAktiviteter)));
     }
 }
