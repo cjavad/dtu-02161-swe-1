@@ -25,14 +25,17 @@ public class Medarbejder {
     // TODO :: start / slut uge input
 
     /**
-     * @param start
-     * @param slut
-     * @param aktiviteter En liste af alle aktiviteter som medarbejderen er anført til, som der har minimum én uge i start og slutdato
-     * @return
+     * @param datoer: Indeholder en start og slut dato for perioden
+     * @return En int stream,
      */
-    public IntStream beregnFritidForPeriode(Pair<UgeDato, UgeDato> datoer) {
+    public int[] beregnFritidForPeriode(Pair<UgeDato, UgeDato> datoer) {
+
         UgeDato start = datoer.getKey();
         UgeDato slut = datoer.getValue();
+
+        if(start == null || slut == null){
+            return new int[0];
+        }
 
         int[] fritid = new int[slut.ugeDiff(start)];
 
@@ -53,7 +56,7 @@ public class Medarbejder {
             fritid[i] = this.ugentligeTimer - fritid[i];
         }
 
-        return Arrays.stream(fritid);
+        return fritid;
     }
 
     public void tilføjAktivitet(Aktivitet aktivitet) {
