@@ -26,6 +26,6 @@ public class UgeDato {
     }
 
     public int ugeDiff(UgeDato dato) {
-        return (this.årstal - dato.årstal) * 52 + this.uge - dato.uge;
+        return Math.abs(this.årstal - dato.årstal) * 52 + Math.abs(this.uge - dato.uge) + 1;
     }
 }
