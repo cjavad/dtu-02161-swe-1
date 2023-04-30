@@ -4,10 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Aktivitet {
-
+    private int bugetteretTid;
     private Projekt projekt;
     private final String navn;
-    private int bugetteretTid;
     private UgeDato startDato;
     private UgeDato slutDato;
     private Set<Medarbejder> anførteMedarbjedere;
@@ -27,11 +26,12 @@ public class Aktivitet {
         projekt.tilføjAktivitet(this);
     }
 
+    // Per uge ikke for hele projektet
     public int beregnArbejdePerMedarbejder() {
         if (this.startDato == null || this.slutDato == null) {
             return 0;
         }
-        return this.bugetteretTid / (this.anførteMedarbjedere.size() * (this.slutDato.ugeDiff(startDato)));
+        return this.bugetteretTid / this.anførteMedarbjedere.size();
     }
 
     public void tilføjMedarbjeder(Medarbejder medarbejder) {
@@ -105,5 +105,4 @@ public class Aktivitet {
     public Set<Medarbejder> getAnførteMedarbjedere() {
         return anførteMedarbjedere;
     }
-
 }
