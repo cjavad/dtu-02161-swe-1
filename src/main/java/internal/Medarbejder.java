@@ -40,7 +40,7 @@ public class Medarbejder {
         }
 
         // Init empty arraylist.
-        List<Integer> fritid = new ArrayList<>(Collections.nCopies(slut.ugeDiff(start), 0));
+        List<Integer> fritid = new ArrayList<>(Collections.nCopies(slut.ugeDiff(start), this.ugentligeTimer));
 
 
         this.anførteAktiviteter.forEach((aktivitet) -> {
@@ -52,13 +52,10 @@ public class Medarbejder {
             endIndex = Math.min(aktivitet.getStartDato().ugeDiff(slut), start.ugeDiff(slut));
 
             for (int i = startIndex; i < endIndex; i++) {
-                fritid.set(i, fritid.get(i) + aktivitet.beregnArbejdePerMedarbejder());
+                fritid.set(i, fritid.get(i) - aktivitet.beregnArbejdePerMedarbejder());
             }
         });
 
-        for (int i = 0; i < fritid.size(); i++) {
-            fritid.set(i, this.ugentligeTimer - fritid.get(i));
-        }
 
         return fritid;
     }
