@@ -2,6 +2,7 @@ package internal;
 
 import javafx.util.Pair;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
@@ -28,16 +29,19 @@ public class Medarbejder {
      * @param datoer: Indeholder en start og slut dato for perioden
      * @return En int stream,
      */
-    public int[] beregnFritidForPeriode(Pair<UgeDato, UgeDato> datoer) {
+    public List<Integer> beregnFritidForPeriode(Pair<UgeDato, UgeDato> datoer) {
 
         UgeDato start = datoer.getKey();
         UgeDato slut = datoer.getValue();
 
         if(start == null || slut == null){
-            return new int[0];
+            // Empty list
+            return new ArrayList<>();
         }
 
-        int[] fritid = new int[slut.ugeDiff(start)];
+        // Init empty arraylist.
+        List<Integer> fritid = new ArrayList<>(Collections.nCopies(slut.ugeDiff(start), 0));
+
 
         this.anførteAktiviteter.forEach((aktivitet) -> {
             if (aktivitet.getStartDato() == null || aktivitet.getSlutDato() == null) return;
@@ -48,12 +52,12 @@ public class Medarbejder {
             endIndex = Math.min(aktivitet.getStartDato().ugeDiff(slut), start.ugeDiff(slut));
 
             for (int i = startIndex; i < endIndex; i++) {
-                fritid[i] += aktivitet.beregnArbejdePerMedarbejder();
+                fritid.set(i, fritid.get(i) + aktivitet.beregnArbejdePerMedarbejder());
             }
         });
 
-        for (int i = 0; i < fritid.length; i++) {
-            fritid[i] = this.ugentligeTimer - fritid[i];
+        for (int i = 0; i < fritid.size(); i++) {
+            fritid.set(i, this.ugentligeTimer - fritid.get(i));
         }
 
         return fritid;
