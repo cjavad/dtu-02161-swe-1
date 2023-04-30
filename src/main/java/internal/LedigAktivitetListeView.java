@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 public class LedigAktivitetListeView extends ListeView<Medarbejder> {
     public Pair<UgeDato, UgeDato> datoer;
@@ -67,7 +68,7 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
         System.out.println("Tid for m2: " + m2.beregnFritidForPeriode(lalv.datoer).sum());
 
         for (Medarbejder m : lalv.højreListe) {
-            System.out.println(Arrays.toString(m.beregnFritidForPeriode(lalv.datoer).toArray()) + ": " + lalv.klassificerSubliste(m) + ": " + m);
+            System.out.println(Arrays.toString(m.beregnFritidForPeriode(lalv.datoer).toArray()));
         }
 
         lalv.fraHøjreTilVenstre(m1);
@@ -111,18 +112,22 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
         return true;
     }
 
-    public String klassificerSubliste(Medarbejder o) {
-        // Find sublisten listen af fritid for medarbejderen tilhører ved at tælle længden af listen
-        // For at sammenligne med antal af elementer i listen der er større end 0, aka. hvor der er fritid.
-        int[] list = o.beregnFritidForPeriode(datoer).toArray();
-        // Hvis antallet af elementer i listen er det samme som antal uger med fritid, er det liste A.
-        // Hvis der er nogen uger med fritid er det liste B.
-        // Hvis der ingen uger med fritid er det liste C.
-        return isA(list) ? "A" : isB(list) ? "B" : isC(list) ? "C" : null; // Null er unreachable.
-    }
-
     public void sorterHøjreListe() {
         // Sorter listen efter klassificeringen af sublisterne og derefter efter antal timer med fritid.
-        højreListe.sort((o1, o2) -> -Math.max(klassificerSubliste(o1).compareTo(klassificerSubliste(o2)), Integer.compare(o1.beregnFritidForPeriode(datoer).sum(), o2.beregnFritidForPeriode(datoer).sum())));
+        højreListe.sort((o1, o2) -> {
+            // Find sublisten listen af fritid for medarbejderen tilhører ved at tælle længden af listen
+            // For at sammenligne med antal af elementer i listen der er større end 0, aka. hvor der er fritid.
+            int[] s1 = o1.beregnFritidForPeriode(datoer).toArray();
+            int[] s2 = o2.beregnFritidForPeriode(datoer).toArray();
+            int sum1 = Arrays.stream(s1).sum();
+            int sum2 = Arrays.stream(s2).sum();
+
+            // Hvis antallet af elementer i listen er det samme som antal uger med fritid, er det liste A.
+            // Hvis der er nogen uger med fritid er det liste B.
+            // Hvis der ingen uger med fritid er det liste C.
+            String klassificeretSubliste1 = isA(s1) ? "A" : isB(s1) ? "B" : isC(s1) ? "C" : null;
+            String klassificeretSubliste2 = isA(s2) ? "A" : isB(s2) ? "B" : isC(s2) ? "C" : null;
+            return -Math.max(klassificeretSubliste1.compareTo(klassificeretSubliste2), Integer.compare(sum1, sum2));
+        });
     }
 }

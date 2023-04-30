@@ -27,6 +27,7 @@ public class Medarbejder {
     /**
      * @param start
      * @param slut
+     * @param aktiviteter En liste af alle aktiviteter som medarbejderen er anført til, som der har minimum én uge i start og slutdato
      * @return
      */
     public IntStream beregnFritidForPeriode(Pair<UgeDato, UgeDato> datoer) {
@@ -76,6 +77,7 @@ public class Medarbejder {
         if (!this.anførteAktiviteter.contains(aktivitet)) {
             return;
         }
+
         this.anførteAktiviteter.remove(aktivitet);
     }
 

@@ -37,6 +37,7 @@ public class ProjektWrapper {
         if (medarbejder == null || aktivitet == null) {
             throw new NullPointerException();
         }
+
         medarbejder.fjernAktivitet(aktivitet);
         aktivitet.fjernMedarbejder(medarbejder);
     }
