@@ -2,10 +2,7 @@ package internal;
 
 import javafx.util.Pair;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
 
 public class Medarbejder {
 
@@ -35,7 +32,7 @@ public class Medarbejder {
         UgeDato slut = datoer.getValue();
 
 
-        if(start == null || slut == null){
+        if(start == null || slut == null){ //0
             // Empty list
             return new ArrayList<>();
         }
@@ -45,21 +42,26 @@ public class Medarbejder {
 
 
         this.anførteAktiviteter.forEach((aktivitet) -> {
-            if (aktivitet.getStartDato() == null || aktivitet.getSlutDato() == null) return;
-
-            int startIndex, endIndex;
-
-            //Giver altid min. 0, da ugeDiff(ugeDato)>=1
-            startIndex = aktivitet.getStartDato().ugeDiff(start) - 1;
-            endIndex = Math.min(aktivitet.getStartDato().ugeDiff(slut), start.ugeDiff(slut));
-
-            for (int i = startIndex; i < endIndex; i++) {
-                fritid.set(i, fritid.get(i) - aktivitet.beregnArbejdePerMedarbejder());
-            }
+            ugentligAktivitet(start, slut, fritid, aktivitet);
         });
 
 
         return fritid;
+    }
+
+    private void ugentligAktivitet(UgeDato start, UgeDato slut, List<Integer> fritid, Aktivitet aktivitet) {
+        //1
+        if (aktivitet.getStartDato() == null || aktivitet.getSlutDato() == null) return;
+
+        int startIndex, endIndex;
+
+        //Giver altid min. 0, da ugeDiff(ugeDato)>=1
+        startIndex = aktivitet.getStartDato().ugeDiff(start) - 1;
+        endIndex = Math.min(aktivitet.getStartDato().ugeDiff(slut), start.ugeDiff(slut));
+
+        for (int i = startIndex; i < endIndex; i++) { //3
+            fritid.set(i, fritid.get(i) - aktivitet.beregnArbejdePerMedarbejder()); //3a
+        }
     }
 
     public void tilføjAktivitet(Aktivitet aktivitet) {
