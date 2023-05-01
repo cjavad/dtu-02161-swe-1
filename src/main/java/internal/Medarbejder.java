@@ -34,12 +34,13 @@ public class Medarbejder {
         UgeDato start = datoer.getKey();
         UgeDato slut = datoer.getValue();
 
+
         if(start == null || slut == null){
             // Empty list
             return new ArrayList<>();
         }
 
-        // Init empty arraylist.
+        // Length of the period [start,slut]>=1
         List<Integer> fritid = new ArrayList<>(Collections.nCopies(slut.ugeDiff(start), this.ugentligeTimer));
 
 
@@ -48,7 +49,8 @@ public class Medarbejder {
 
             int startIndex, endIndex;
 
-            startIndex = Math.max(aktivitet.getStartDato().ugeDiff(start), 0) - 1;
+            //Giver altid min. 0, da ugeDiff(ugeDato)>=1
+            startIndex = aktivitet.getStartDato().ugeDiff(start) - 1;
             endIndex = Math.min(aktivitet.getStartDato().ugeDiff(slut), start.ugeDiff(slut));
 
             for (int i = startIndex; i < endIndex; i++) {
