@@ -41,7 +41,7 @@ public class Medarbejder {
         List<Integer> fritid = new ArrayList<>(Collections.nCopies(slut.ugeDiff(start), this.ugentligeTimer));
 
 
-        this.anførteAktiviteter.forEach((aktivitet) -> {
+        this.anførteAktiviteter.forEach((aktivitet) -> { //1
             beregnFritidPerAktivitet(start, slut, fritid, aktivitet);
         });
 
@@ -50,8 +50,8 @@ public class Medarbejder {
     }
 
     private void beregnFritidPerAktivitet(UgeDato start, UgeDato slut, List<Integer> fritid, Aktivitet aktivitet) {
-        //1
-        if (aktivitet.getStartDato() == null || aktivitet.getSlutDato() == null) return;
+
+        if (aktivitet.getStartDato() == null || aktivitet.getSlutDato() == null) return; //0
 
         int startIndex, endIndex;
 
@@ -59,8 +59,8 @@ public class Medarbejder {
         startIndex = aktivitet.getStartDato().ugeDiff(start) - 1;
         endIndex = Math.min(aktivitet.getStartDato().ugeDiff(slut), start.ugeDiff(slut));
 
-        for (int i = startIndex; i < endIndex; i++) { //3
-            fritid.set(i, fritid.get(i) - aktivitet.beregnArbejdePerMedarbejder()); //3a
+        for (int i = startIndex; i < endIndex; i++) { //2
+            fritid.set(i, fritid.get(i) - aktivitet.beregnArbejdePerMedarbejder()); //2a
         }
     }
 
