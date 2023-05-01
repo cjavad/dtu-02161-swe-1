@@ -42,14 +42,14 @@ public class Medarbejder {
 
 
         this.anførteAktiviteter.forEach((aktivitet) -> {
-            ugentligAktivitet(start, slut, fritid, aktivitet);
+            beregnUgentligFritid(start, slut, fritid, aktivitet);
         });
 
 
         return fritid;
     }
 
-    private void ugentligAktivitet(UgeDato start, UgeDato slut, List<Integer> fritid, Aktivitet aktivitet) {
+    private void beregnUgentligFritid(UgeDato start, UgeDato slut, List<Integer> fritid, Aktivitet aktivitet) {
         //1
         if (aktivitet.getStartDato() == null || aktivitet.getSlutDato() == null) return;
 
