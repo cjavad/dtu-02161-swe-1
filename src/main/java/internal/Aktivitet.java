@@ -90,8 +90,36 @@ public class Aktivitet {
         return startDato;
     }
 
+    //Checker om startDato er mindre end slutdato eller vis eversa
+    private boolean isLegalDatoAssignment(UgeDato startDato,UgeDato slutDato){
+
+        //Setting it to null, while they're both null is acceptable
+        if(startDato == null && slutDato == null){
+            return true;
+        }
+        // (WLOG) if start != null and slut = null -> then slut := null or start :!= null is acceptable
+        if(slutDato == null || startDato == null){
+            return true;
+        }
+        //They're both not null, then we just compare
+        else{
+            return startDato.compareTo(slutDato) < 0;
+        }
+
+
+
+    }
+
     public void setStartDato(UgeDato startDato) {
-        this.startDato = startDato;
+        assert(startDato != null);
+
+        if(isLegalDatoAssignment(startDato,this.slutDato) )
+        {
+            this.startDato = startDato;
+        }
+        else{
+            throw new Error("slutDato er mindre end startDato");
+        }
     }
 
     public UgeDato getSlutDato() {
@@ -99,7 +127,16 @@ public class Aktivitet {
     }
 
     public void setSlutDato(UgeDato slutDato) {
-        this.slutDato = slutDato;
+
+        if( isLegalDatoAssignment(this.startDato,slutDato) )
+        {
+            this.slutDato = slutDato;
+        }
+        else{
+            throw new Error("slutDato er mindre end startDato");
+        }
+
+
     }
 
     public Set<Medarbejder> getAnførteMedarbejdere() {
