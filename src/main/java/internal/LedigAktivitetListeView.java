@@ -112,7 +112,15 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
 
 
     public String klassificerSubliste(Medarbejder o) {
-        assert o != null && datoer.getKey() != null && datoer.getValue() != null;
+        /**
+         * Precondition:
+         *
+         * Medarbarbejder kan ikke være null.
+         * Start dato kan ikke være null.
+         * Slut kato kan ikke være null.
+         * Slut dato kan ikke komme før start dato
+         */
+        assert o != null && datoer.getKey() != null && datoer.getValue() != null && datoer.getValue().compareTo(datoer.getKey()) >= 0;
 
         // Find sublisten listen af fritid for medarbejderen tilhører ved at tælle længden af listen
         // For at sammenligne med antal af elementer i listen der er større end 0, aka. hvor der er fritid.
@@ -134,6 +142,13 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
             subliste = null;
         }
 
+        /**
+         * Postcondition:
+         *
+         * Sublisten må ikke være null (det burde heller ikke være muligt)
+         * Sublisten skal være enten A, B eller C.
+         *
+         */
         assert subliste != null && (subliste.equals("A") || subliste.equals("B") || subliste.equals("C"));
         return subliste;
     }
