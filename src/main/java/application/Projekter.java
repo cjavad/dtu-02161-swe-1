@@ -16,7 +16,7 @@ public class Projekter {
 
 	public Parent lavBrugerflade() {
 		int index = 0;
-		for (Projekt projekt : system.projekter) {
+		for (Projekt projekt : new Projekt[]{}) {
 			Button projektKnap = new Button(projekt.getProjektID());
 			root.add(projektKnap, 0, index);
 
