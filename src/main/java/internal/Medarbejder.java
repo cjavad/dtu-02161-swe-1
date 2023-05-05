@@ -19,37 +19,7 @@ public class Medarbejder {
         this.ugentligeTimer = 0;
     }
 
-    public void tilføjMedarbejderTilProjekt(Projekt projekt) {
-        if (projekt == null) {
-            throw new NullPointerException();
-        }
-        projekt.tilføjMedarbejder(this);
-        this.tilføjProjekt(projekt);
-    }
 
-    public void fjernMedarbejderFraProjekt(Projekt projekt) {
-        if (projekt == null) {
-            throw new NullPointerException();
-        }
-        projekt.fjernMedarbejder(this);
-        this.fjernProjekt(projekt);
-    }
-
-    public void tilføjMedarbjederTilAktivitet(Aktivitet aktivitet) {
-        if (aktivitet == null) {
-            throw new NullPointerException();
-        }
-        this.tilføjAktivitet(aktivitet);
-        aktivitet.tilføjMedarbjeder(this);
-    }
-
-    public void fjernMedarbejderFraAktivitet(Aktivitet aktivitet) {
-        if (aktivitet == null) {
-            throw new NullPointerException();
-        }
-        this.fjernAktivitet(aktivitet);
-        aktivitet.fjernMedarbejder(this);
-    }
 
 
     // TODO :: start / slut uge input

@@ -16,6 +16,39 @@ public class Projekt {
         this.aktiviteter = new HashSet<Aktivitet>();
     }
 
+    public void tilføjAktivitetTilProjekt(Aktivitet aktivitet) {
+        if (aktivitet == null) {
+            throw new NullPointerException();
+        }
+        this.tilføjAktivitet(aktivitet);
+        aktivitet.tilføjProjekt(this);
+    }
+
+    public void fjernAktivitetFraProjekt(Aktivitet aktivitet) {
+        if (aktivitet == null) {
+            throw new NullPointerException();
+        }
+        this.fjernAktivitet(aktivitet);
+        aktivitet.fjernProjekt(this);
+    }
+
+    public void tilføjMedarbejderTilProjekt(Medarbejder medarbejder) {
+        if (medarbejder == null) {
+            throw new NullPointerException();
+        }
+
+        medarbejder.tilføjProjekt(this);
+        this.tilføjMedarbejder(medarbejder);
+    }
+
+    public void fjernMedarbejderFraProjekt(Medarbejder medarbejder) {
+        if (medarbejder == null) {
+            throw new NullPointerException();
+        }
+        medarbejder.fjernProjekt(this);
+        this.fjernMedarbejder(medarbejder);
+    }
+
     public void tilføjMedarbejder(Medarbejder medarbejder) {
 		// NOTE: hvorfor laver vi detter tjek? 
 		// altså, det er et hashset så dubletter kan ikke eksistere

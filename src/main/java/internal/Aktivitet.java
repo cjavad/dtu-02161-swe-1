@@ -19,20 +19,20 @@ public class Aktivitet {
         this.anførteMedarbjedere = new HashSet<Medarbejder>();
     }
 
-    public void tilføjAktivitetTilProjekt(Projekt projekt) {
-        if (projekt == null) {
+    public void tilføjMedarbjederTilAktivitet(Medarbejder medarbejder) {
+        if (medarbejder == null) {
             throw new NullPointerException();
         }
-        this.tilføjProjekt(projekt);
-        projekt.tilføjAktivitet(this);
+        this.tilføjMedarbjeder(medarbejder);
+        medarbejder.tilføjAktivitet(this);
     }
 
-    public void fjernAktivitetFraProjekt(Projekt projekt) {
-        if (projekt == null) {
+    public void fjernMedarbejderFraAktivitet(Medarbejder medarbejder) {
+        if (medarbejder == null) {
             throw new NullPointerException();
         }
-        this.fjernProjekt(projekt);
-        projekt.fjernAktivitet(this);
+        this.fjernMedarbejder(medarbejder);
+        medarbejder.fjernAktivitet(this);
     }
 
     // Per uge ikke for hele projektet

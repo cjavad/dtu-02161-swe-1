@@ -9,44 +9,44 @@ public class ProjektPlanningApp {
 
 
     public void tilføjMedarbejderTilProjekt(Medarbejder m, Projekt p) {
-        if (m == null) {
+        if (p == null) {
             throw new NullPointerException();
         }
-        m.tilføjMedarbejderTilProjekt(p);
+        p.tilføjMedarbejderTilProjekt(m);
     }
 
     public void tilføjMedarbjederTilAktivitet(Medarbejder m, Aktivitet a) {
-        if (m == null) {
+        if (a == null) {
             throw new NullPointerException();
         }
-        m.tilføjMedarbjederTilAktivitet(a);
+        a.tilføjMedarbjederTilAktivitet(m);
     }
 
     public void fjernMedarbejderFraProjekt(Medarbejder m, Projekt p) {
-        if (m == null) {
+        if (p == null) {
             throw new NullPointerException();
         }
-        m.fjernMedarbejderFraProjekt(p);
+        p.fjernMedarbejderFraProjekt(m);
     }
 
     public void fjernMedarbejderFraAktivitet(Medarbejder m, Aktivitet a) {
-        if (m == null) {
+        if (a == null) {
             throw new NullPointerException();
         }
-        m.fjernMedarbejderFraAktivitet(a);
+        a.fjernMedarbejderFraAktivitet(m);
     }
 
     public void tilføjAktivitetTilProjekt(Aktivitet a, Projekt p) {
-        if (a == null) {
+        if (p == null) {
             throw new NullPointerException();
         }
-        a.tilføjAktivitetTilProjekt(p);
+        p.tilføjAktivitetTilProjekt(a);
     }
 
     public void fjernAktivitetFraProjekt(Aktivitet a, Projekt p) {
-        if (a == null) {
+        if (p == null) {
             throw new NullPointerException();
         }
-        a.fjernAktivitetFraProjekt(p);
+        p.fjernAktivitetFraProjekt(a);
     }
 }
