@@ -27,6 +27,14 @@ public class Aktivitet {
         projekt.tilføjAktivitet(this);
     }
 
+    public void fjernAktivitetFraProjekt(Projekt projekt) {
+        if (projekt == null) {
+            throw new NullPointerException();
+        }
+        this.fjernProjekt(projekt);
+        projekt.fjernAktivitet(this);
+    }
+
     public int beregnArbejdePerMedarbejder() {
         if (this.startDato == null || this.slutDato == null) {
             return 0;

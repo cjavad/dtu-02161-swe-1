@@ -3,10 +3,11 @@ package example.junit;
 import internal.Aktivitet;
 import internal.Medarbejder;
 import internal.Projekt;
-import internal.ProjektWrapper;
-import io.cucumber.java.bs.A;
+import internal.ProjektPlanningApp;
 
-public class ProjektWrapperTest {
+public class ProjektPlanningAppTest {
+
+    public ProjektPlanningApp app = new ProjektPlanningApp();
 
     @org.junit.Test
     public void tilføjMedarbejderTilProjektTest() {
@@ -14,21 +15,21 @@ public class ProjektWrapperTest {
         {
             Projekt p = new Projekt("2023-01");
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-                ProjektWrapper.g.tilføjMedarbejderTilProjekt(null, p);
+                app.tilføjMedarbejderTilProjekt(null, p);
             });
         }
         // null projekt
         {
             Medarbejder m = new Medarbejder("abcd");
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-                ProjektWrapper.g.tilføjMedarbejderTilProjekt(m, null);
+                app.tilføjMedarbejderTilProjekt(m, null);
             });
         }
         // non null
         {
             Medarbejder m = new Medarbejder("abcd");
             Projekt p = new Projekt("2023-01");
-            ProjektWrapper.g.tilføjMedarbejderTilProjekt(m, p);
+            app.tilføjMedarbejderTilProjekt(m, p);
 
             org.junit.Assert.assertTrue(m.getProjekter().contains(p));
             org.junit.Assert.assertTrue(p.getMedarbejder().contains(m));
@@ -43,7 +44,7 @@ public class ProjektWrapperTest {
             Aktivitet a = new Aktivitet("ak", p);
 
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-               ProjektWrapper.g.tilføjMedarbjederTilAktivitet(null, a);
+               app.tilføjMedarbjederTilAktivitet(null, a);
             });
         }
         // null aktivitet
@@ -51,7 +52,7 @@ public class ProjektWrapperTest {
             Medarbejder m = new Medarbejder("abcd");
 
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-                ProjektWrapper.g.tilføjMedarbjederTilAktivitet(m, null);
+                app.tilføjMedarbjederTilAktivitet(m, null);
             });
         }
         // medarbejder not in projekt
@@ -60,7 +61,7 @@ public class ProjektWrapperTest {
             Projekt p = new Projekt("2023-01");
             Aktivitet a = new Aktivitet("ak", p);
 
-            ProjektWrapper.g.tilføjMedarbjederTilAktivitet(m, a);
+            app.tilføjMedarbjederTilAktivitet(m, a);
 
             org.junit.Assert.assertFalse(m.getAnførteAktiviteter().contains(a));
             org.junit.Assert.assertFalse(a.getAnførteMedarbjedere().contains(m));
@@ -70,9 +71,9 @@ public class ProjektWrapperTest {
             Medarbejder m = new Medarbejder("abcd");
             Projekt p = new Projekt("2023-01");
             Aktivitet a = new Aktivitet("ak", p);
-            ProjektWrapper.g.tilføjMedarbejderTilProjekt(m, p);
+            app.tilføjMedarbejderTilProjekt(m, p);
 
-            ProjektWrapper.g.tilføjMedarbjederTilAktivitet(m, a);
+            app.tilføjMedarbjederTilAktivitet(m, a);
 
             org.junit.Assert.assertTrue(m.getAnførteAktiviteter().contains(a));
             org.junit.Assert.assertTrue(a.getAnførteMedarbjedere().contains(m));
@@ -103,14 +104,14 @@ public class ProjektWrapperTest {
         {
             Projekt p = new Projekt("2023-01");
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-                ProjektWrapper.g.fjernMedarbejderFraProjekt(null, p);
+                app.fjernMedarbejderFraProjekt(null, p);
             });
         }
         // null projekt
         {
             Medarbejder m = new Medarbejder("abcd");
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-                ProjektWrapper.g.fjernMedarbejderFraProjekt(m, null);
+                app.fjernMedarbejderFraProjekt(m, null);
             });
         }
         // non null
@@ -118,9 +119,9 @@ public class ProjektWrapperTest {
             Medarbejder m = new Medarbejder("abcd");
             Projekt p = new Projekt("2023-01");
 
-            ProjektWrapper.g.tilføjMedarbejderTilProjekt(m, p);
+            app.tilføjMedarbejderTilProjekt(m, p);
 
-            ProjektWrapper.g.fjernMedarbejderFraProjekt(m, p);
+            app.fjernMedarbejderFraProjekt(m, p);
 
             org.junit.Assert.assertFalse(m.getProjekter().contains(p));
             org.junit.Assert.assertFalse(p.getMedarbejder().contains(m));
@@ -130,7 +131,7 @@ public class ProjektWrapperTest {
             Medarbejder m = new Medarbejder("abcd");
             Projekt p = new Projekt("2023-01");
 
-            ProjektWrapper.g.fjernMedarbejderFraProjekt(m, p);
+            app.fjernMedarbejderFraProjekt(m, p);
 
             org.junit.Assert.assertFalse(m.getProjekter().contains(p));
             org.junit.Assert.assertFalse(p.getMedarbejder().contains(m));
@@ -147,7 +148,7 @@ public class ProjektWrapperTest {
             Aktivitet a = new Aktivitet("ak", p);
 
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-                ProjektWrapper.g.fjernMedarbejderFraAktivitet(null, a);
+                app.fjernMedarbejderFraAktivitet(null, a);
             });
         }
         // null aktivitet
@@ -155,7 +156,7 @@ public class ProjektWrapperTest {
             Medarbejder m = new Medarbejder("abcd");
 
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-                ProjektWrapper.g.fjernMedarbejderFraAktivitet(m, null);
+                app.fjernMedarbejderFraAktivitet(m, null);
             });
         }
         // normal
@@ -164,10 +165,10 @@ public class ProjektWrapperTest {
             Projekt p = new Projekt("2023-01");
             Aktivitet a = new Aktivitet("ak", p);
 
-            ProjektWrapper.g.tilføjMedarbejderTilProjekt(m, p);
-            ProjektWrapper.g.tilføjMedarbjederTilAktivitet(m, a);
+            app.tilføjMedarbejderTilProjekt(m, p);
+            app.tilføjMedarbjederTilAktivitet(m, a);
 
-            ProjektWrapper.g.fjernMedarbejderFraAktivitet(m, a);
+            app.fjernMedarbejderFraAktivitet(m, a);
 
             org.junit.Assert.assertFalse(m.getAnførteAktiviteter().contains(a));
             org.junit.Assert.assertFalse(a.getAnførteMedarbjedere().contains(m));
@@ -181,7 +182,7 @@ public class ProjektWrapperTest {
             Projekt p = new Projekt("2023-01");
 
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-                ProjektWrapper.g.fjernAktivitetFraProjekt(null, p);
+                app.fjernAktivitetFraProjekt(null, p);
             });
         }
         // null projekt
@@ -190,7 +191,7 @@ public class ProjektWrapperTest {
             Aktivitet a = new Aktivitet("ak", p);
 
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-                ProjektWrapper.g.fjernAktivitetFraProjekt(a, null);
+                app.fjernAktivitetFraProjekt(a, null);
             });
         }
         // aktivitet in different projekt
@@ -199,7 +200,7 @@ public class ProjektWrapperTest {
             Projekt p2 = new Projekt("2023-02");
             Aktivitet a = new Aktivitet("ak", p2);
 
-            ProjektWrapper.g.fjernAktivitetFraProjekt(a, p1);
+            app.fjernAktivitetFraProjekt(a, p1);
 
             org.junit.Assert.assertTrue(a.getProjekt() == p2);
             org.junit.Assert.assertTrue(p2.getAktiviteter().contains(a));
@@ -210,7 +211,7 @@ public class ProjektWrapperTest {
             Projekt p = new Projekt("2023-01");
             Aktivitet a = new Aktivitet("ak", p);
 
-            ProjektWrapper.g.fjernAktivitetFraProjekt(a, p);
+            app.fjernAktivitetFraProjekt(a, p);
 
             org.junit.Assert.assertFalse(a.getProjekt() == p);
             org.junit.Assert.assertFalse(p.getAktiviteter().contains(a));

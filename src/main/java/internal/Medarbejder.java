@@ -20,26 +20,57 @@ public class Medarbejder {
         this.ugentligeTimer = 0;
     }
 
+    public void tilføjMedarbejderTilProjekt(Projekt projekt) {
+        if (projekt == null) {
+            throw new NullPointerException();
+        }
+        projekt.tilføjMedarbejder(this);
+        this.tilføjProjekt(projekt);
+    }
+
+    public void fjernMedarbejderFraProjekt(Projekt projekt) {
+        if (projekt == null) {
+            throw new NullPointerException();
+        }
+        projekt.fjernMedarbejder(this);
+        this.fjernProjekt(projekt);
+    }
+
+    public void tilføjMedarbjederTilAktivitet(Aktivitet aktivitet) {
+        if (aktivitet == null) {
+            throw new NullPointerException();
+        }
+        this.tilføjAktivitet(aktivitet);
+        aktivitet.tilføjMedarbjeder(this);
+    }
+
+    public void fjernMedarbejderFraAktivitet(Aktivitet aktivitet) {
+        if (aktivitet == null) {
+            throw new NullPointerException();
+        }
+        this.fjernAktivitet(aktivitet);
+        aktivitet.fjernMedarbejder(this);
+    }
+
+
     // TODO :: start / slut uge input
 
     /**
      *
      * @param start
      * @param slut
-     * @param aktiviteter En liste af alle aktiviteter som medarbejderen er anført til, som der har minimum én uge i start og slutdato
      * @return
      */
-    public int[] beregnFritid(UgeDato start, UgeDato slut, List<Aktivitet> aktiviteter) {
-        //Precondition, alle aktiviteter har IDer i anførte aktiviterer, og de har alle en start og slut dato, der gør, at de er inde i den valgte start og slutdato
-        aktiviteter.forEach((aktivitet) -> {
-            assert this.anførteAktiviteter.contains(aktivitet);
-            assert aktivitet.getStartDato() != null;
-            assert aktivitet.getSlutDato() != null;
-        });
+    public int[] beregnFritid(UgeDato start, UgeDato slut) {
+        assert start != null;
+        assert slut != null;
 
         int[] fritid = new int[slut.ugeDiff(start)];
 
-        aktiviteter.forEach((aktivitet) -> {
+        // fjern aktiviteter der ikke har start eller slut dato
+        this.anførteAktiviteter.stream()
+                .filter(a -> a.getStartDato() != null && a.getSlutDato() != null)
+                .forEach((aktivitet) -> {
             int startIndex, endIndex;
 
             startIndex = Math.max(aktivitet.getStartDato().ugeDiff(start), 0);
