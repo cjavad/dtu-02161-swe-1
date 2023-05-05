@@ -43,19 +43,16 @@ public class Aktivitet {
         return this.bugetteretTid / this.anførteMedarbjedere.size();
     }
 
+
+    /**
+    Precondition: Aktiviteten tilhører et projekt, medarbejderen tilhører samme projekt som aktiviteten
+     Postcondition: Der eksisterer nu én refference til medarbejderen i aktivitetens anførteMedarbejdere
+     */
     public void tilføjMedarbjeder(Medarbejder medarbejder) {
-        if (this.projekt == null) {
-            return;
-        }
 
-        if (!medarbejder.getProjekter().contains(this.projekt)) {
-            return;
-        }
+        assert(this.projekt != null && medarbejder.getProjekter().contains(this.projekt));
 
-        if (this.anførteMedarbjedere.contains(medarbejder)) {
-            return;
-        }
-
+        //Da vi har et set, behøver vi ikke at tjekke, om medarbejderen allerede tilhører settet
         this.anførteMedarbjedere.add(medarbejder);
     }
 
@@ -106,19 +103,19 @@ public class Aktivitet {
         return startDato;
     }
 
-    //Checker om startDato er mindre end slutdato eller vis eversa
+    //Checker om startDato er mindre end slutdato eller vise versa
     private boolean isLegalDatoAssignment(UgeDato startDato,UgeDato slutDato){
 
         //Setting it to null, while they're both null is acceptable
-        if(startDato == null && slutDato == null){
+        if(startDato == null && slutDato == null){ //1
             return true;
         }
         // (WLOG) if start != null and slut = null -> then slut := null or start :!= null is acceptable
-        if(slutDato == null || startDato == null){
+        if(slutDato == null || startDato == null){ //2
             return true;
         }
         //They're both not null, then we just compare
-        else{
+        else{ //3
             return startDato.compareTo(slutDato) < 0;
         }
 
