@@ -4,7 +4,6 @@ import internal.Aktivitet;
 import internal.Medarbejder;
 import internal.Projekt;
 import internal.ProjektPlanningApp;
-import internal.ProjektWrapper;
 
 public class ProjektPlanningAppTest {
 
