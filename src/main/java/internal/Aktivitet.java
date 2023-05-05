@@ -19,10 +19,15 @@ public class Aktivitet {
         this.anførteMedarbjedere = new HashSet<Medarbejder>();
     }
 
+    /**
+     * Precondition: Medarbejderen er ikke null, aktiviteten tilhører et projekt, medarbejderen tilhører samme projekt som aktiviteten
+     * Postcondition: Der eksisterer nu én refference til aktiviteten i medarbejderens anførteAktiviteter
+     */
+
     public void tilføjMedarbjederTilAktivitet(Medarbejder medarbejder) {
-        if (medarbejder == null) {
-            throw new NullPointerException();
-        }
+
+        assert (medarbejder != null && iSammeProjektSomMedarbejder(medarbejder));
+
         this.tilføjMedarbjeder(medarbejder);
         medarbejder.tilføjAktivitet(this);
     }
@@ -31,6 +36,7 @@ public class Aktivitet {
         if (medarbejder == null) {
             throw new NullPointerException();
         }
+
         this.fjernMedarbejder(medarbejder);
         medarbejder.fjernAktivitet(this);
     }
@@ -45,12 +51,12 @@ public class Aktivitet {
 
 
     /**
-    Precondition: Aktiviteten tilhører et projekt, medarbejderen tilhører samme projekt som aktiviteten
+    Precondition: Medarbejderen er ikke null, aktiviteten tilhører et projekt, medarbejderen tilhører samme projekt som aktiviteten
      Postcondition: Der eksisterer nu én refference til medarbejderen i aktivitetens anførteMedarbejdere
      */
     public void tilføjMedarbjeder(Medarbejder medarbejder) {
 
-        assert(this.projekt != null && medarbejder.getProjekter().contains(this.projekt));
+        assert(medarbejder != null && iSammeProjektSomMedarbejder(medarbejder));
 
         //Da vi har et set, behøver vi ikke at tjekke, om medarbejderen allerede tilhører settet
         this.anførteMedarbjedere.add(medarbejder);
@@ -68,6 +74,7 @@ public class Aktivitet {
         if (projekt == null || this.projekt != null) {
             return;
         }
+
         this.projekt = projekt;
     }
 
@@ -152,5 +159,9 @@ public class Aktivitet {
 
     public Set<Medarbejder> getAnførteMedarbejdere() {
         return anførteMedarbjedere;
+    }
+
+    public boolean iSammeProjektSomMedarbejder(Medarbejder medarbejder){
+        return (this.projekt != null && this.projekt.getMedarbejder().contains(medarbejder));
     }
 }

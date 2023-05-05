@@ -66,13 +66,14 @@ public class Medarbejder {
         }
     }
 
+    /**
+     *
+     * Precondition: Medarbejderen tilhører samme projekt som aktiviteten
+     * Postcondition: Der eksisterer nu én refference til aktiviteten i medarbejderens anførteAktiviteter
+     */
     public void tilføjAktivitet(Aktivitet aktivitet) {
-        if (!aktivitet.getProjekt().getMedarbejder().contains(this)) {
-            return; // TODO :: fejl
-        }
-        if (this.anførteAktiviteter.contains(aktivitet)) {
-            return;
-        }
+        assert (iSammeProjektSomAktivitet(aktivitet));
+
         this.anførteAktiviteter.add(aktivitet);
     }
 
@@ -98,6 +99,7 @@ public class Medarbejder {
         if (this.projektLederFor.contains(projekt)) {
             this.projektLederFor.remove(projekt);
         }
+
         this.projekter.remove(projekt);
 
         this.anførteAktiviteter.stream()
@@ -131,5 +133,11 @@ public class Medarbejder {
 
     public String toString() {
         return initial;
+    }
+
+
+    private Boolean iSammeProjektSomAktivitet(Aktivitet aktivitet){
+
+        return aktivitet.iSammeProjektSomMedarbejder(this);
     }
 }

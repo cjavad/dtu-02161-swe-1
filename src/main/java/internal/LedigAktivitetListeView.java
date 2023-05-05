@@ -85,7 +85,7 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
 
     public boolean isA(List<Integer> fritid) {
         for (int i : fritid) {
-            if (i == 0) {
+            if (i <= 0) {
                 return false;
             }
         }
@@ -113,52 +113,53 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
     }
 
 
-    public String klassificerSubliste(Medarbejder o) {
+    public String opdelPåBaggrundAfFritid(Medarbejder o) {
         /**
          * Precondition:
          *
          * Medarbarbejder kan ikke være null.
          * Start dato kan ikke være null.
-         * Slut kato kan ikke være null.
+         * Slut dato kan ikke være null.
          * Slut dato kan ikke komme før start dato
          */
-        assert o != null && datoer.getKey() != null && datoer.getValue() != null && datoer.getValue().compareTo(datoer.getKey()) >= 0;
+        assert o != null && datoer.getKey() != null && datoer.getValue() != null && datoer.getValue().compareTo(datoer.getKey()) >= 0; //0
 
         // Find sublisten listen af fritid for medarbejderen tilhører ved at tælle længden af listen
         // For at sammenligne med antal af elementer i listen der er større end 0, aka. hvor der er fritid.
-        List<Integer> list = o.beregnFritidForPeriode(datoer);
+        List<Integer> fritidPerUge = o.beregnFritidForPeriode(datoer);
 
         // Hvis antallet af elementer i listen er det samme som antal uger med fritid, er det liste A.
         // Hvis der er nogen uger med fritid er det liste B.
         // Hvis der ingen uger med fritid er det liste C.
 
-        String subliste = "";
+        String kategori = "";
 
-        if (isA(list)) { // 1
-            subliste = "A";
-        } else if (isB(list)) { // 2
-            subliste = "B";
-        } else if (isC(list)) { // 3
-            subliste = "C";
-        } else { // 4?
-            subliste = null;
+
+        if (isA(fritidPerUge)) { // 1 - Ingen har en uge med fritid på 0 eller under
+            kategori = "A";
+        } else if (isB(fritidPerUge)) { // 2
+            kategori = "B";
+        } else if (isC(fritidPerUge)) { // 3
+            kategori = "C";
+        } else { // 4
+            kategori = null;
         }
 
         /**
          * Postcondition:
          *
-         * Sublisten må ikke være null (det burde heller ikke være muligt)
-         * Sublisten skal være enten A, B eller C.
+         * Kategorien må ikke være null (det burde heller ikke være muligt)
+         * Kategorien skal være enten A, B eller C.
          *
          */
-        assert subliste != null && (subliste.equals("A") || subliste.equals("B") || subliste.equals("C"));
-        return subliste;
+        assert kategori != null && (kategori.equals("A") || kategori.equals("B") || kategori.equals("C"));
+        return kategori;
     }
 
     public void sorterHøjreListe() {
         // Sorter listen efter klassificeringen af sublisterne og derefter efter antal timer med fritid.
         højreListe.sort((o1, o2) -> -Math.max(
-                klassificerSubliste(o1).compareTo(klassificerSubliste(o2)),
+                opdelPåBaggrundAfFritid(o1).compareTo(opdelPåBaggrundAfFritid(o2)),
                 Integer.compare(
                         o1.beregnFritidForPeriode(datoer).stream().mapToInt(i -> i).sum(),
                         o2.beregnFritidForPeriode(datoer).stream().mapToInt(i -> i).sum()

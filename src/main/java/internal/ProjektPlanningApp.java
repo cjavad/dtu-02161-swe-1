@@ -15,10 +15,12 @@ public class ProjektPlanningApp {
         p.tilføjMedarbejderTilProjekt(m);
     }
 
+    /**
+     * Precondition: Medarbejderen er ikke null, aktiviteten er ikke null, aktiviteten tilhører et projekt, medarbejderen tilhører samme projekt som aktiviteten
+     * Postcondition: Der eksisterer nu én refference til aktiviteten i medarbejderens anførteAktiviteter
+     */
     public void tilføjMedarbjederTilAktivitet(Medarbejder m, Aktivitet a) {
-        if (a == null) {
-            throw new NullPointerException();
-        }
+        assert(a != null && m != null && a.iSammeProjektSomMedarbejder(m));
         a.tilføjMedarbjederTilAktivitet(m);
     }
 
