@@ -36,6 +36,13 @@ public class ProjektPlanningApp {
         m.fjernMedarbejderFraAktivitet(a);
     }
 
+    public void tilføjAktivitetTilProjekt(Aktivitet a, Projekt p) {
+        if (a == null) {
+            throw new NullPointerException();
+        }
+        a.tilføjAktivitetTilProjekt(p);
+    }
+
     public void fjernAktivitetFraProjekt(Aktivitet a, Projekt p) {
         if (a == null) {
             throw new NullPointerException();

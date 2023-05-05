@@ -11,18 +11,19 @@ public class Aktivitet {
     private UgeDato slutDato;
     private Set<Medarbejder> anførteMedarbjedere;
 
-    public Aktivitet(String navn, Projekt projekt) {
-        if (projekt == null) {
-            throw new NullPointerException();
-        }
-
+    public Aktivitet(String navn) {
         this.navn = navn;
-        this.projekt = projekt;
         this.bugetteretTid = 0;
         this.startDato = null;
         this.slutDato = null;
         this.anførteMedarbjedere = new HashSet<Medarbejder>();
+    }
 
+    public void tilføjAktivitetTilProjekt(Projekt projekt) {
+        if (projekt == null) {
+            throw new NullPointerException();
+        }
+        this.tilføjProjekt(projekt);
         projekt.tilføjAktivitet(this);
     }
 
@@ -66,8 +67,15 @@ public class Aktivitet {
         this.anførteMedarbjedere.remove(medarbejder);
     }
 
+    public void tilføjProjekt(Projekt projekt) {
+        if (projekt == null || this.projekt != null) {
+            return;
+        }
+        this.projekt = projekt;
+    }
+
     public void fjernProjekt(Projekt projekt) {
-        if (this.projekt != projekt) {
+        if (projekt == null || this.projekt != projekt) {
             return;
         }
 

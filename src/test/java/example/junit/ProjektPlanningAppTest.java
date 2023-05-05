@@ -41,7 +41,9 @@ public class ProjektPlanningAppTest {
         // null medarbejder
         {
             Projekt p = new Projekt("2023-01");
-            Aktivitet a = new Aktivitet("ak", p);
+            Aktivitet a = new Aktivitet("ak");
+
+            app.tilføjAktivitetTilProjekt(a, p);
 
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
                app.tilføjMedarbjederTilAktivitet(null, a);
@@ -59,7 +61,8 @@ public class ProjektPlanningAppTest {
         {
             Medarbejder m = new Medarbejder("abcd");
             Projekt p = new Projekt("2023-01");
-            Aktivitet a = new Aktivitet("ak", p);
+            Aktivitet a = new Aktivitet("ak");
+            app.tilføjAktivitetTilProjekt(a, p);
 
             app.tilføjMedarbjederTilAktivitet(m, a);
 
@@ -70,7 +73,8 @@ public class ProjektPlanningAppTest {
         {
             Medarbejder m = new Medarbejder("abcd");
             Projekt p = new Projekt("2023-01");
-            Aktivitet a = new Aktivitet("ak", p);
+            Aktivitet a = new Aktivitet("ak");
+            app.tilføjAktivitetTilProjekt(a, p);
             app.tilføjMedarbejderTilProjekt(m, p);
 
             app.tilføjMedarbjederTilAktivitet(m, a);
@@ -85,13 +89,15 @@ public class ProjektPlanningAppTest {
         // null projekt
         {
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
-                new Aktivitet("ak", null);
+                Aktivitet a = new Aktivitet("ak");
+                app.tilføjAktivitetTilProjekt(a, null);
             });
         }
         // non null projekt
         {
             Projekt p = new Projekt("2023-01");
-            Aktivitet a = new Aktivitet("ak", p);
+            Aktivitet a = new Aktivitet("ak");
+            app.tilføjAktivitetTilProjekt(a, p);
 
             org.junit.Assert.assertTrue(a.getProjekt() == p);
             org.junit.Assert.assertTrue(p.getAktiviteter().contains(a));
@@ -145,7 +151,8 @@ public class ProjektPlanningAppTest {
         // null medarbejder
         {
             Projekt p = new Projekt("2023-01");
-            Aktivitet a = new Aktivitet("ak", p);
+            Aktivitet a = new Aktivitet("ak");
+            app.tilføjAktivitetTilProjekt(a, p);
 
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
                 app.fjernMedarbejderFraAktivitet(null, a);
@@ -163,7 +170,8 @@ public class ProjektPlanningAppTest {
         {
             Medarbejder m = new Medarbejder("abcd");
             Projekt p = new Projekt("2023-01");
-            Aktivitet a = new Aktivitet("ak", p);
+            Aktivitet a = new Aktivitet("ak");
+            app.tilføjAktivitetTilProjekt(a, p);
 
             app.tilføjMedarbejderTilProjekt(m, p);
             app.tilføjMedarbjederTilAktivitet(m, a);
@@ -188,7 +196,8 @@ public class ProjektPlanningAppTest {
         // null projekt
         {
             Projekt p = new Projekt("2023-01");
-            Aktivitet a = new Aktivitet("ak", p);
+            Aktivitet a = new Aktivitet("ak");
+            app.tilføjAktivitetTilProjekt(a, p);
 
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
                 app.fjernAktivitetFraProjekt(a, null);
@@ -198,7 +207,8 @@ public class ProjektPlanningAppTest {
         {
             Projekt p1 = new Projekt("2023-01");
             Projekt p2 = new Projekt("2023-02");
-            Aktivitet a = new Aktivitet("ak", p2);
+            Aktivitet a = new Aktivitet("ak");
+            app.tilføjAktivitetTilProjekt(a, p2);
 
             app.fjernAktivitetFraProjekt(a, p1);
 
@@ -209,7 +219,8 @@ public class ProjektPlanningAppTest {
         // normal
         {
             Projekt p = new Projekt("2023-01");
-            Aktivitet a = new Aktivitet("ak", p);
+            Aktivitet a = new Aktivitet("ak");
+            app.tilføjAktivitetTilProjekt(a, p);
 
             app.fjernAktivitetFraProjekt(a, p);
 

@@ -28,8 +28,8 @@ public class Projekt {
     }
 
     public void tilføjAktivitet(Aktivitet aktivitet) {
-        if (this.aktiviteter.contains(aktivitet)) {
-            return;
+        for (Aktivitet a : this.aktiviteter) {
+            if (a.getNavn().contains(aktivitet.getNavn())) return;
         }
         this.aktiviteter.add(aktivitet);
     }

@@ -11,6 +11,7 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
     public Pair<UgeDato, UgeDato> datoer;
 
     public static void main(String[] args) {
+        /*
         // Simple Test
         ArrayList<Medarbejder> højreListe = new ArrayList<>();
         ArrayList<Medarbejder> venstreListe = new ArrayList<>();
@@ -74,6 +75,7 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
         for (Medarbejder m : lalv.venstreListe) {
             System.out.println(m);
         }
+        */
     }
 
     public LedigAktivitetListeView(Pair<UgeDato, UgeDato> datoer, ArrayList<Medarbejder> højreListe, ArrayList<Medarbejder> venstreListe) {
