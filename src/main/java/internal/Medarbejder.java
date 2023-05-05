@@ -140,4 +140,20 @@ public class Medarbejder {
 
         return aktivitet.iSammeProjektSomMedarbejder(this);
     }
+
+    public int forekomsterAfAktivitet(Aktivitet a){
+        Iterator<Aktivitet> aktivitetIterator = this.anførteAktiviteter.iterator();
+        int forekomster = 0;
+        boolean elementerTilbage = aktivitetIterator.hasNext();
+
+        while(elementerTilbage)
+            if(aktivitetIterator.next() == a){
+                forekomster++;
+            }
+
+        elementerTilbage = aktivitetIterator.hasNext();
+
+        return forekomster;
+
+    }
 }

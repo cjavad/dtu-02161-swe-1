@@ -1,6 +1,7 @@
 package internal;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class Aktivitet {
@@ -164,4 +165,22 @@ public class Aktivitet {
     public boolean iSammeProjektSomMedarbejder(Medarbejder medarbejder){
         return (this.projekt != null && this.projekt.getMedarbejder().contains(medarbejder));
     }
-}
+
+    public int forekomsterAfMedarbejder(Medarbejder m){
+        Iterator<Medarbejder> medarbejderIterator = this.anførteMedarbjedere.iterator();
+        int forekomster = 0;
+        boolean elementerTilbage = medarbejderIterator.hasNext();
+        while(elementerTilbage)
+
+            if(medarbejderIterator.next() == m){
+                forekomster++;
+            }
+
+            elementerTilbage = medarbejderIterator.hasNext();
+
+        return forekomster;
+
+        }
+
+    }
+

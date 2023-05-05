@@ -17,12 +17,17 @@ public class ProjektPlanningApp {
 
     /**
      * Precondition: Medarbejderen er ikke null, aktiviteten er ikke null, aktiviteten tilhører et projekt, medarbejderen tilhører samme projekt som aktiviteten
-     * Postcondition: Der eksisterer nu én refference til aktiviteten i medarbejderens anførteAktiviteter
+     * Postcondition: Der eksisterer nu én reference til aktiviteten i medarbejderens anførteAktiviteter og én reference til medarbejderen i aktivitetens anførteMedarbejdere
      */
     public void tilføjMedarbjederTilAktivitet(Medarbejder m, Aktivitet a) {
+
         assert(a != null && m != null && a.iSammeProjektSomMedarbejder(m));
+
         a.tilføjMedarbjederTilAktivitet(m);
+
+        assert(a.forekomsterAfMedarbejder(m) == 1 && m.forekomsterAfAktivitet(a) == 1);
     }
+
 
     public void fjernMedarbejderFraProjekt(Medarbejder m, Projekt p) {
         if (p == null) {
@@ -51,4 +56,5 @@ public class ProjektPlanningApp {
         }
         p.fjernAktivitetFraProjekt(a);
     }
+
 }
