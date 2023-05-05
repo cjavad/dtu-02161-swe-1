@@ -114,8 +114,6 @@ public class Aktivitet {
             return startDato.compareTo(slutDato) < 0;
         }
 
-
-
     }
 
     public void setStartDato(UgeDato startDato) {
