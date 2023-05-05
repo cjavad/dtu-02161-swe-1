@@ -3,6 +3,7 @@ package internal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Pair;
 
 public class Medarbejder {
 
@@ -56,33 +57,45 @@ public class Medarbejder {
     // TODO :: start / slut uge input
 
     /**
-     *
-     * @param start
-     * @param slut
-     * @return
+     * @param datoer: Indeholder en start og slut dato for perioden
+     * @return En int stream,
      */
-    public int[] beregnFritid(UgeDato start, UgeDato slut) {
-        assert start != null;
-        assert slut != null;
+    public List<Integer> beregnFritidForPeriode(Pair<UgeDato, UgeDato> datoer) {
 
-        int[] fritid = new int[slut.ugeDiff(start)];
+        UgeDato start = datoer.getKey();
+        UgeDato slut = datoer.getValue();
 
-        // fjern aktiviteter der ikke har start eller slut dato
-        this.anførteAktiviteter.stream()
-                .filter(a -> a.getStartDato() != null && a.getSlutDato() != null)
-                .forEach((aktivitet) -> {
-            int startIndex, endIndex;
 
-            startIndex = Math.max(aktivitet.getStartDato().ugeDiff(start), 0);
-            endIndex = Math.min(aktivitet.getStartDato().ugeDiff(slut), start.ugeDiff(slut));
+        if(start == null || slut == null){ //0
+            // Empty list
+            return new ArrayList<>();
+        }
 
-            for (int i = startIndex; i < endIndex; i++) {
-                fritid[i] += aktivitet.beregnArbejdePerMedarbejder();
-            }
+        // Length of the period [start,slut]>=1
+        List<Integer> fritid = new ArrayList<>(Collections.nCopies(slut.ugeDiff(start), this.ugentligeTimer));
 
+
+        this.anførteAktiviteter.forEach((aktivitet) -> { //1
+            beregnFritidPerAktivitet(start, slut, fritid, aktivitet);
         });
 
+
         return fritid;
+    }
+
+    private void beregnFritidPerAktivitet(UgeDato start, UgeDato slut, List<Integer> fritid, Aktivitet aktivitet) {
+
+        if (aktivitet.getStartDato() == null || aktivitet.getSlutDato() == null) return; //0
+
+        int startIndex, endIndex;
+
+        //Giver altid min. 0, da ugeDiff(ugeDato)>=1
+        startIndex = aktivitet.getStartDato().ugeDiff(start) - 1;
+        endIndex = Math.min(aktivitet.getStartDato().ugeDiff(slut), start.ugeDiff(slut));
+
+        for (int i = startIndex; i < endIndex; i++) { //2
+            fritid.set(i, fritid.get(i) - aktivitet.beregnArbejdePerMedarbejder()); //2a
+        }
     }
 
     public void tilføjAktivitet(Aktivitet aktivitet) {
@@ -146,5 +159,9 @@ public class Medarbejder {
 
     public void setUgentligeTimer(int ugentligeTimer) {
         this.ugentligeTimer = ugentligeTimer;
+    }
+
+    public String toString() {
+        return initial;
     }
 }

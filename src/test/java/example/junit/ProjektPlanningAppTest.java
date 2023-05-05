@@ -4,6 +4,7 @@ import internal.Aktivitet;
 import internal.Medarbejder;
 import internal.Projekt;
 import internal.ProjektPlanningApp;
+import internal.ProjektWrapper;
 
 public class ProjektPlanningAppTest {
 
@@ -64,7 +65,7 @@ public class ProjektPlanningAppTest {
             app.tilføjMedarbjederTilAktivitet(m, a);
 
             org.junit.Assert.assertFalse(m.getAnførteAktiviteter().contains(a));
-            org.junit.Assert.assertFalse(a.getAnførteMedarbjedere().contains(m));
+            org.junit.Assert.assertFalse(a.getAnførteMedarbejdere().contains(m));
         }
         // medarbejder in projekt
         {
@@ -76,7 +77,7 @@ public class ProjektPlanningAppTest {
             app.tilføjMedarbjederTilAktivitet(m, a);
 
             org.junit.Assert.assertTrue(m.getAnførteAktiviteter().contains(a));
-            org.junit.Assert.assertTrue(a.getAnførteMedarbjedere().contains(m));
+            org.junit.Assert.assertTrue(a.getAnførteMedarbejdere().contains(m));
         }
     }
 
@@ -171,7 +172,7 @@ public class ProjektPlanningAppTest {
             app.fjernMedarbejderFraAktivitet(m, a);
 
             org.junit.Assert.assertFalse(m.getAnførteAktiviteter().contains(a));
-            org.junit.Assert.assertFalse(a.getAnførteMedarbjedere().contains(m));
+            org.junit.Assert.assertFalse(a.getAnførteMedarbejdere().contains(m));
         }
     }
 

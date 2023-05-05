@@ -9,7 +9,7 @@
 	<groupId>dtu</groupId>
 	<artifactId>Hello_JavaFX</artifactId>
 	<name>Hello_JavaFX</name>
-	<version>SNAPSHOT 0.0.1</version>
+	<version>SNAPSHOT 0.0.1</version>	
 
 	<properties>
 		<!-- Set the Java version used by the compiler. -->
