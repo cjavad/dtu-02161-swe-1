@@ -141,14 +141,18 @@ public class Medarbejder {
         return aktivitet.iSammeProjektSomMedarbejder(this);
     }
 
+    /**
+    Precondition: Aktivitet er ikke en null pointer
+     Postcondition: forekomster er lige antallet af forekomster af refferencer til a i anførteAktiviteter
+     */
     public int forekomsterAfAktivitet(Aktivitet a){
         Iterator<Aktivitet> aktivitetIterator = this.anførteAktiviteter.iterator();
         int forekomster = 0;
         boolean elementerTilbage = aktivitetIterator.hasNext();
 
-        while(elementerTilbage)
-            if(aktivitetIterator.next() == a){
-                forekomster++;
+        while(elementerTilbage) //1
+            if(aktivitetIterator.next() == a){ //2
+                forekomster++; //2a
             }
 
         elementerTilbage = aktivitetIterator.hasNext();
