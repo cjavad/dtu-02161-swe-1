@@ -1,5 +1,7 @@
-package example.cucumber;
+package example.cucumber.tests;
 
+import example.cucumber.ErrorMessage;
+import example.cucumber.TestDateServer;
 import internal.SystemApp;
 import internal.*;
 import io.cucumber.java.en.Given;
@@ -14,16 +16,13 @@ import static org.junit.Assert.assertTrue;
 public class AnførteMedarbejdereTilAktivitet {
 
     public SystemApp system;
-    public Projekt aktiveProjekt;
-    public TestDateServer dateServer;
+    public ErrorMessage error;
+    public Aktiv aktiv;
 
-    public List<Aktivitet> aktivitetList;
-    public List<Medarbejder> medarbejderList;
-
-    public AnførteMedarbejdereTilAktivitet(SystemApp system) {
+    public AnførteMedarbejdereTilAktivitet(SystemApp system, ErrorMessage error, Aktiv aktiv) {
         this.system = system;
-        this.dateServer = new TestDateServer();
-        this.aktiveProjekt = null;
+        this.aktiv = aktiv;
+        this.error = error;
     }
 
     @Given("projektet {string} er oprettet med løbenummer {int} og årstal {int}")
@@ -64,16 +63,16 @@ public class AnførteMedarbejdereTilAktivitet {
     @Given("brugeren er logget ind som {string} på projektet {string}")
     public void brugerenErLoggetIndSomPåProjektet(String navn, String projektNavn) {
         this.system.login(navn);
-        this.aktiveProjekt = this.system.findProjektMedNavn(projektNavn);
+        this.aktiv.setProjekt(this.system.findProjektMedNavn(projektNavn));
     }
     @When("brugeren vælger at se listen af aktiviteter")
     public void brugerenVælgerAtSeListenAfAktiviteter() {
-        this.aktivitetList = this.aktiveProjekt.getAktiviteter().stream().toList();
+        this.aktiv.aktivitetList = this.aktiv.getProjekt().getAktiviteter().stream().toList();
     }
     @Then("ses aktiviten {string} med start datoen {string} og slut datoen {string}")
     public void sesAktivitenMedStartDatoenOgSlutDatoen(String navn, String start, String slut) {
         assertFalse(
-                this.aktivitetList.stream().noneMatch(a ->
+                this.aktiv.aktivitetList.stream().noneMatch(a ->
                         navn.equals(a.getNavn()) &&
                         UgeDato.fromString(start).equals(a.getStartDato()) &&
                         UgeDato.fromString(slut).equals(a.getSlutDato())
@@ -82,38 +81,53 @@ public class AnførteMedarbejdereTilAktivitet {
     }
     @When("brugeren vælger at se listen af anførte medarbejdere på {string}")
     public void brugerenVælgerAtSeListenAfAnførteMedarbejderePå(String navn) {
-        this.medarbejderList = this.aktiveProjekt.findAktivitet(navn).getAnførteMedarbejdere().stream().toList();
+        this.aktiv.medarbejderList = this.aktiv.getProjekt().findAktivitet(navn).getAnførteMedarbejdere().stream().toList();
     }
     @Then("er der {int} medarbejdere anført på den")
     public void erDerMedarbejdereAnførtPåDen(Integer count) {
-        assertTrue(this.medarbejderList.size() == count);
+        assertTrue(this.aktiv.medarbejderList.size() == count);
     }
     @When("brugeren anfører {string} til {string}")
     public void brugerenAnførerTil(String medarbejder, String aktivitet) {
-        this.system.tilføjMedarbejderTilAktivitet(
-                this.system.findMedarbejder(medarbejder),
-                this.aktiveProjekt.findAktivitet(aktivitet)
-        );
+        try {
+            this.system.tilføjMedarbejderTilAktivitet(
+                    this.system.findMedarbejder(medarbejder),
+                    this.aktiv.getProjekt().findAktivitet(aktivitet)
+            );
+        } catch (Exception e) {
+            this.error.setMessage(e.getMessage());
+        }
     }
     @Then("er der {int} medarbejder anført {string}")
     public void erDerMedarbejderAnført(Integer count, String aktivitet) {
-        assertTrue(this.aktiveProjekt.findAktivitet(aktivitet).getAnførteMedarbejdere().size() == count);
+        assertTrue(this.aktiv.getProjekt().findAktivitet(aktivitet).getAnførteMedarbejdere().size() == count);
     }
     @Then("er medarbejderen {string} anført {string}")
     public void erMedarbejderenAnført(String medarbejder, String aktivitet) {
-        assertTrue(this.system.findMedarbejder(medarbejder).getAnførteAktiviteter().contains(this.aktiveProjekt.findAktivitet(aktivitet)));
+        assertTrue(this.system.findMedarbejder(medarbejder).getAnførteAktiviteter().contains(this.aktiv.getProjekt().findAktivitet(aktivitet)));
     }
 
     @Then("brugeren får en fejlbesked {string}")
     public void brugerenFårEnFejlbesked(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(string.equals(this.error.getMessage()));
     }
     @Then("er der ingen anførte medarbejderer på {string}")
     public void erDerIngenAnførteMedarbejdererPå(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(this.aktiv.getProjekt().findAktivitet(string).getAnførteMedarbejdere().isEmpty());
     }
 
+    @Then("medarbejderen {string} er anført på {string}")
+    public void medarbejderenErAnførtPå(String medarbejder, String aktivitet) {
+        Medarbejder m = this.system.findMedarbejder(medarbejder);
+        Aktivitet a = this.aktiv.getProjekt().findAktivitet(aktivitet);
 
+        assertTrue(m.getAnførteAktiviteter().contains(a));
+        assertTrue(a.getAnførteMedarbejdere().contains(m));
+    }
+
+    @Given("brugeren er logget ind {string} på {string}")
+    public void brugerenErLoggetIndPå(String navn, String projektNavn) {
+        this.system.login(navn);
+        this.aktiv.setProjekt(this.system.findProjektMedNavn(projektNavn));
+    }
 }

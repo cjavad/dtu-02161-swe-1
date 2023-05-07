@@ -18,21 +18,21 @@ Feature: fjern medarbejder fra projekt
     Given brugeren er logget ind som "admin" på "Projekt 1"
     When brugeren vælger at se medarbejderer på projektet
     Then er "aaaa" og "bbbb" vist i medarbejderlisten
-    When brugeren vælger at fjerne "bbbb" fra projektet
+    When brugeren vælger at fjerne medarbejderen "bbbb" fra projektet
     Then er der 1 bruger tilbage i medarbejderlisten
 
   Scenario:
     Given brugeren er logget ind som "aaaa" på "Projekt 1"
     When brugeren vælger at se medarbejderer på projektet
     Then er "aaaa" og "bbbb" vist i medarbejderlisten
-    When brugeren vælger at fjerne "bbbb" fra projektet
-    Then er der 1 bruger tilbage i medarbejderlisten
+    When brugeren vælger at fjerne medarbejderen "bbbb" fra projektet
+    Then er der 2 bruger tilbage i medarbejderlisten
 
   Scenario:
     Given brugeren er logget ind som "bbbb" på "Projekt 1"
     When brugeren vælger at se medarbejderer på projektet
     Then er "aaaa" og "bbbb" vist i medarbejderlisten
-    When brugeren vælger at fjerne "bbbb" fra projektet
+    When brugeren vælger at fjerne medarbejderen "bbbb" fra projektet
     Then er der 2 bruger tilbage i medarbejderlisten
     And brugeren får en fejlbesked "du kan ikke fjerne medarbejder fra projektet"
 
@@ -40,5 +40,5 @@ Feature: fjern medarbejder fra projekt
     Given brugeren er logget ind som "cccc" på "Projekt 2"
     When brugeren vælger at se medarbejderer på projektet
     Then er "cccc" og "dddd" vist i medarbejderlisten
-    When brugeren vælger at fjerne "dddd" fra projektet
-    Then er der 1 bruger tilbage i medarbejderlisten
+    When brugeren vælger at fjerne medarbejderen "dddd" fra projektet
+    Then er der 2 bruger tilbage i medarbejderlisten

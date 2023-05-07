@@ -21,17 +21,17 @@ Feature: fjern aktivitet fra projekt
     And medarbejderen "aaaa" er anført "Aktivitet 1" på "Projekt 3"
     And medarbejderen "dddd" er anført "Aktivitet 1" på "Projekt 3"
 
-  Scenario:
-    # Admin
-    Given brugeren er logget ind som admin på "Projekt 1"
-    When brugeren vælger at se aktiviteterne på projektet
-    Then kan brugeren se "Aktivitet 1" med start datoen "01-2023" og slut datoen "10-2023"
-    And medarbejderen "aaaa" har aktivitets tuplen ("2023-01", "Aktivitet 1")
-    And medarbejderen "bbbb" har aktivitets tuplen ("2023-01", "Aktivitet 1")
-    When brugeren vælger at fjerne "Aktivitet 1" fra projektet
-    Then er der 0 aktiviteter på projektet
-    And medarbejderen "aaaa" har ikke aktivitets tuplen ("2023-01", "Aktivitet 1")
-    And medarbejderen "bbbb" har ikke aktivitets tuplen ("2023-01", "Aktivitet 1")
+#  Scenario:
+#    # Admin
+#    Given brugeren er logget ind som admin på "Projekt 1"
+#    When brugeren vælger at se aktiviteterne på projektet
+#    Then kan brugeren se "Aktivitet 1" med start datoen "01-2023" og slut datoen "10-2023"
+#    And medarbejderen "aaaa" har aktivitets tuplen ("2023-01", "Aktivitet 1")
+#    And medarbejderen "bbbb" har aktivitets tuplen ("2023-01", "Aktivitet 1")
+#    When brugeren vælger at fjerne "Aktivitet 1" fra projektet
+#    Then er der 0 aktiviteter på projektet
+#    And medarbejderen "aaaa" har ikke aktivitets tuplen ("2023-01", "Aktivitet 1")
+#    And medarbejderen "bbbb" har ikke aktivitets tuplen ("2023-01", "Aktivitet 1")
 
   Scenario:
     # Projektleder

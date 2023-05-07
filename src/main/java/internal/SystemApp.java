@@ -35,8 +35,8 @@ public class SystemApp {
         this.user = null;
     }
 
-    public boolean lavNytProjekt(String navn, DateServer dateServer) {
-        if (!isAdmin) return false;
+    public boolean lavNytProjekt(String navn) throws Exception {
+        if (!isAdmin) throw new Exception("Du kan ikke oprette et projekt, da du ikke er admin");
 
         this.projekter.add(
                 new Projekt(
@@ -87,9 +87,9 @@ public class SystemApp {
         );
     }
 
-    public void sletAktivitet(Aktivitet aktivitet) {
-        if (!isProjektleder(aktivitet.getProjekt())) return;
-
+    public void sletAktivitet(Aktivitet aktivitet) throws Exception {
+        if (aktivitet.getProjekt().getProjektLeder() != null && !isProjektleder(aktivitet.getProjekt()))
+            throw new Exception("du kan ikke aktiviteter fra projektet");
         this.planner.fjernAktivitetFraProjekt(
                 aktivitet,
                 aktivitet.getProjekt()
@@ -104,19 +104,21 @@ public class SystemApp {
     }
 
     public void tilføjMedarbejderTilProjekt(Medarbejder medarbejder, Projekt projekt) {
-        if (!isProjektleder(projekt)) return;
+        if (!this.isAdmin) return;
 
         this.planner.tilføjMedarbejderTilProjekt(medarbejder, projekt);
     }
 
-    public void fjernMedarbejderFraProjekt(Medarbejder medarbejder, Projekt projekt) {
-        if (!isProjektleder(projekt)) return;
+    public void fjernMedarbejderFraProjekt(Medarbejder medarbejder, Projekt projekt) throws Exception {
+        if (!this.isAdmin) throw new Exception("du kan ikke fjerne medarbejder fra projektet");
 
         this.planner.fjernMedarbejderFraProjekt(medarbejder, projekt);
     }
 
-    public void tilføjMedarbejderTilAktivitet(Medarbejder medarbejder, Aktivitet aktivitet) {
-        if (aktivitet.getProjekt().getProjektLeder() != null && !isProjektleder(aktivitet.getProjekt())) return;
+    public void tilføjMedarbejderTilAktivitet(Medarbejder medarbejder, Aktivitet aktivitet) throws Exception {
+        if (aktivitet.getProjekt().getProjektLeder() != null && !isProjektleder(aktivitet.getProjekt())) {
+            throw new Exception("du kan ikke anføre en medarbejder til en aktivitet");
+        }
 
         this.planner.tilføjMedarbjederTilAktivitet(medarbejder, aktivitet);
     }
@@ -126,7 +128,6 @@ public class SystemApp {
 
         this.planner.fjernMedarbejderFraAktivitet(medarbejder, aktivitet);
     }
-
 
 
     public boolean login(String initials) {
