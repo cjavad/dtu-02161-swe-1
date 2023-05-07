@@ -41,6 +41,11 @@ public class UgeDato implements Comparable<UgeDato> {
     }
 
     @Override
+    public String toString() {
+        return this.årstal + "-" + this.uge;
+    }
+
+    @Override
     public int compareTo(UgeDato o) {
         // For at sammenligne UgeDato kan først sammenligne årstal, og hvis de er ens, ugen.
         return this.årstal == o.årstal ?
