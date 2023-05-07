@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import internal.Aktivitet;
 import internal.Medarbejder;
-import internal.SystemAppException;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -84,7 +83,6 @@ public class ProjektUI {
 			fjernMedarbejderDialog();
 		});
 		medarbejderKnapBox.getChildren().add(fjernMedarbejder);
-
 		medarbejderBox.getChildren().add(medarbejderKnapBox);
 
 		VBox aktivitetBox = new VBox();
@@ -112,7 +110,8 @@ public class ProjektUI {
 		fjernAktivitet.setOnAction(e -> {
 			fjernAktivitetDialog();
 		});
-		aktivitetKnapBox.getChildren().add(fjernAktivitet);
+		aktivitetKnapBox.getChildren().add(fjernAktivitet);	
+		aktivitetBox.getChildren().add(aktivitetKnapBox);
 
 		root.add(infoBox, 0, 1);
 		root.add(medarbejderBox, 1, 1);	
@@ -156,13 +155,10 @@ public class ProjektUI {
 		}
 
 		Medarbejder medarbejder = app.system.findMedarbejder(result.get());
-		if (medarbejder != null) {
-			try {
-				app.system.fjernMedarbejderFraProjekt(medarbejder, projekt);
-			} catch (SystemAppException e) {
-				throw new RuntimeException(e);
-			}
-		} else {
+
+		try {
+			app.system.fjernMedarbejderFraProjekt(medarbejder, projekt);
+		} catch (Exception e) {
 			new Alert(Alert.AlertType.ERROR, "Medarbejder '" + result.get() + "' ikke fundet").showAndWait();
 		}
 
@@ -187,6 +183,7 @@ public class ProjektUI {
 		}
 
 		Aktivitet aktivitet = new Aktivitet(result.get());
+		aktivitet.setProjekt(projekt);
 		projekt.tilføjAktivitet(aktivitet);
 
 		app.visBrugerflade();

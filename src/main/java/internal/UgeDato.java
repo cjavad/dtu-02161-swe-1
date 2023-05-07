@@ -40,7 +40,7 @@ public class UgeDato implements Comparable<UgeDato> {
 
     @Override
     public String toString() {
-        return this.årstal + "-" + this.uge;
+        return this.uge + "-" + this.årstal;
     }
 
     @Override

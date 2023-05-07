@@ -127,13 +127,11 @@ public class StartUI {
 
 		Optional<String> navn = navnInput.showAndWait();
 
-		if (navn.isPresent()) {
-			try {
-				if (!app.system.lavNytProjekt(navn.get())) {
-					new Alert(Alert.AlertType.ERROR, "Kunne ikke oprette projekt").showAndWait();
-				}
-			} catch (SystemAppException e) {
-				throw new RuntimeException(e);
+		if (navn.isPresent()) {	
+			try { 
+				app.system.lavNytProjekt(navn.get());
+			} catch (Exception e) {
+				new Alert(Alert.AlertType.ERROR, "Kunne ikke oprette projekt").showAndWait();
 			}
 		}
 
