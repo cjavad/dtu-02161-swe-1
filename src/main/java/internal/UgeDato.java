@@ -1,7 +1,5 @@
 package internal;
 
-import io.cucumber.java.sl.In;
-
 public class UgeDato implements Comparable<UgeDato> {
     int årstal;
     int uge;

@@ -1,11 +1,20 @@
 package application;
 
 import internal.Projekt;
+
+import java.util.Optional;
+
+import internal.Aktivitet;
 import internal.Medarbejder;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class ProjektUI {
 	public HelloFX app;
@@ -21,18 +30,27 @@ public class ProjektUI {
 
 		root.add(app.lavTilbageKnap(), 0, 0);
 
-		Label projektId = new Label("Projekt id: " + projekt.getProjektID());
-		root.add(projektId, 0, 1);
+		VBox infoBox = new VBox();
 
-		// NOTE: kan ikke implementere projekt navn eller år, da projekt klassen ikke indeholder dem
+		// projekt info
+		infoBox.getChildren().add(new Label("ID: " + projekt.getProjektID()));
+		infoBox.getChildren().add(new Label("Navn: " + projekt.getNavn()));
+
+		// projekt leder
+		if (projekt.getProjektLeder() != null) {
+			Label projektLeder = new Label("Projekt leder: " + projekt.getProjektLeder().getInitial());
+			infoBox.getChildren().add(projektLeder);
+		}
+
+		Button vælgProjektLeder = new Button("Vælg projekt leder");
+		vælgProjektLeder.setOnAction(e -> {
+			vælgProjektLederDialog();
+		});
+		infoBox.getChildren().add(vælgProjektLeder);
 		
-		GridPane medarbejdere = new GridPane();
-
-		medarbejdere.add(new Label("Medarbejdere"), 0, 0);
-
-		GridPane medarbejdeListe = new GridPane();
-
-		int index = 0;
+		// medarbejdere
+		VBox medarbejderBox = new VBox();
+		ListView<Button> medarbejdeListe = new ListView<Button>();
 		for (Medarbejder medarbejder : projekt.getMedarbejder()) {
 			String label = medarbejder.getInitial();
 
@@ -43,27 +61,183 @@ public class ProjektUI {
 			}
 
 			Button medarbejderInitial = new Button(label);
-
 			medarbejderInitial.setOnAction(e -> {
-				vælgMedarbejder(medarbejder);
+				app.visMedarbejder(medarbejder);
 			});
-
-			medarbejdeListe.add(medarbejderInitial, 0, index);
-
-
-			index += 1;
+			medarbejdeListe.getItems().add(medarbejderInitial);
 		}
 
-		medarbejdere.add(medarbejdeListe, 0, 1);
+		medarbejderBox.getChildren().add(new Label("Medarbejdere"));
+		medarbejderBox.getChildren().add(medarbejdeListe);
 
-		root.add(medarbejdere, 0, 2);
+		HBox medarbejderKnapBox = new HBox();	
+
+		Button tilføjMedarbejder = new Button("Tilføj medarbejder");
+		tilføjMedarbejder.setOnAction(e -> {
+			tilføjMedarbejderDialog();
+		});
+		medarbejderKnapBox.getChildren().add(tilføjMedarbejder);
+
+		Button fjernMedarbejder = new Button("Fjern medarbejder");
+		fjernMedarbejder.setOnAction(e -> {
+			fjernMedarbejderDialog();
+		});
+		medarbejderKnapBox.getChildren().add(fjernMedarbejder);
+
+		medarbejderBox.getChildren().add(medarbejderKnapBox);
+
+		VBox aktivitetBox = new VBox();
+		ListView<Button> aktivitetListe = new ListView<Button>();
+		for (Aktivitet aktivitet : projekt.getAktiviteter()) {
+			Button aktivitetNavn = new Button(aktivitet.getNavn());
+			aktivitetNavn.setOnAction(e -> {
+				app.visAktivitet(aktivitet);
+			});
+			aktivitetListe.getItems().add(aktivitetNavn);
+		}
+
+		aktivitetBox.getChildren().add(new Label("Aktiviteter"));
+		aktivitetBox.getChildren().add(aktivitetListe);
+
+		HBox aktivitetKnapBox = new HBox();
+
+		Button tilføjAktivitet = new Button("Tilføj aktivitet");
+		tilføjAktivitet.setOnAction(e -> {
+			tilføjAktivitetDialog();
+		});
+		aktivitetKnapBox.getChildren().add(tilføjAktivitet);
+
+		Button fjernAktivitet = new Button("Fjern aktivitet");
+		fjernAktivitet.setOnAction(e -> {
+			fjernAktivitetDialog();
+		});
+		aktivitetKnapBox.getChildren().add(fjernAktivitet);
+
+		root.add(infoBox, 0, 1);
+		root.add(medarbejderBox, 1, 1);	
+		root.add(aktivitetBox, 2, 1);
 
 		return root;
 	}
 
-	public void vælgMedarbejder(Medarbejder medarbejder) {
-		app.medarbejder = medarbejder;
-		app.appStage = AppStage.Medarbejder;
+	public void tilføjMedarbejderDialog() {
+		TextInputDialog dialog = new TextInputDialog("Medarbejder initial");
+		dialog.setTitle("Tilføj medarbejder");
+		dialog.setHeaderText("Tilføj medarbejder til projekt");
+
+		Optional<String> result = dialog.showAndWait();
+
+		if (!result.isPresent()) {
+			new Alert(Alert.AlertType.ERROR, "Ingen medarbejder initial indtastet").showAndWait();
+			return;
+		}
+
+		Medarbejder medarbejder = app.system.findMedarbejder(result.get());
+		if (medarbejder != null) {
+			app.system.tilføjMedarbejderTilProjekt(medarbejder, projekt);
+		} else {
+			new Alert(Alert.AlertType.ERROR, "Medarbejder '" + result.get() + "' ikke fundet").showAndWait();
+		}
+
+		app.visBrugerflade();
+	}
+
+	public void fjernMedarbejderDialog() {
+		TextInputDialog dialog = new TextInputDialog("Medarbejder initial");
+		dialog.setTitle("Fjern medarbejder");
+		dialog.setHeaderText("Fjern medarbejder fra projekt");
+
+		Optional<String> result = dialog.showAndWait();
+
+		if (!result.isPresent()) {
+			new Alert(Alert.AlertType.ERROR, "Ingen medarbejder initial indtastet").showAndWait();
+			return;
+		}
+
+		Medarbejder medarbejder = app.system.findMedarbejder(result.get());
+		if (medarbejder != null) {
+			app.system.fjernMedarbejderFraProjekt(medarbejder, projekt);
+		} else {
+			new Alert(Alert.AlertType.ERROR, "Medarbejder '" + result.get() + "' ikke fundet").showAndWait();
+		}
+
+		app.visBrugerflade();
+	}
+
+	public void tilføjAktivitetDialog() {
+		TextInputDialog dialog = new TextInputDialog("Aktivitet navn");
+		dialog.setTitle("Tilføj aktivitet");
+		dialog.setHeaderText("Tilføj aktivitet til projekt");
+
+		Optional<String> result = dialog.showAndWait();
+
+		if (!result.isPresent()) {
+			new Alert(Alert.AlertType.ERROR, "Ingen aktivitet navn indtastet").showAndWait();
+			return;
+		}
+
+		if (projekt.findAktivitet(result.get()) != null) {
+			new Alert(Alert.AlertType.ERROR, "Aktivitet '" + result.get() + "' findes allerede").showAndWait();
+			return;
+		}
+
+		Aktivitet aktivitet = new Aktivitet(result.get());
+		projekt.tilføjAktivitet(aktivitet);
+
+		app.visBrugerflade();
+	}
+
+	public void fjernAktivitetDialog() {
+		TextInputDialog dialog = new TextInputDialog("Aktivitet navn");
+		dialog.setTitle("Fjern aktivitet");
+		dialog.setHeaderText("Fjern aktivitet fra projekt");
+
+		Optional<String> result = dialog.showAndWait();
+
+		if (!result.isPresent()) {
+			new Alert(Alert.AlertType.ERROR, "Ingen aktivitet navn indtastet").showAndWait();
+			return;
+		}
+
+		Aktivitet aktivitet = projekt.findAktivitet(result.get());
+		if (aktivitet != null) {
+			projekt.fjernAktivitet(aktivitet);
+		} else {
+			new Alert(Alert.AlertType.ERROR, "Aktivitet '" + result.get() + "' ikke fundet").showAndWait();
+		}
+
+		app.visBrugerflade();
+	}
+
+	public void vælgProjektLederDialog() {
+		TextInputDialog dialog = new TextInputDialog("Medarbejder initial");
+		dialog.setTitle("Vælg projekt leder");
+		dialog.setHeaderText("Vælg projekt leder");
+
+		Optional<String> result = dialog.showAndWait();
+
+		if (!result.isPresent()) {
+			new Alert(Alert.AlertType.ERROR, "Ingen medarbejder initial indtastet").showAndWait();
+			return;
+		}
+
+		Medarbejder medarbejder = app.system.findMedarbejder(result.get());
+		if (medarbejder == null) {
+			new Alert(Alert.AlertType.ERROR, "Medarbejder '" + result.get() + "' ikke fundet").showAndWait();
+			return;
+		}
+
+		if (projekt.getMedarbejder().contains(medarbejder)) {
+			new Alert(Alert.AlertType.ERROR, "Medarbejder '" + result.get() + "' er ikke medarbejder på projektet").showAndWait();
+			return;
+		}
+
+		if (app.medarbejder == projekt.getProjektLeder() || projekt.getProjektLeder() == null || app.system.isAdmin) {
+			projekt.setProjektLeder(medarbejder);
+		} else {
+			new Alert(Alert.AlertType.ERROR, "Du har ikke rettigheder til at ændre projekt leder").showAndWait();
+		}
+
 		app.visBrugerflade();
 	}
 }

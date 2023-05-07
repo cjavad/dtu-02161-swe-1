@@ -3,7 +3,8 @@ package application;
 public enum AppStage {
 	Start,
 	Projekt,
-	Medarbejder;
+	Medarbejder,
+	Aktivitet;
 
 	public AppStage sidste() {
 		switch (this) {
@@ -12,6 +13,8 @@ public enum AppStage {
 			case Projekt:
 				return AppStage.Start;
 			case Medarbejder:
+				return AppStage.Start;
+			case Aktivitet:
 				return AppStage.Projekt;
 			default:
 				throw new IndexOutOfBoundsException("how?!");

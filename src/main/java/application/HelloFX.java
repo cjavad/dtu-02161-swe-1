@@ -1,7 +1,9 @@
 package application;
 
+import internal.Aktivitet;
 import internal.Medarbejder;
 import internal.Projekt;
+import internal.SystemApp;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,35 +11,40 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class HelloFX extends Application {
+	public SystemApp system;
 	public Projekt projekt;
 	public Medarbejder medarbejder;
+	public Aktivitet aktivitet;
 
 	public Stage stage;
 	public AppStage appStage = AppStage.Start;
 
     @Override
     public void start(Stage stage) {
-		this.stage = stage;
+		this.stage = stage;	
+		this.system = new SystemApp();
 
-		this.projekt = new Projekt("test", "someid42069");
-
-		Medarbejder mag = new Medarbejder("MAG");
-		projekt.tilføjMedarbejder(mag);
-		projekt.setProjektLeder(mag);	
-
-		appStage = AppStage.Projekt;
+		appStage = AppStage.Start;
 		visBrugerflade();
     }
 
+	public Parent lavStartBrugerflade() {
+		StartUI ui = new StartUI(this);
+		return ui.lavBrugerflade();  
+	}
+
 	public Parent lavProjektBrugerflade() {
 		ProjektUI ui = new ProjektUI(this, projekt);
-
         return ui.lavBrugerflade();  
 	}
 
 	public Parent lavMedarbejderBrugerflade() {
 		MedarbejderUI ui = new MedarbejderUI(this, medarbejder);
+		return ui.lavBrugerflade();  
+	}
 
+	public Parent lavAktivitetBrugerflade() {
+		AktivitetUI ui = new AktivitetUI(this, aktivitet);
 		return ui.lavBrugerflade();  
 	}
 
@@ -50,6 +57,7 @@ public class HelloFX extends Application {
 	public void visBrugerflade() {
 		switch (this.appStage) {
 			case Start:
+				visBrugerflade(lavStartBrugerflade());
 				break;
 			case Projekt:
 				visBrugerflade(lavProjektBrugerflade());
@@ -57,7 +65,28 @@ public class HelloFX extends Application {
 			case Medarbejder:
 				visBrugerflade(lavMedarbejderBrugerflade());
 				break;
+			case Aktivitet:
+				visBrugerflade(lavAktivitetBrugerflade());
+				break;
 		}
+	}
+
+	public void visProjekt(Projekt projekt) {
+		this.projekt = projekt;
+		appStage = AppStage.Projekt;
+		visBrugerflade();
+	}
+
+	public void visMedarbejder(Medarbejder medarbejder) {
+		this.medarbejder = medarbejder;
+		appStage = AppStage.Medarbejder;
+		visBrugerflade();
+	}
+
+	public void visAktivitet(Aktivitet aktivitet) {
+		this.aktivitet = aktivitet;
+		appStage = AppStage.Aktivitet;
+		visBrugerflade();
 	}
 
 	public void tilbage() {

@@ -1,11 +1,7 @@
 package internal;
 
-import internal.*;
-import internal.ListeView;
-
 import java.util.HashSet;
 import java.util.Set;
-
 
 public class SystemApp {
 
@@ -23,7 +19,7 @@ public class SystemApp {
     public Set<Medarbejder> medarbejder;
 
     public SystemApp() {
-        this.dateServer = null;
+        this.dateServer = new SystemDateServer(new UgeDato(1, 2024));
 
         this.projekter = new HashSet<Projekt>();
         this.medarbejder = new HashSet<Medarbejder>();
@@ -39,11 +35,12 @@ public class SystemApp {
         if (!isAdmin) throw new SystemAppException("Du kan ikke oprette et projekt, da du ikke er admin");
 
         this.projekter.add(
-                new Projekt(
-                        navn,
-                        this.recorder.getProjektID(this.dateServer.getUgeDato())
-                )
+			new Projekt(
+				navn,
+				this.recorder.getProjektID(this.dateServer.getUgeDato())
+            )
         );
+
         return true;
     }
 
@@ -171,8 +168,8 @@ public class SystemApp {
     }
 
     public boolean isProjektleder(Projekt projekt) {
+		if (this.isAdmin) return true;
         if (this.user == null) return false;
         return this.user.getProjektLederFor().contains(projekt);
     }
-
 }
