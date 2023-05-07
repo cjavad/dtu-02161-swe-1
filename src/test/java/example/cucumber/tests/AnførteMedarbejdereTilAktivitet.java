@@ -1,14 +1,12 @@
 package example.cucumber.tests;
 
+import example.cucumber.Aktiv;
 import example.cucumber.ErrorMessage;
-import example.cucumber.TestDateServer;
 import internal.SystemApp;
 import internal.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
-import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -94,7 +92,7 @@ public class AnførteMedarbejdereTilAktivitet {
                     this.system.findMedarbejder(medarbejder),
                     this.aktiv.getProjekt().findAktivitet(aktivitet)
             );
-        } catch (Exception e) {
+        } catch (SystemAppException e) {
             this.error.setMessage(e.getMessage());
         }
     }

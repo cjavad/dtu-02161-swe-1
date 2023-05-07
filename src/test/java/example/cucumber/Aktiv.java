@@ -1,4 +1,4 @@
-package example.cucumber.tests;
+package example.cucumber;
 
 import internal.Aktivitet;
 import internal.Medarbejder;

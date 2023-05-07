@@ -5,6 +5,7 @@ import example.cucumber.TestDateServer;
 import internal.DateServer;
 import internal.Projekt;
 import internal.SystemApp;
+import internal.SystemAppException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -33,7 +34,7 @@ public class CreateProjektTest {
     public void brugerenTrykkerPåEnKnapOgOpretterEtProjektMedTitlen(String string, String navn) {
         try {
             this.system.lavNytProjekt(navn);
-        } catch (Exception e) {
+        } catch (SystemAppException e) {
             this.error.setMessage(e.getMessage());
         }
     }

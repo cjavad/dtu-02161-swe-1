@@ -1,7 +1,9 @@
 package example.cucumber.tests;
 
+import example.cucumber.Aktiv;
 import example.cucumber.ErrorMessage;
 import internal.SystemApp;
+import internal.SystemAppException;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -28,7 +30,7 @@ public class FjernMedarbejderFraProjektTest {
     public void brugerenVælgerAtFjerneMedarbejderenFraProjektet(String medarbejder) {
         try {
             this.system.fjernMedarbejderFraProjekt(this.system.findMedarbejder(medarbejder), this.aktiv.getProjekt());
-        } catch (Exception e) {
+        } catch (SystemAppException e) {
             this.error.setMessage(e.getMessage());
         }
     }

@@ -1,7 +1,9 @@
 package example.cucumber.tests;
 
+import example.cucumber.Aktiv;
 import example.cucumber.ErrorMessage;
 import internal.SystemApp;
+import internal.SystemAppException;
 import internal.UgeDato;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -65,7 +67,7 @@ public class FjernAktivitetFraProjektTest {
     public void brugerenVælgerAtFjerneFraProjektet(String string) {
         try {
             this.system.sletAktivitet(this.aktiv.getProjekt().findAktivitet(string));
-        } catch (Exception e) {
+        } catch (SystemAppException e) {
             this.error.setMessage(e.getMessage());
         }
     }
