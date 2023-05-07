@@ -11,6 +11,11 @@ public class UgeDato implements Comparable<UgeDato> {
         this.uge = uge;
     }
 
+    public static UgeDato fromString(String dato) {
+        String[] pair = dato.split("-");
+        return new UgeDato(Integer.parseInt(pair[1]), Integer.parseInt(pair[0]));
+    }
+
     public int getÅrstal() {
         return årstal;
     }
