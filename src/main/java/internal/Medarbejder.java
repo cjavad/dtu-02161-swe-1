@@ -66,6 +66,20 @@ public class Medarbejder {
         }
     }
 
+    public void tilføjProjektleder(Projekt projekt) {
+        if (this.projektLederFor.contains(projekt)) {
+            return;
+        }
+        this.projektLederFor.add(projekt);
+    }
+
+    public void fjernProjektleder(Projekt projekt) {
+        if (!this.projektLederFor.contains(projekt)) {
+            return;
+        }
+        this.projektLederFor.remove(projekt);
+    }
+
     /**
      *
      * Precondition: Medarbejderen tilhører samme projekt som aktiviteten

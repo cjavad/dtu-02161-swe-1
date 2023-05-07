@@ -16,6 +16,16 @@ public class Projekt {
         this.aktiviteter = new HashSet<Aktivitet>();
     }
 
+    public void ændreProjektleder(Medarbejder medarbejder) {
+        this.setProjektLeder(medarbejder);
+        if (this.getProjektLeder() != null) {
+            this.getProjektLeder().fjernProjektleder(this);
+        }
+        if (medarbejder != null) {
+            medarbejder.tilføjProjektleder(this);
+        }
+    }
+
     public void tilføjAktivitetTilProjekt(Aktivitet aktivitet) {
         if (aktivitet == null) {
             throw new NullPointerException();

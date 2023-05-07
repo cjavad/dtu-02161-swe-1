@@ -2,11 +2,12 @@ package internal;
 
 public class ProjektPlanningApp {
 
-    // gjort ind i Aktivitet contructoren, har bruge for projekt object til lave aktivitet
-//    public void tilføjAktivitetTilProjekt(Aktivitet aktivitet, Projekt projekt) {
-//        projekt.tilføjAktivitet(aktivitet);
-//    }
-
+    public void ændreProjektleder(Projekt p, Medarbejder m) {
+        if (p == null) {
+            throw new NullPointerException();
+        }
+        p.ændreProjektleder(m);
+    }
 
     public void tilføjMedarbejderTilProjekt(Medarbejder m, Projekt p) {
         if (p == null) {
