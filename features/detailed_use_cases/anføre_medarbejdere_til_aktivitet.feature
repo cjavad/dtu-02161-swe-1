@@ -1,7 +1,7 @@
 # En liste af ID'er af medarbejdere, der tilhører aktiviteten
 # Når man anfører en medarbejder til aktiviteten, så tilføjer vi en aktivitetstuple til medarbejder objektet i medarbejder DB'en med samme ID, som det der er blevet anført
 
-Feature:
+Feature: anførte medarbejdere til aktivitet
   Background:
     Given projektet "Projekt 1" er oprettet med løbenummer 1 og årstal 2023
     And en medarbejder "aaaa" eksisterer og er tilknyttet projektet "Projekt 1"

@@ -3,7 +3,7 @@
 
 
 
-Feature: fjern_medarbejder_fra_aktivitet
+Feature: fjern medarbejder fra aktivitet
   Background:
     Given projektet "Projekt 1" er oprettet med løbenummer 1 og årstal 2023
     And en medarbejder "aaaa" eksisterer og er tilknyttet projektet "Projekt 1"

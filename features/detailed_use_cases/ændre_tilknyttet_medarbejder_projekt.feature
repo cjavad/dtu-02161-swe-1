@@ -1,4 +1,4 @@
-Feature: ændre_tilknyttet_medarbejder_projekt
+Feature: ændre tilknyttet medarbejder projekt
   Background:
     Given en medarbejder "aaaa" eksistere
     And en medarbejder "bbbb" eksistere

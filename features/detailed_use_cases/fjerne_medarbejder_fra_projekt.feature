@@ -2,7 +2,7 @@
 # Alle refferencer til medarbejderen slettes fra projektets medarbejder liste
 # Skal være admin
 
-Feature: fjern_medarbejder_fra_projekt
+Feature: fjern medarbejder fra projekt
   Actor: Admin
 
   Background:

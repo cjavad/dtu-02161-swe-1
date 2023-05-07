@@ -1,4 +1,4 @@
-Feature: slet_aktivitet
+Feature: slet aktivitet
   Description: Slet aktiviteter.
   Actors: Softwarehuset A/S, Medarbejder, Projektleder
 

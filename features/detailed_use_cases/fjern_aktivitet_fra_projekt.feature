@@ -1,7 +1,7 @@
 # Aktiviteten er nu ikke længere i nogen af medarbejdernes projekt-aktivitet tuples
 # Aktiviteten eksisterer nu ikke længere i aktivitets DB'en for projektet
 
-Feature: fjern_aktivitet_fra_projekt
+Feature: fjern aktivitet fra projekt
   Background:
     Given projektet "Projekt 1" er oprettet med løbenummer 1 og årstal 2023
     And en medarbejder "aaaa" eksisterer og er tilknyttet projektet "Projekt 1"

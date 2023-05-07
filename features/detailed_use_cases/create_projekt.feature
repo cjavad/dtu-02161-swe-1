@@ -1,6 +1,6 @@
 # Skal være admin
 
-Feature:
+Feature: create projekt
   Actor: Admin
 
   Scenario:

@@ -1,3 +1,5 @@
+Feature: tilføj aktiviteter til projekt
+
 # Slut- og startdato til aktiviteter
 # En liste af aktiviteter for projektet
 # Budgetteret tid per uge: Hvis budgetteret tid ikke er valgt, så er dette lig 0
