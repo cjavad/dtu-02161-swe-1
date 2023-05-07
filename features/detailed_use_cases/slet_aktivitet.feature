@@ -8,14 +8,14 @@ Feature: slet aktivitet
     And Medarbejderen er logget ind som Softwarehuset A/S
     And Medarbejderen opretter et projekt "2022-01"
     And Medarbejderen tilknytter brugeren "aaaa" som projektleder til "2022-01"
-    And Medarbejderen opretter en aktivitet til projektet "Aktivitet 1" med start tidspunktet "19-2022" og slut tidspunktet "20-2022"
-    And Medarbejderen opretter et projekt "2022-01" (Uden projektleder)
-    And Medarbejderen opretter en aktivitet til projektet "Aktivitet 1" med start tidspunktet "19-2022" og  slut tidspunktet "20-2022"
+    And Medarbejderen opretter en aktivitet til projektet "2022-01" med start tidspunktet "19-2022" og slut tidspunktet "20-2022"
+    And Medarbejderen opretter et projekt "2022-02" (Uden projektleder)
+    And Medarbejderen opretter en aktivitet til projektet "2022-02" med start tidspunktet "19-2022" og slut tidspunktet "20-2022"
 
   Scenario: Medarbejder prøver at slette en projekt (med projektleder)
     Given Medarbejderen er logget ind som "bbbb" på projektet "2022-01"
     When medarbejderen prøver at slette aktiviteten "Aktivitet 1"
-    Then fejlbeskeden er givet "Du kan ikke ændre aktiviteter på dette projekt"
+    Then fejlbeskeden er givet "du kan ikke aktiviteter fra projektet"
     And der er en aktivitet i projektet "Aktivitet 1"
 
 
