@@ -19,6 +19,12 @@ public class Medarbejder {
         this.ugentligeTimer = 0;
     }
 
+    public static void main(String[] args) {
+        Medarbejder m = new Medarbejder("a");
+        m.setUgentligeTimer(2);
+        System.out.println(m.beregnFritidForPeriode(new Pair<>(new UgeDato(2023, 1), new UgeDato(2023, 1))));
+    }
+
 
 
 
@@ -33,26 +39,22 @@ public class Medarbejder {
         UgeDato start = datoer.getKey();
         UgeDato slut = datoer.getValue();
 
-
-        if(start == null || slut == null){ //0
+        if(start == null || slut == null){ // 0 / 1
             // Empty list
             return new ArrayList<>();
         }
 
-        // Length of the period [start,slut]>=1
+        // Length of the period [start, slut] >= 1
         List<Integer> fritid = new ArrayList<>(Collections.nCopies(slut.ugeDiff(start), this.ugentligeTimer));
 
-
-        this.anførteAktiviteter.forEach((aktivitet) -> { //1
+        this.anførteAktiviteter.forEach((aktivitet) -> { // 2
             beregnFritidPerAktivitet(start, slut, fritid, aktivitet);
         });
-
 
         return fritid;
     }
 
     private void beregnFritidPerAktivitet(UgeDato start, UgeDato slut, List<Integer> fritid, Aktivitet aktivitet) {
-
         if (aktivitet.getStartDato() == null || aktivitet.getSlutDato() == null) return; //0
 
         int startIndex, endIndex;
