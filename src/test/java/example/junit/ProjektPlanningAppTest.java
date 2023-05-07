@@ -13,7 +13,7 @@ public class ProjektPlanningAppTest {
     public void tilføjMedarbejderTilProjektTest() {
         // null medarbjeder
         {
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test", "2023-01");
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
                 app.tilføjMedarbejderTilProjekt(null, p);
             });
@@ -28,7 +28,7 @@ public class ProjektPlanningAppTest {
         // non null
         {
             Medarbejder m = new Medarbejder("abcd");
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
             app.tilføjMedarbejderTilProjekt(m, p);
 
             org.junit.Assert.assertTrue(m.getProjekter().contains(p));
@@ -40,7 +40,7 @@ public class ProjektPlanningAppTest {
     public void tilføjMedarbjederTilAktivitetTest() {
         // null medarbejder
         {
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
             Aktivitet a = new Aktivitet("ak");
 
             app.tilføjAktivitetTilProjekt(a, p);
@@ -60,7 +60,7 @@ public class ProjektPlanningAppTest {
         // medarbejder not in projekt
         {
             Medarbejder m = new Medarbejder("abcd");
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
             Aktivitet a = new Aktivitet("ak");
             app.tilføjAktivitetTilProjekt(a, p);
 
@@ -72,7 +72,7 @@ public class ProjektPlanningAppTest {
         // medarbejder in projekt
         {
             Medarbejder m = new Medarbejder("abcd");
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
             Aktivitet a = new Aktivitet("ak");
             app.tilføjAktivitetTilProjekt(a, p);
             app.tilføjMedarbejderTilProjekt(m, p);
@@ -95,7 +95,7 @@ public class ProjektPlanningAppTest {
         }
         // non null projekt
         {
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
             Aktivitet a = new Aktivitet("ak");
             app.tilføjAktivitetTilProjekt(a, p);
 
@@ -108,7 +108,7 @@ public class ProjektPlanningAppTest {
     public void fjernMedarbejderFraProjektTest() {
         // null medarbjeder
         {
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
                 app.fjernMedarbejderFraProjekt(null, p);
             });
@@ -123,7 +123,7 @@ public class ProjektPlanningAppTest {
         // non null
         {
             Medarbejder m = new Medarbejder("abcd");
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
 
             app.tilføjMedarbejderTilProjekt(m, p);
 
@@ -135,7 +135,7 @@ public class ProjektPlanningAppTest {
         // not in projekt
         {
             Medarbejder m = new Medarbejder("abcd");
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
 
             app.fjernMedarbejderFraProjekt(m, p);
 
@@ -150,7 +150,7 @@ public class ProjektPlanningAppTest {
     public void fjernMedarbejderFraAktivitetTest() {
         // null medarbejder
         {
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
             Aktivitet a = new Aktivitet("ak");
             app.tilføjAktivitetTilProjekt(a, p);
 
@@ -169,7 +169,7 @@ public class ProjektPlanningAppTest {
         // normal
         {
             Medarbejder m = new Medarbejder("abcd");
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
             Aktivitet a = new Aktivitet("ak");
             app.tilføjAktivitetTilProjekt(a, p);
 
@@ -187,7 +187,7 @@ public class ProjektPlanningAppTest {
     public void fjernAktivitetFraProjekt() {
         // null aktivitet
         {
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
 
             org.junit.Assert.assertThrows(NullPointerException.class, () -> {
                 app.fjernAktivitetFraProjekt(null, p);
@@ -195,7 +195,7 @@ public class ProjektPlanningAppTest {
         }
         // null projekt
         {
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
             Aktivitet a = new Aktivitet("ak");
             app.tilføjAktivitetTilProjekt(a, p);
 
@@ -205,8 +205,8 @@ public class ProjektPlanningAppTest {
         }
         // aktivitet in different projekt
         {
-            Projekt p1 = new Projekt("2023-01");
-            Projekt p2 = new Projekt("2023-02");
+            Projekt p1 = new Projekt("test","2023-01");
+            Projekt p2 = new Projekt("test","2023-02");
             Aktivitet a = new Aktivitet("ak");
             app.tilføjAktivitetTilProjekt(a, p2);
 
@@ -218,7 +218,7 @@ public class ProjektPlanningAppTest {
         }
         // normal
         {
-            Projekt p = new Projekt("2023-01");
+            Projekt p = new Projekt("test","2023-01");
             Aktivitet a = new Aktivitet("ak");
             app.tilføjAktivitetTilProjekt(a, p);
 

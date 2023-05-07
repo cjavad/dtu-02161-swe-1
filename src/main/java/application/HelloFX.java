@@ -19,7 +19,7 @@ public class HelloFX extends Application {
     public void start(Stage stage) {
 		this.stage = stage;
 
-		this.projekt = new Projekt("someid42069");
+		this.projekt = new Projekt("test", "someid42069");
 
 		Medarbejder mag = new Medarbejder("MAG");
 		projekt.tilføjMedarbejder(mag);

@@ -16,28 +16,31 @@ public class SystemApp {
     public ListeView<Projekt> projektListeView;
     public ListeView<Medarbejder> medarbejderListeView;
     public ProjektPlanningApp planner;
+
     public DateServer dateServer;
 
     public Set<Projekt> projekter;
     public Set<Medarbejder> medarbejder;
 
     public SystemApp() {
-        this.dateServer = null; // TODO :: implement
+        this.dateServer = null;
 
         this.projekter = new HashSet<Projekt>();
         this.medarbejder = new HashSet<Medarbejder>();
 
         this.planner = new ProjektPlanningApp();
+        this.recorder = new IDGenerator();
 
         this.isAdmin = false;
         this.user = null;
     }
 
-    public boolean lavNytProjekt() {
+    public boolean lavNytProjekt(String navn, DateServer dateServer) {
         if (!isAdmin) return false;
 
         this.projekter.add(
                 new Projekt(
+                        navn,
                         this.recorder.getProjektID(this.dateServer.getUgeDato())
                 )
         );
@@ -150,9 +153,16 @@ public class SystemApp {
         return null;
     }
 
-    public Projekt findProjekt(String id) {
+    public Projekt findProjektMedID(String id) {
         for (Projekt p : this.projekter) {
             if (p.getProjektID().equals(id)) return p;
+        }
+        return null;
+    }
+
+    public Projekt findProjektMedNavn(String navn) {
+        for (Projekt p : this.projekter) {
+            if (p.getNavn().equals(navn)) return p;
         }
         return null;
     }

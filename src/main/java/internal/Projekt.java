@@ -4,12 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Projekt {
+    private String navn;
     private final String projektID;
     private Medarbejder projektLeder;
     private Set<Medarbejder> medarbejder;
     private Set<Aktivitet> aktiviteter;
 
-    public Projekt(String projektID) {
+    public Projekt(String navn, String projektID) {
+        this.navn = navn;
         this.projektID = projektID;
         this.projektLeder = null;
         this.medarbejder = new HashSet<Medarbejder>();
@@ -126,5 +128,20 @@ public class Projekt {
 	// FIXME: er denne metode nødvendig? hvorfor ville man ikke bare bruge getProjektID?
     public String toString() {
         return getProjektID();
+    }
+
+    public String getNavn() {
+        return navn;
+    }
+
+    public void setNavn(String navn) {
+        this.navn = navn;
+    }
+
+    public Aktivitet findAktivitet(String navn) {
+        for (Aktivitet aktivitet : this.aktiviteter) {
+            if (aktivitet.getNavn().equals(navn)) return aktivitet;
+        }
+        return null;
     }
 }

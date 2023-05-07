@@ -9,7 +9,11 @@ public class IDGenerator {
 
     public String getProjektID(UgeDato dato) {
         // zero pad løbenummer
-        return dato.getÅrstal() + "-" + String.format("%02d", løbenummer.getLøbenummer());
+        return formatProjektID(dato.getÅrstal(), this.løbenummer.getLøbenummer());
+    }
+
+    public String formatProjektID(int år, int løbenummer) {
+        return år + "-" + String.format("%02d", løbenummer);
     }
 
     public Løbenummer getLøbenummer() {
