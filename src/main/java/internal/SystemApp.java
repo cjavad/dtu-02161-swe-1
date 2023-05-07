@@ -75,8 +75,10 @@ public class SystemApp {
         this.projekter.remove(projekt);
     }
 
-    public void lavAktivitet(String navn, Projekt projekt) {
-        if (!isProjektleder(projekt)) return;
+    public void lavAktivitet(String navn, Projekt projekt) throws SystemAppException {
+        if (!isProjektleder(projekt) && projekt.getProjektLeder() != null) {
+            throw new SystemAppException("Du kan ikke ændre aktiviteter på dette projekt");
+        };
 
         this.planner.tilføjAktivitetTilProjekt(
                 new Aktivitet(navn),
