@@ -144,4 +144,11 @@ public class Projekt {
         }
         return null;
     }
+
+    public Medarbejder findMedarbejder(String initial) {
+        for (Medarbejder medarbejder : this.medarbejder) {
+            if (medarbejder.getInitial().equals(initial)) return medarbejder;
+        }
+        return null;
+    }
 }

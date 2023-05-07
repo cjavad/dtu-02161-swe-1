@@ -11,26 +11,28 @@ Background:
   And brugeren "bbbb" findes
   And Medarbejderen er logget ind som Softwarehuset A/S
   And Medarbejderen opretter et projekt "2022-01"
+  And Medarbejderen opretter et projekt "2022-02"
   And Medarbejderen tilknytter brugeren "aaaa" som projektleder til "2022-01"
   And Medarbejderen opretter et projekt "2022-01" (Uden projektleder)
+  And medarbejderen tilknytter bruger "bbbb" til projektet "2022-02"
 
   Scenario: Medarbejder prøver at oprette en aktivitet (med projektleder)
     Given en medarbejder er logget ind som "bbbb" på projektet "2022-01"
-    When medarbejderen prøver at oprette en aktivitet "Aktivitet 1" med start datoen "19-2022" og slut datoen "20-2022"
+    When medarbejderen prøver at oprette en aktivitet "Aktivitet 1" på projekt "2022-01" med start datoen "19-2022" og slut datoen "20-2022"
     Then fejlbeskeden er givet "Du kan ikke ændre aktiviteter på dette projekt"
     And er der ingen aktiviteter i projektet
 
   Scenario: Medarbejder prøver at oprette en aktivitet (uden projektleder)
     Given en medarbejder er logget ind som "bbbb" på projektet "2022-02"
-    When medarbejderen prøver at oprette en aktivitet "Aktivitet 1" med start datoen "19-2022" og slut datoen "20-2022"
-    Then er der en aktivitet i projektet
+    When medarbejderen prøver at oprette en aktivitet "Aktivitet 1" på projekt "2022-02" med start datoen "19-2022" og slut datoen "20-2022"
+    Then er der "1" aktivitet i projektet "2022-02"
 
   Scenario: Projektleder prøver at oprette en aktivitet
     Given en medarbejder er logget ind som "aaaa" på projektet "2022-01"
-    When medarbejderen prøver at oprette en aktivitet "Aktivitet 1" med start datoen "19-2022" og slut datoen "20-2022"
-    Then er der en aktivitet i projektet "Aktivitet 1"
+    When medarbejderen prøver at oprette en aktivitet "Aktivitet 1" på projekt "2022-01" med start datoen "19-2022" og slut datoen "20-2022"
+    Then er der en aktivitet i projektet "2022-01" ved navn "Aktivitet 1"
 
   Scenario: Projektleder prøver at oprette en delvis udfyldt aktivitet
     Given en medarbejder er logget ind som "aaaa" på projektet "2022-01"
-    When medarbejderen prøver at oprette en aktivitet "Aktivitet 1"
-    Then er der en aktivitet i projektet "Aktivitet 1" med
+    When medarbejderen prøver at oprette en aktivitet "Aktivitet 1" på projekt "2022-01" med start datoen "19-2022" og slut datoen "20-2022"
+    Then er der en aktivitet i projektet "2022-01" ved navn "Aktivitet 1"
