@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import internal.Medarbejder;
 import internal.Projekt;
+import internal.SystemAppException;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -126,9 +127,13 @@ public class StartUI {
 
 		Optional<String> navn = navnInput.showAndWait();
 
-		if (navn.isPresent()) {	
-			if (!app.system.lavNytProjekt(navn.get(), null)) {
-				new Alert(Alert.AlertType.ERROR, "Kunne ikke oprette projekt").showAndWait();
+		if (navn.isPresent()) {
+			try {
+				if (!app.system.lavNytProjekt(navn.get())) {
+					new Alert(Alert.AlertType.ERROR, "Kunne ikke oprette projekt").showAndWait();
+				}
+			} catch (SystemAppException e) {
+				throw new RuntimeException(e);
 			}
 		}
 
