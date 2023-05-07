@@ -59,7 +59,7 @@ public class Medarbejder {
 
         //Giver altid min. 0, da ugeDiff(ugeDato)>=1
         startIndex = aktivitet.getStartDato().ugeDiff(start) - 1;
-        endIndex = Math.min(aktivitet.getStartDato().ugeDiff(slut), start.ugeDiff(slut));
+        endIndex = Math.min(aktivitet.getStartDato().ugeDiff(aktivitet.getSlutDato()), start.ugeDiff(slut));
 
         for (int i = startIndex; i < endIndex; i++) { //2
             fritid.set(i, fritid.get(i) - aktivitet.beregnArbejdePerMedarbejder()); //2a
@@ -159,19 +159,15 @@ public class Medarbejder {
     Precondition: Aktivitet er ikke en null pointer
      Postcondition: forekomster er lige antallet af forekomster af refferencer til a i anførteAktiviteter
      */
-    public int forekomsterAfAktivitet(Aktivitet a){
+    public int forekomsterAfAktivitet(Aktivitet a) {
         Iterator<Aktivitet> aktivitetIterator = this.anførteAktiviteter.iterator();
         int forekomster = 0;
-        boolean elementerTilbage = aktivitetIterator.hasNext();
 
-        while(elementerTilbage) //1
-            if(aktivitetIterator.next() == a){ //2
+        while (aktivitetIterator.hasNext()) { //1
+            if (aktivitetIterator.next() == a) { //2
                 forekomster++; //2a
             }
-
-        elementerTilbage = aktivitetIterator.hasNext();
-
+        }
         return forekomster;
-
     }
 }

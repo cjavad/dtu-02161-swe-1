@@ -112,8 +112,7 @@ public class Aktivitet {
     }
 
     //Checker om startDato er mindre end slutdato eller vise versa
-    private boolean isLegalDatoAssignment(UgeDato startDato,UgeDato slutDato){
-
+    public boolean isLegalDatoAssignment(UgeDato startDato,UgeDato slutDato){
         //Setting it to null, while they're both null is acceptable
         if(startDato == null && slutDato == null){ //1
             return true;
@@ -123,8 +122,9 @@ public class Aktivitet {
             return true;
         }
         //They're both not null, then we just compare
-        else{ //3
-            return startDato.compareTo(slutDato) < 0;
+        // They can be equal, or the end date can come after the start date, but the end date cannot come before the start date.
+        else { //3
+            return startDato.compareTo(slutDato) <= 0; // 3a, 3b
         }
 
     }
@@ -166,21 +166,18 @@ public class Aktivitet {
         return (this.projekt != null && this.projekt.getMedarbejder().contains(medarbejder));
     }
 
-    public int forekomsterAfMedarbejder(Medarbejder m){
+    public int forekomsterAfMedarbejder(Medarbejder m) {
         Iterator<Medarbejder> medarbejderIterator = this.anførteMedarbjedere.iterator();
         int forekomster = 0;
-        boolean elementerTilbage = medarbejderIterator.hasNext();
-        while(elementerTilbage)
 
-            if(medarbejderIterator.next() == m){
+        while (medarbejderIterator.hasNext()) {
+            if (medarbejderIterator.next() == m) {
                 forekomster++;
             }
-
-            elementerTilbage = medarbejderIterator.hasNext();
-
-        return forekomster;
-
         }
 
+        return forekomster;
     }
+
+}
 
