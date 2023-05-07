@@ -5,10 +5,9 @@ import internal.ListeView;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
-public class System {
+public class SystemApp {
 
     public boolean isAdmin;
     public Medarbejder user;
@@ -22,7 +21,7 @@ public class System {
     public Set<Projekt> projekter;
     public Set<Medarbejder> medarbejder;
 
-    public System() {
+    public SystemApp() {
         this.dateServer = null; // TODO :: implement
 
         this.projekter = new HashSet<Projekt>();
@@ -147,6 +146,13 @@ public class System {
     public Medarbejder findMedarbejder(String initials) {
         for (Medarbejder m : this.medarbejder) {
             if (m.getInitial().equals(initials)) return m;
+        }
+        return null;
+    }
+
+    public Projekt findProjekt(String id) {
+        for (Projekt p : this.projekter) {
+            if (p.getProjektID().equals(id)) return p;
         }
         return null;
     }
