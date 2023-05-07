@@ -116,7 +116,7 @@ public class SystemApp {
     }
 
     public void tilføjMedarbejderTilAktivitet(Medarbejder medarbejder, Aktivitet aktivitet) {
-        if (!isProjektleder(aktivitet.getProjekt())) return;
+        if (aktivitet.getProjekt().getProjektLeder() != null && !isProjektleder(aktivitet.getProjekt())) return;
 
         this.planner.tilføjMedarbjederTilAktivitet(medarbejder, aktivitet);
     }
@@ -126,6 +126,8 @@ public class SystemApp {
 
         this.planner.fjernMedarbejderFraAktivitet(medarbejder, aktivitet);
     }
+
+
 
     public boolean login(String initials) {
         if (initials.equals("admin")) {
