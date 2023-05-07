@@ -19,6 +19,7 @@ public class OpdelPåBaggrundAfFritidTests {
     List<Aktivitet> aktiviteter = Arrays.asList(new Aktivitet("a"),
             new Aktivitet("b"),
             new Aktivitet("c"));
+
     @org.junit.Before()
     public void setup() {
         // Instantiate the medarbejder and aktivitet objects

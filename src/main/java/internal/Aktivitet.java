@@ -47,6 +47,7 @@ public class Aktivitet {
         if (this.startDato == null || this.slutDato == null) {
             return 0;
         }
+
         return this.bugetteretTid / this.anførteMedarbjedere.size();
     }
 
