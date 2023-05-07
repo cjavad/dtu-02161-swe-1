@@ -52,4 +52,14 @@ public class UgeDato implements Comparable<UgeDato> {
                 Integer.compare(this.uge, o.uge) :
                 Integer.compare(this.årstal, o.årstal);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (!(o instanceof UgeDato)) return false;
+
+        UgeDato obj = (UgeDato) o;
+
+        return obj.uge == this.uge && obj.årstal == this.årstal;
+    }
 }
