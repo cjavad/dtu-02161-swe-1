@@ -1,4 +1,4 @@
-package application;
+package internal;
 
 import internal.*;
 import internal.ListeView;
