@@ -18,6 +18,10 @@ For example, the class name CucumberTests (Test with an s) will be ignored by Ma
 		 ,features={"features"}
 		 ,snippets = SnippetType.CAMELCASE
 		 ,publish= false
+		 ,glue = { "example.cucumber"}
 		 )
 public class CucumberTest {
+
+
+
 }
