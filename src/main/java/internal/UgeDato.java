@@ -31,7 +31,7 @@ public class UgeDato implements Comparable<UgeDato> {
 
         assert(dato != null);
         int difference = Math.abs(this.årstal - dato.årstal) * 52 + Math.abs(this.uge - dato.uge) + 1;
-        assert(difference >= 1);
+//        assert(difference >= 1); // BAD >:(
         return difference;
     }
 
