@@ -172,4 +172,28 @@ public class SystemApp {
         if (this.user == null) return false;
         return this.user.getProjektLederFor().contains(projekt);
     }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public Medarbejder getUser() {
+        return user;
+    }
+
+    public ListeView<Projekt> getProjektListeView() {
+        return projektListeView;
+    }
+
+    public ListeView<Medarbejder> getMedarbejderListeView() {
+        return medarbejderListeView;
+    }
+
+    public Set<Projekt> getProjekter() {
+        return projekter;
+    }
+
+    public Set<Medarbejder> getMedarbejder() {
+        return medarbejder;
+    }
 }

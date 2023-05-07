@@ -63,7 +63,7 @@ public class StartUI {
 
 		// projekt liste
 		ListView<Button> projektListe = new ListView<Button>();
-		for (Projekt projekt : app.system.projekter) {
+		for (Projekt projekt : app.system.getProjekter()) {
 			Button projektButton = new Button(projekt.getNavn());
 			projektButton.setOnAction(e -> {
 				app.visProjekt(projekt);
@@ -83,7 +83,7 @@ public class StartUI {
 
 		// medarbejder liste
 		ListView<Button> medarbejderListe = new ListView<Button>();
-		for (Medarbejder medarbejder : app.system.medarbejder) {
+		for (Medarbejder medarbejder : app.system.getMedarbejder()) {
 			Button medarbejderButton = new Button(medarbejder.getInitial());
 			medarbejderButton.setOnAction(e -> {
 				app.visMedarbejder(medarbejder);
@@ -146,7 +146,7 @@ public class StartUI {
 		Optional<String> initial = initialInput.showAndWait();
 
 		if (initial.isPresent()) {
-			if (!app.system.isAdmin) {
+			if (!app.system.isAdmin()) {
 				new Alert(Alert.AlertType.ERROR, "Kun admin kan oprette medarbejdere").showAndWait();
 				return;
 			}
