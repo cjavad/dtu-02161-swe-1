@@ -113,7 +113,7 @@ public class Projekt {
     }
 
     public void setProjektLeder(Medarbejder projektLeder) {
-        this.projektLeder.getProjektLederFor().remove(this);
+        if (this.projektLeder != null) this.projektLeder.getProjektLederFor().remove(this);
         if (projektLeder != null) projektLeder.getProjektLederFor().add(this);
         this.projektLeder = projektLeder;
     }
