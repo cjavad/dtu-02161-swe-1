@@ -20,15 +20,6 @@ public class Medarbejder implements Serializable {
         this.ugentligeTimer = 0;
     }
 
-    public static void main(String[] args) {
-        Medarbejder m = new Medarbejder("a");
-        m.setUgentligeTimer(2);
-        System.out.println(m.beregnFritidForPeriode(new Pair<>(new UgeDato(2023, 1), new UgeDato(2023, 1))));
-    }
-
-
-
-
     // TODO :: start / slut uge input
 
     /**
