@@ -18,7 +18,6 @@ public class SystemApp implements Serializable {
     public SystemApp() {
         this.dateServer = new SystemDateServer(new UgeDato(1, 2024));
 
-
         this.planner = new ProjektPlanningApp();
         this.recorder = new IDGenerator();
 

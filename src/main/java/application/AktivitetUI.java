@@ -1,11 +1,9 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
-import internal.Aktivitet;
-import internal.Medarbejder;
-import internal.SystemAppException;
-import internal.UgeDato;
+import internal.*;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -13,9 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 public class AktivitetUI {
 	public HelloFX app;
+	public LedigAktivitetListeView ledigAktivitetListeView;
 	public Aktivitet aktivitet;
 
 	public AktivitetUI(HelloFX app, Aktivitet aktivitet) {
@@ -33,10 +33,18 @@ public class AktivitetUI {
 		VBox medarbejderBox = new VBox();
 		medarbejderBox.setMinWidth(256);
 
+		ledigAktivitetListeView = new LedigAktivitetListeView(
+				new Pair<>(this.aktivitet.getStartDato(), this.aktivitet.getSlutDato()),
+				new ArrayList<>(this.aktivitet.getProjekt().getMedarbejder()),
+				new ArrayList<>(this.aktivitet.getAnførteMedarbejdere())
+		);
+
+		ledigAktivitetListeView.sorterHøjreListe();
+
 		ListeView mview = new ListeView(
 				this.app,
-				this.aktivitet.getAnførteMedarbejdere(),     // TODO :: fixme
-				this.aktivitet.getProjekt().getMedarbejder(), // TODO :: fixme
+				ledigAktivitetListeView.getVenstreListe(),     // TODO :: fixme
+				ledigAktivitetListeView.getHøjreListe(), // TODO :: fixme
 				(m) -> {
 					try {
 						this.app.system.tilføjMedarbejderTilAktivitet(m, this.aktivitet);
@@ -52,12 +60,13 @@ public class AktivitetUI {
 						throw new RuntimeException(e);
 					}
 					this.app.visBrugerflade();
-				}
+				},
+				// Only annotate available medarbejdere if start and end date is set
+				this.aktivitet.getStartDato() != null && this.aktivitet.getSlutDato() != null ? ledigAktivitetListeView : null
 		);
 
 		medarbejderBox.getChildren().add(new Label("Medarbejdere"));
 		medarbejderBox.getChildren().add(mview.root);
-
 
 		VBox tidBox = new VBox();
 		tidBox.getChildren().add(new Label("Budgetteret tid: " + aktivitet.getBugetteretTid()));

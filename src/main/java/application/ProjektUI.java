@@ -2,6 +2,7 @@ package application;
 
 import internal.Projekt;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import internal.Aktivitet;
@@ -54,8 +55,8 @@ public class ProjektUI {
 
 		ListeView mview = new ListeView(
 				this.app,
-				this.projekt.getMedarbejder(),
-				this.app.system.fåMedarbejdere(),
+				new ArrayList<>(this.projekt.getMedarbejder()),
+				new ArrayList<>(this.app.system.fåMedarbejdere()),
 				(m) -> {
 					try {
 						this.app.system.tilføjMedarbejderTilProjekt(m, this.projekt);
