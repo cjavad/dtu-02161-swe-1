@@ -3,8 +3,7 @@ package example.junit.whitebox;
 import internal.ProjektPlanningApp;
 import internal.UgeDato;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class UgeDatoEqualsTests {
 
@@ -12,12 +11,12 @@ public class UgeDatoEqualsTests {
 
     @org.junit.Test
     public void inputsetA1() {
-        assertFalse(compare.equals(null));
+        assertThrows(AssertionError.class, () -> compare.equals(null));
     }
 
     @org.junit.Test
     public void inputsetA2() {
-        assertFalse(compare.equals(new Object()));
+        assertThrows(AssertionError.class, () -> compare.equals(new Object()));
     }
 
     @org.junit.Test
