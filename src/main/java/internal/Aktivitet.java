@@ -28,8 +28,6 @@ public class Aktivitet implements Serializable {
 
     public void tilføjMedarbjederTilAktivitet(Medarbejder medarbejder) {
 
-        assert (medarbejder != null && iSammeProjektSomMedarbejder(medarbejder));
-
         this.tilføjMedarbjeder(medarbejder);
         medarbejder.tilføjAktivitet(this);
     }
