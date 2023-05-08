@@ -4,6 +4,7 @@ import example.cucumber.Aktiv;
 import example.cucumber.ErrorMessage;
 import internal.SystemApp;
 import internal.*;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -127,5 +128,17 @@ public class AnførteMedarbejdereTilAktivitet {
     public void brugerenErLoggetIndPå(String navn, String projektNavn) {
         this.system.login(navn);
         this.aktiv.setProjekt(this.system.findProjektMedNavn(projektNavn));
+    }
+
+    @And("medarbejderen {string} er tilknyttet til projektet ved navn {string}")
+    public void medarbejderenErTilknyttetTilProjektetVedNavn(String arg0, String arg1) {
+        try {
+            this.system.tilføjMedarbejderTilProjekt(
+                    this.system.findMedarbejder(arg0),
+                    this.system.findProjektMedNavn(arg1)
+            );
+        } catch (SystemAppException e) {
+            this.error.setMessage(e.getMessage());
+        }
     }
 }

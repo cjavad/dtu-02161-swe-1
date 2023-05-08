@@ -32,7 +32,7 @@ Feature: fjern medarbejder fra aktivitet
     And medarbejderen "bbbb" har aktivitets tuplen ("2023-01", "Aktivitet 1")
     When brugeren vælger at fjerne "aaaa" fra "Aktivitet 1"
     Then er der 1 aktivitet på projektet
-    And medarbejderen "aaaa" har aktivitets tuplen ("2023-01", "Aktivitet 1")
+    And medarbejderen "aaaa" har ikke aktivitets tuplen ("2023-01", "Aktivitet 1")
     And medarbejderen "bbbb" har aktivitets tuplen ("2023-01", "Aktivitet 1")
 
   Scenario:

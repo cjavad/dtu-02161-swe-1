@@ -119,6 +119,8 @@ public class SystemApp {
             throw new SystemAppException("du kan ikke anføre en medarbejder til en aktivitet");
         }
 
+        if (!aktivitet.iSammeProjektSomMedarbejder(medarbejder)) throw new SystemAppException("du kan ikke anføre en medarbejder til en aktivitet som ikke er på projektet");
+
         this.planner.tilføjMedarbjederTilAktivitet(medarbejder, aktivitet);
     }
 
