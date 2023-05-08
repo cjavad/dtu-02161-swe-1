@@ -59,7 +59,6 @@ public class UgeDato implements Comparable<UgeDato>, Serializable {
         if (!(o instanceof UgeDato)) return false;
 
         UgeDato obj = (UgeDato) o;
-
         return obj.uge == this.uge && obj.årstal == this.årstal;
     }
 }
