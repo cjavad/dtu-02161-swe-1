@@ -3,13 +3,13 @@ package internal;
 import java.io.Serializable;
 
 public class SystemDateServer implements DateServer, Serializable {
-	UgeDato ugeDato;
+	UgeDato dato;
 
-	public SystemDateServer(UgeDato ugeDato) {
-		this.ugeDato = ugeDato;
+	public SystemDateServer(UgeDato dato) {
+		this.dato = dato;
 	}
 
 	public UgeDato getUgeDato() {
-		return ugeDato;
+		return dato;
 	}
 }
