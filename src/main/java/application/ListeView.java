@@ -1,15 +1,19 @@
 package application;
 
+import internal.LedigAktivitetListeView;
 import internal.Medarbejder;
 import internal.Projekt;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class ListeView {
@@ -17,16 +21,21 @@ public class ListeView {
     public HelloFX app;
 
     public ListView<Medarbejder> vs;
-    public ListView<Medarbejder> hs;
+    public ListView<Label> hs;
 
+    public LedigAktivitetListeView ledigAktivitetListeView;
     public Consumer<Medarbejder> moveLeft;
     public Consumer<Medarbejder> moveRight;
-    public Set<Medarbejder> medarbejderList;
-    public Set<Medarbejder> allMedarbejder;
+    public List<Medarbejder> medarbejderList;
+    public List<Medarbejder> allMedarbejder;
 
     public GridPane root;
 
-    public ListeView(HelloFX app, Set<Medarbejder> medarbejderList, Set<Medarbejder> allMedarbejder, Consumer<Medarbejder> moveLeft, Consumer<Medarbejder> moveRight) {
+    public ListeView(HelloFX app, List<Medarbejder> medarbejderList, List<Medarbejder> allMedarbejder, Consumer<Medarbejder> moveLeft, Consumer<Medarbejder> moveRight) {
+        this(app, medarbejderList, allMedarbejder, moveLeft, moveRight, null);
+    }
+
+    public ListeView(HelloFX app, List<Medarbejder> medarbejderList, List<Medarbejder> allMedarbejder, Consumer<Medarbejder> moveLeft, Consumer<Medarbejder> moveRight, LedigAktivitetListeView lw) {
         this.app = app;
         this.medarbejderList = medarbejderList;
         this.allMedarbejder = allMedarbejder;
@@ -34,6 +43,7 @@ public class ListeView {
         this.moveLeft = moveLeft;
         this.moveRight = moveRight;
 
+        this.ledigAktivitetListeView = lw;
         init();
     }
 
@@ -52,7 +62,24 @@ public class ListeView {
             if (this.medarbejderList.contains(medarbejder)) {
                 vs.getItems().add(medarbejder);
             } else {
-                hs.getItems().add(medarbejder);
+                var l = new Label(medarbejder.getInitial());
+
+                if (this.ledigAktivitetListeView != null) {
+
+                    var kategori = this.ledigAktivitetListeView.opdelPåBaggrundAfFritid(medarbejder);
+                    // Select color based on kategori (A, B eller C) = (Green, Yellow, Red)
+                    if (Objects.equals(kategori, "A")) {
+                        l.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.GREEN, null, null)));
+                    } else if (Objects.equals(kategori, "B")) {
+                        l.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.YELLOW, null, null)));
+                    } else if (Objects.equals(kategori, "C")) {
+                        l.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.RED, null, null)));
+                    }
+
+                    l.setTextFill(javafx.scene.paint.Color.WHITE);
+                }
+
+                hs.getItems().add(l);
             }
         }
 
@@ -60,7 +87,8 @@ public class ListeView {
         leftButton.setMinWidth(50);
         leftButton.setOnAction((event) -> {
             if (this.hs.getSelectionModel().getSelectedItem() != null) {
-                this.moveLeft.accept(this.hs.getSelectionModel().getSelectedItem());
+                var a  = this.hs.getSelectionModel().getSelectedItem();
+                this.moveLeft.accept(app.system.findMedarbejder(a.getText()));
             }
         });
 
