@@ -109,16 +109,24 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
         return true;
     }
 
+    /**
+     * Precondition:
+     *
+     * Medarbarbejder kan ikke være null &&
+     * Start dato kan ikke være null &&
+     * Slut dato kan ikke være null &&
+     * Slut dato kan ikke komme før start dato
+     * Postcondition:
+     *
+     * Kategorien må ikke være null &&
+     * (kategori == "A" => \neg \exists i(i \in fritidPerUge && i<=0)) &&
+     * (kategori == "B" => \exists i, \existsj (i \in fritidPerUge && i \in fritidPerUge && j \in fritidPerUge && i<=0 && j>0)) &&
+     * (kategori == "C" => \neg \exists i(i \in fritidPerUge && i>0)) &&
+     * (kategori == "A" || kategori == "B" || kategori == "C")
+     */
 
     public String opdelPåBaggrundAfFritid(Medarbejder o) {
-        /**
-         * Precondition:
-         *
-         * Medarbarbejder kan ikke være null.
-         * Start dato kan ikke være null.
-         * Slut dato kan ikke være null.
-         * Slut dato kan ikke komme før start dato
-         */
+
         assert o != null && datoer.getKey() != null && datoer.getValue() != null && datoer.getValue().compareTo(datoer.getKey()) >= 0; //0
 
         // Find sublisten listen af fritid for medarbejderen tilhører ved at tælle længden af listen
@@ -134,24 +142,33 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
 
         if (isA(fritidPerUge)) { // 1 - Ingen har en uge med fritid på 0 eller under
             kategori = "A";
-        } else if (isB(fritidPerUge)) { // 2
+        } else if (isB(fritidPerUge)) { // 2 - Der eksisterer uger med fritid og uger uden
             kategori = "B";
-        } else if (isC(fritidPerUge)) { // 3
+        } else if (isC(fritidPerUge)) { // 3 - Der eksisterer ingen uger med fritid
             kategori = "C";
         } else { // 4
             kategori = null;
         }
 
-        /**
-         * Postcondition:
-         *
-         * Kategorien må ikke være null (det burde heller ikke være muligt)
-         * Kategorien skal være enten A, B eller C.
-         *
-         */
-        assert kategori != null && (kategori.equals("A") || kategori.equals("B") || kategori.equals("C"));
+        assert postconditionOpdelPåBaggrundAfFritid(fritidPerUge, kategori);
         return kategori;
     }
+
+    public boolean postconditionOpdelPåBaggrundAfFritid(List<Integer> fritidPerUge,String kategori){
+        if(kategori != null){
+            switch(kategori){
+                case "A":
+                    return fritidPerUge.stream().noneMatch(i -> i<=0);
+                case "B":
+                    return fritidPerUge.stream().anyMatch(i -> i<=0) && fritidPerUge.stream().anyMatch(j -> j>0);
+                case "C":
+                    return fritidPerUge.stream().noneMatch(i -> i>0);
+            }
+        }
+
+        return false;
+    }
+
 
     public void sorterHøjreListe() {
         // Sorter listen efter klassificeringen af sublisterne og derefter efter antal timer med fritid.
