@@ -20,7 +20,6 @@ public class Medarbejder implements Serializable {
         this.ugentligeTimer = 0;
     }
 
-    // TODO :: start / slut uge input
 
     /**
      * @param datoer: Indeholder en start og slut dato for perioden
@@ -45,6 +44,7 @@ public class Medarbejder implements Serializable {
 
         return fritid;
     }
+
 
     private void beregnFritidPerAktivitet(UgeDato start, UgeDato slut, List<Integer> fritid, Aktivitet aktivitet) {
         if (aktivitet.getStartDato() == null || aktivitet.getSlutDato() == null) return; //0
@@ -100,14 +100,9 @@ public class Medarbejder implements Serializable {
     }
 
     public void fjernProjekt(Projekt projekt) {
-        if (!this.projekter.contains(projekt)) {
-            return;
-        }
+        assert(this.projekter.contains(projekt));
 
-        if (this.projektLederFor.contains(projekt)) {
-            this.projektLederFor.remove(projekt);
-        }
-
+        this.projektLederFor.remove(projekt);
         this.projekter.remove(projekt);
 
         this.anførteAktiviteter.stream()
