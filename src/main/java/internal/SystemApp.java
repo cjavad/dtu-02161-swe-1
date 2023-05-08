@@ -75,8 +75,10 @@ public class SystemApp {
         this.projekter.remove(projekt);
     }
 
-    public void lavAktivitet(String navn, Projekt projekt) {
-        if (!isProjektleder(projekt)) return;
+    public void lavAktivitet(String navn, Projekt projekt) throws SystemAppException {
+        if (!isProjektleder(projekt) && projekt.getProjektLeder() != null) {
+            throw new SystemAppException("Du kan ikke ændre aktiviteter på dette projekt");
+        };
 
         this.planner.tilføjAktivitetTilProjekt(
                 new Aktivitet(navn),
@@ -100,28 +102,30 @@ public class SystemApp {
         this.planner.ændreProjektleder(projekt, medarbejder);
     }
 
-    public void tilføjMedarbejderTilProjekt(Medarbejder medarbejder, Projekt projekt) {
-        if (!this.isAdmin) return;
+    public void tilføjMedarbejderTilProjekt(Medarbejder medarbejder, Projekt projekt) throws SystemAppException {
+        if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("Du har ikke rettigheder til at tilknytte en medarbejder til dette projekt");
 
         this.planner.tilføjMedarbejderTilProjekt(medarbejder, projekt);
     }
 
     public void fjernMedarbejderFraProjekt(Medarbejder medarbejder, Projekt projekt) throws SystemAppException {
-        if (!this.isAdmin) throw new SystemAppException("du kan ikke fjerne medarbejder fra projektet");
+        if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("du kan ikke fjerne medarbejder fra projektet");
 
         this.planner.fjernMedarbejderFraProjekt(medarbejder, projekt);
     }
 
     public void tilføjMedarbejderTilAktivitet(Medarbejder medarbejder, Aktivitet aktivitet) throws SystemAppException {
-        if (aktivitet.getProjekt().getProjektLeder() != null && !isProjektleder(aktivitet.getProjekt())) {
+        if (!this.isAdmin && aktivitet.getProjekt().getProjektLeder() != null && !isProjektleder(aktivitet.getProjekt())) {
             throw new SystemAppException("du kan ikke anføre en medarbejder til en aktivitet");
         }
+
+        if (!aktivitet.iSammeProjektSomMedarbejder(medarbejder)) throw new SystemAppException("du kan ikke anføre en medarbejder til en aktivitet som ikke er på projektet");
 
         this.planner.tilføjMedarbjederTilAktivitet(medarbejder, aktivitet);
     }
 
     public void fjernMedarbejderFraAktivitet(Medarbejder medarbejder, Aktivitet aktivitet) throws SystemAppException {
-        if (!isProjektleder(aktivitet.getProjekt())) throw new SystemAppException("du kan ikke fjerne anførte medarbejdere fra aktiviter");
+        if (!this.isAdmin && !isProjektleder(aktivitet.getProjekt())) throw new SystemAppException("du kan ikke fjerne anførte medarbejdere fra aktiviter");
 
         this.planner.fjernMedarbejderFraAktivitet(medarbejder, aktivitet);
     }

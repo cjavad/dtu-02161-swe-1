@@ -45,7 +45,7 @@ public class ProjektPlanningAppTest {
 
             app.tilføjAktivitetTilProjekt(a, p);
 
-            org.junit.Assert.assertThrows(NullPointerException.class, () -> {
+            org.junit.Assert.assertThrows(AssertionError.class, () -> {
                app.tilføjMedarbjederTilAktivitet(null, a);
             });
         }
@@ -53,7 +53,7 @@ public class ProjektPlanningAppTest {
         {
             Medarbejder m = new Medarbejder("abcd");
 
-            org.junit.Assert.assertThrows(NullPointerException.class, () -> {
+            org.junit.Assert.assertThrows(AssertionError.class, () -> {
                 app.tilføjMedarbjederTilAktivitet(m, null);
             });
         }
@@ -64,7 +64,9 @@ public class ProjektPlanningAppTest {
             Aktivitet a = new Aktivitet("ak");
             app.tilføjAktivitetTilProjekt(a, p);
 
-            app.tilføjMedarbjederTilAktivitet(m, a);
+            org.junit.Assert.assertThrows(AssertionError.class, () -> {
+                app.tilføjMedarbjederTilAktivitet(m, a);
+            });
 
             org.junit.Assert.assertFalse(m.getAnførteAktiviteter().contains(a));
             org.junit.Assert.assertFalse(a.getAnførteMedarbejdere().contains(m));

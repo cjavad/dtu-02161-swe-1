@@ -113,6 +113,8 @@ public class Projekt {
     }
 
     public void setProjektLeder(Medarbejder projektLeder) {
+        if (this.projektLeder != null) this.projektLeder.getProjektLederFor().remove(this);
+        if (projektLeder != null) projektLeder.getProjektLederFor().add(this);
         this.projektLeder = projektLeder;
     }
 
@@ -141,6 +143,13 @@ public class Projekt {
     public Aktivitet findAktivitet(String navn) {
         for (Aktivitet aktivitet : this.aktiviteter) {
             if (aktivitet.getNavn().equals(navn)) return aktivitet;
+        }
+        return null;
+    }
+
+    public Medarbejder findMedarbejder(String initial) {
+        for (Medarbejder medarbejder : this.medarbejder) {
+            if (medarbejder.getInitial().equals(initial)) return medarbejder;
         }
         return null;
     }
