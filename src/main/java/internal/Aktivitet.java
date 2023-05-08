@@ -115,20 +115,40 @@ public class Aktivitet implements Serializable {
         return startDato;
     }
 
+    /**
+    Precondition: True (Can be ommitted)
+     Postcondition: (startDato != null) && (slutDato != null) => startDato<=slutDato
+     */
     //Checker om startDato er mindre end slutdato eller vise versa
     public boolean isLegalDatoAssignment(UgeDato startDato,UgeDato slutDato){
+
+        assert true;
         //Setting it to null, while they're both null is acceptable
+        boolean result;
+
         if(startDato == null && slutDato == null){ //1
-            return true;
+            result = true;
         }
         // (WLOG) if start != null and slut = null -> then slut := null or start :!= null is acceptable
         if(slutDato == null || startDato == null){ //2
-            return true;
+            result = true;
         }
         //They're both not null, then we just compare
         // They can be equal, or the end date can come after the start date, but the end date cannot come before the start date.
         else { //3
-            return startDato.compareTo(slutDato) <= 0; // 3a, 3b
+            result = startDato.compareTo(slutDato) <= 0; // 3a, 3b
+        }
+
+        assert(result == postconditionIsLegalDatoAssignment(startDato,slutDato));
+        return result;
+    }
+
+    public boolean postconditionIsLegalDatoAssignment(UgeDato startDato,UgeDato slutDato){
+        if(slutDato == null || startDato == null){ //2
+            return true;
+        }
+        else{
+            return startDato.compareTo(slutDato) <= 0;
         }
 
     }
