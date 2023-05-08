@@ -112,7 +112,7 @@ public class Aktivitet implements Serializable {
 
     /**
     Precondition: True (Can be ommitted)
-     Postcondition: (startDato != null) && (slutDato != null) => startDato<=slutDato
+     Postcondition: ((startDato != null) && (slutDato != null)) => startDato<=slutDato
      */
     //Checker om startDato er mindre end slutdato eller vise versa
     public boolean isLegalDatoAssignment(UgeDato startDato,UgeDato slutDato){
