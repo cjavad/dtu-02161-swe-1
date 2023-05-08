@@ -184,5 +184,10 @@ public class Aktivitet {
         return forekomster;
     }
 
+    @Override
+    public String toString() {
+        return this.navn;
+    }
+
 }
 

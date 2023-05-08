@@ -4,15 +4,14 @@ import java.util.Optional;
 
 import internal.Aktivitet;
 import internal.Medarbejder;
+import internal.SystemAppException;
 import internal.UgeDato;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class AktivitetUI {
@@ -28,34 +27,37 @@ public class AktivitetUI {
 		GridPane root = new GridPane();
 
 		root.add(app.lavTilbageKnap(), 0, 0);
-		root.add(new Label("Navn: " + aktivitet.getNavn()), 1, 0);	
+		root.add(new Label("Navn: " + aktivitet.getNavn()), 1, 0);
 
+		// medarbejder
 		VBox medarbejderBox = new VBox();
-		ListView<Button> medarbejdeListe = new ListView<Button>();
-		for (Medarbejder medarbejder : aktivitet.getAnførteMedarbejdere()) {
-			Button medarbejderKnap = new Button(medarbejder.getInitial());
-			medarbejderKnap.setOnAction(e -> {
-				app.visMedarbejder(medarbejder);
-			});
-			medarbejdeListe.getItems().add(medarbejderKnap);
-		}
+		medarbejderBox.setMinWidth(256);
 
-		medarbejderBox.getChildren().add(new Label("Anførte medarbejdere"));
-		medarbejderBox.getChildren().add(medarbejdeListe);
+		ListeView mview = new ListeView(
+				this.app,
+				this.aktivitet.getAnførteMedarbejdere(),     // TODO :: fixme
+				this.aktivitet.getProjekt().getMedarbejder(), // TODO :: fixme
+				(m) -> {
+					try {
+						this.app.system.tilføjMedarbejderTilAktivitet(m, this.aktivitet);
+					} catch (SystemAppException e) {
+						throw new RuntimeException(e);
+					}
+					this.app.visBrugerflade();
+				},
+				(m) -> {
+					try {
+						this.app.system.fjernMedarbejderFraAktivitet(m, this.aktivitet);
+					} catch (SystemAppException e) {
+						throw new RuntimeException(e);
+					}
+					this.app.visBrugerflade();
+				}
+		);
 
-		HBox medarbejdereKnapBox = new HBox();
-		Button tilføjMedarbejderKnap = new Button("Tilføj medarbejder");
-		tilføjMedarbejderKnap.setOnAction(e -> {
-			tilføjMedarbejderDialog();
-		});
-		medarbejdereKnapBox.getChildren().add(tilføjMedarbejderKnap);
+		medarbejderBox.getChildren().add(new Label("Medarbejdere"));
+		medarbejderBox.getChildren().add(mview.root);
 
-		Button fjernMedarbejderKnap = new Button("Fjern medarbejder");
-		fjernMedarbejderKnap.setOnAction(e -> {
-			fjernMedarbejderDialog();
-		});
-		medarbejdereKnapBox.getChildren().add(fjernMedarbejderKnap);
-		medarbejderBox.getChildren().add(medarbejdereKnapBox);
 
 		VBox tidBox = new VBox();
 		tidBox.getChildren().add(new Label("Budgetteret tid: " + aktivitet.getBugetteretTid()));
@@ -97,6 +99,8 @@ public class AktivitetUI {
 	}
 
 	public void setBugetteretTidDialog() {
+		if (!this.app.system.isProjektleder(aktivitet.getProjekt())) return;
+
 		TextInputDialog dialog = new TextInputDialog("timer");
 		dialog.setTitle("Budgetteret tid");
 		dialog.setHeaderText("Budgetteret tid");
@@ -104,7 +108,6 @@ public class AktivitetUI {
 		Optional<String> result = dialog.showAndWait();
 
 		if (!result.isPresent()) {
-			new Alert(Alert.AlertType.ERROR, "Ingen tid sat").showAndWait();
 			return;
 		}
 
@@ -118,6 +121,8 @@ public class AktivitetUI {
 	}
 
 	public void setStartTidDialog() {
+		if (!this.app.system.isProjektleder(aktivitet.getProjekt())) return;
+
 		TextInputDialog dialog = new TextInputDialog("uu-åååå");
 		dialog.setTitle("Start tidspunkt");
 		dialog.setHeaderText("Set start tidspunkt");
@@ -125,7 +130,6 @@ public class AktivitetUI {
 		Optional<String> result = dialog.showAndWait();
 
 		if (!result.isPresent()) {
-			new Alert(Alert.AlertType.ERROR, "Ingen tid sat").showAndWait();
 			return;
 		}
 
@@ -140,6 +144,9 @@ public class AktivitetUI {
 	}
 
 	public void setSlutTidDialog() {
+		if (!this.app.system.isProjektleder(aktivitet.getProjekt())) return;
+
+
 		TextInputDialog dialog = new TextInputDialog("uu-åååå");
 		dialog.setTitle("Slut tidspunkt");
 		dialog.setHeaderText("Set slut tidspunkt");
@@ -147,7 +154,6 @@ public class AktivitetUI {
 		Optional<String> result = dialog.showAndWait();
 
 		if (!result.isPresent()) {
-			new Alert(Alert.AlertType.ERROR, "Ingen tid sat").showAndWait();
 			return;
 		}
 
@@ -156,69 +162,6 @@ public class AktivitetUI {
 			aktivitet.setSlutDato(dato);
 		} catch (Exception e) {
 			new Alert(Alert.AlertType.ERROR, e.toString()).showAndWait();
-		}
-
-		app.visBrugerflade();
-	}
-
-	public void tilføjMedarbejderDialog() {
-		TextInputDialog dialog = new TextInputDialog("Initialer");
-		dialog.setTitle("Tilføj medarbejder");
-		dialog.setHeaderText("Tilføj medarbejder til aktivitet");
-
-		Optional<String> result = dialog.showAndWait();
-
-		if (!result.isPresent()) {
-			new Alert(Alert.AlertType.ERROR, "Ingen medarbejder valgt").showAndWait();
-			return;
-		}
-
-		Medarbejder medarbejder = app.system.findMedarbejder(result.get());
-
-		if (medarbejder == null) {
-			new Alert(Alert.AlertType.ERROR, "Medarbejder ikke fundet").showAndWait();
-			return;
-		}
-
-		if (!aktivitet.getProjekt().getMedarbejder().contains(medarbejder)) {
-			new Alert(Alert.AlertType.ERROR, "Medarbejder ikke tilknyttet projektet").showAndWait();
-			return;
-		}
-
-		try {
-			app.system.tilføjMedarbejderTilAktivitet(medarbejder, aktivitet);
-		} catch (Exception e) {
-			new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
-			return;
-		}
-
-		app.visBrugerflade();
-	}
-
-	public void fjernMedarbejderDialog() {
-		TextInputDialog dialog = new TextInputDialog("Initialer");
-		dialog.setTitle("Fjern medarbejder");
-		dialog.setHeaderText("Fjern medarbejder fra aktivitet");
-
-		Optional<String> result = dialog.showAndWait();
-
-		if (!result.isPresent()) {
-			new Alert(Alert.AlertType.ERROR, "Ingen medarbejder valgt").showAndWait();
-			return;
-		}
-
-		Medarbejder medarbejder = app.system.findMedarbejder(result.get());
-
-		if (medarbejder == null) {
-			new Alert(Alert.AlertType.ERROR, "Medarbejder ikke fundet").showAndWait();
-			return;
-		}
-
-		try {
-		    app.system.fjernMedarbejderFraAktivitet(medarbejder, aktivitet);
-		} catch (Exception e) {
-			new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
-			return;
 		}
 
 		app.visBrugerflade();

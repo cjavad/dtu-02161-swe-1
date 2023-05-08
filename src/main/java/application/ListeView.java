@@ -22,12 +22,14 @@ public class ListeView {
     public Consumer<Medarbejder> moveLeft;
     public Consumer<Medarbejder> moveRight;
     public Set<Medarbejder> medarbejderList;
+    public Set<Medarbejder> allMedarbejder;
 
     public GridPane root;
 
-    public ListeView(HelloFX app, Set<Medarbejder> medarbejderList, Consumer<Medarbejder> moveLeft, Consumer<Medarbejder> moveRight) {
+    public ListeView(HelloFX app, Set<Medarbejder> medarbejderList, Set<Medarbejder> allMedarbejder, Consumer<Medarbejder> moveLeft, Consumer<Medarbejder> moveRight) {
         this.app = app;
         this.medarbejderList = medarbejderList;
+        this.allMedarbejder = allMedarbejder;
 
         this.moveLeft = moveLeft;
         this.moveRight = moveRight;
@@ -41,7 +43,12 @@ public class ListeView {
         this.vs = new ListView<>();
         this.hs = new ListView<>();
 
-        for (Medarbejder medarbejder : this.app.system.getMedarbejder()) {
+        this.vs.setMaxWidth(128);
+        this.hs.setMaxWidth(128);
+
+        this.root.setMaxWidth(128 + 128 + 50);
+
+        for (Medarbejder medarbejder : this.allMedarbejder) {
             if (this.medarbejderList.contains(medarbejder)) {
                 vs.getItems().add(medarbejder);
             } else {
@@ -50,6 +57,7 @@ public class ListeView {
         }
 
         Button leftButton = new Button("<<");
+        leftButton.setMinWidth(50);
         leftButton.setOnAction((event) -> {
             if (this.hs.getSelectionModel().getSelectedItem() != null) {
                 this.moveLeft.accept(this.hs.getSelectionModel().getSelectedItem());
@@ -57,6 +65,7 @@ public class ListeView {
         });
 
         Button rightButton = new Button(">>");
+        rightButton.setMinWidth(50);
         rightButton.setOnAction((event) -> {
             if (this.vs.getSelectionModel().getSelectedItem() != null) {
                 this.moveRight.accept(this.vs.getSelectionModel().getSelectedItem());
@@ -64,11 +73,13 @@ public class ListeView {
         });
 
         this.root.add(this.vs, 0, 0);
-        this.root.add(rightButton, 0, 1);
-        this.root.add(this.hs, 1, 0);
-        this.root.add(leftButton, 1, 1);
 
+        GridPane buttons = new GridPane();
+        buttons.add(leftButton, 0, 0);
+        buttons.add(rightButton, 0, 1);
+        root.add(buttons, 1, 0);
 
+        this.root.add(this.hs, 2, 0);
     }
 
 

@@ -21,7 +21,8 @@ public class HelloFX extends Application {
 
     @Override
     public void start(Stage stage) {
-		this.stage = stage;	
+		this.stage = stage;
+
 		this.system = new SystemApp();
 
 		appStage = AppStage.Start;

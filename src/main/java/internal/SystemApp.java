@@ -32,6 +32,7 @@ public class SystemApp {
     }
 
     public boolean lavNytProjekt(String navn) throws SystemAppException {
+        if (!isLoggedIn()) return false;
         if (!isAdmin) throw new SystemAppException("Du kan ikke oprette et projekt, da du ikke er admin");
 
         this.projekter.add(
@@ -45,6 +46,7 @@ public class SystemApp {
     }
 
     public void opretNyMedarbejder(String initials) {
+        if (!isLoggedIn()) return;
         if (!isAdmin) return;
         if (initials.length() > 4) return;
         if (findMedarbejder(initials) != null) return;
@@ -55,6 +57,7 @@ public class SystemApp {
     }
 
     public void sletMedarbejder(Medarbejder medarbejder) {
+        if (!isLoggedIn()) return;
         if (!isAdmin) return;
 
         medarbejder.getProjekter().forEach(
@@ -64,6 +67,7 @@ public class SystemApp {
     }
 
     public void sletProjekt(Projekt projekt) {
+        if (!isLoggedIn()) return;
         if (!isAdmin) return;
 
         projekt.getMedarbejder().forEach(
@@ -76,6 +80,7 @@ public class SystemApp {
     }
 
     public void lavAktivitet(String navn, Projekt projekt) throws SystemAppException {
+        if (!isLoggedIn()) return;
         if (!isProjektleder(projekt) && projekt.getProjektLeder() != null) {
             throw new SystemAppException("Du kan ikke ændre aktiviteter på dette projekt");
         };
@@ -87,6 +92,7 @@ public class SystemApp {
     }
 
     public void sletAktivitet(Aktivitet aktivitet) throws SystemAppException {
+        if (!isLoggedIn()) return;
         if (aktivitet.getProjekt().getProjektLeder() != null && !isProjektleder(aktivitet.getProjekt()))
             throw new SystemAppException("du kan ikke aktiviteter fra projektet");
         this.planner.fjernAktivitetFraProjekt(
@@ -96,6 +102,7 @@ public class SystemApp {
     }
 
     public void vælgProjektleder(Projekt projekt, Medarbejder medarbejder) {
+        if (!isLoggedIn()) return;
         // TODO :: permissions ????
         if (!this.isAdmin) return;
 
@@ -103,18 +110,21 @@ public class SystemApp {
     }
 
     public void tilføjMedarbejderTilProjekt(Medarbejder medarbejder, Projekt projekt) throws SystemAppException {
+        if (!isLoggedIn()) return;
         if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("Du har ikke rettigheder til at tilknytte en medarbejder til dette projekt");
 
         this.planner.tilføjMedarbejderTilProjekt(medarbejder, projekt);
     }
 
     public void fjernMedarbejderFraProjekt(Medarbejder medarbejder, Projekt projekt) throws SystemAppException {
+        if (!isLoggedIn()) return;
         if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("du kan ikke fjerne medarbejder fra projektet");
 
         this.planner.fjernMedarbejderFraProjekt(medarbejder, projekt);
     }
 
     public void tilføjMedarbejderTilAktivitet(Medarbejder medarbejder, Aktivitet aktivitet) throws SystemAppException {
+        if (!isLoggedIn()) return;
         if (!this.isAdmin && aktivitet.getProjekt().getProjektLeder() != null && !isProjektleder(aktivitet.getProjekt())) {
             throw new SystemAppException("du kan ikke anføre en medarbejder til en aktivitet");
         }
@@ -125,6 +135,7 @@ public class SystemApp {
     }
 
     public void fjernMedarbejderFraAktivitet(Medarbejder medarbejder, Aktivitet aktivitet) throws SystemAppException {
+        if (!isLoggedIn()) return;
         if (!this.isAdmin && !isProjektleder(aktivitet.getProjekt())) throw new SystemAppException("du kan ikke fjerne anførte medarbejdere fra aktiviter");
 
         this.planner.fjernMedarbejderFraAktivitet(medarbejder, aktivitet);
@@ -148,6 +159,10 @@ public class SystemApp {
     public void logout() {
         this.isAdmin = false;
         this.user = null;
+    }
+
+    public boolean isLoggedIn() {
+        return this.isAdmin || this.user != null;
     }
 
     public Medarbejder findMedarbejder(String initials) {

@@ -2,10 +2,7 @@ package example.cucumber.tests;
 
 import example.cucumber.ErrorMessage;
 import example.cucumber.TestDateServer;
-import internal.DateServer;
-import internal.Projekt;
-import internal.SystemApp;
-import internal.SystemAppException;
+import internal.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -49,6 +46,9 @@ public class CreateProjektTest {
 
     @Given("brugeren er logget ind som {string}")
     public void brugerenErLoggetIndSom(String string) {
+        if (this.system.getMedarbejder().stream().noneMatch(m -> m.getInitial().equals(string))) {
+            this.system.getMedarbejder().add(new Medarbejder(string));
+        }
         this.system.login(string);
     }
     @Then("kan brugeren se en tom liste over projekter")
