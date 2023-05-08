@@ -60,6 +60,8 @@ public class SystemAppTests {
 		systemApp.getProjektListeView();
 		systemApp.fåProjekter();
 		systemApp.fåMedarbejdere();
+		systemApp.getMedarbejderListeView();	
+		systemApp.hvorMangeProjekter();
 	}
 
 	@org.junit.Test()
