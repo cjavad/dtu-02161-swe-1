@@ -24,7 +24,7 @@ public class FjernMedarbejderFraProjektTests {
 
     @org.junit.Test()
     public void inputsetA() {
-        org.junit.Assert.assertThrows(NullPointerException.class, () -> systemApp.planner.fjernMedarbejderFraProjekt(null, projekt));
+        org.junit.Assert.assertThrows(AssertionError.class, () -> systemApp.planner.fjernMedarbejderFraProjekt(null, projekt));
     }
 
     @org.junit.Test()

@@ -59,7 +59,7 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
 
     public String opdelPåBaggrundAfFritid(Medarbejder o) {
 
-        assert o != null && datoer.getKey() != null && datoer.getValue() != null && datoer.getValue().compareTo(datoer.getKey()) >= 0; //0
+        assert o != null && datoer.getKey() != null && datoer.getValue() != null && datoer.getValue().compareTo(datoer.getKey()) >= 0; //precondition
 
         // Find sublisten listen af fritid for medarbejderen tilhører ved at tælle længden af listen
         // For at sammenligne med antal af elementer i listen der er større end 0, aka. hvor der er fritid.
@@ -81,7 +81,7 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
             kategori = null;
         }
 
-        assert postconditionOpdelPåBaggrundAfFritid(fritidPerUge, kategori);
+        assert postconditionOpdelPåBaggrundAfFritid(fritidPerUge, kategori); //postcondition
         return kategori;
     }
 

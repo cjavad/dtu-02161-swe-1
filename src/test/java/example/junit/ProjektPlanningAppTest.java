@@ -111,7 +111,7 @@ public class ProjektPlanningAppTest {
         // null medarbjeder
         {
             Projekt p = new Projekt("test","2023-01");
-            org.junit.Assert.assertThrows(NullPointerException.class, () -> {
+            org.junit.Assert.assertThrows(AssertionError.class, () -> {
                 app.fjernMedarbejderFraProjekt(null, p);
             });
         }

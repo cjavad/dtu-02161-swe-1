@@ -53,12 +53,30 @@ public class UgeDato implements Comparable<UgeDato>, Serializable {
                 Integer.compare(this.årstal, o.årstal);
     }
 
+    /**
+    Precondition: objekt != null && type(objekt) == UgeDato
+     Postcondition: (result == true => objekt.uge == this.uge && objekt.årstal == this.årstal) && (result == false => objekt.uge != this.uge || objekt.årstal != this.årstal)
+     */
     @Override
     public boolean equals(Object o) {
-        if (o == null) return false;
-        if (!(o instanceof UgeDato)) return false;
+        assert(o != null && (o instanceof UgeDato));
 
         UgeDato obj = (UgeDato) o;
-        return obj.uge == this.uge && obj.årstal == this.årstal;
+
+        boolean result = obj.uge == this.uge && obj.årstal == this.årstal;
+
+
+        return result;
+    }
+
+    public boolean postConditionEquals(UgeDato andenUgedato, boolean resultat){
+        if (resultat){
+            return andenUgedato.uge == this.uge && andenUgedato.årstal == this.årstal;
+        }
+        else{
+
+            return andenUgedato.uge != this.uge || andenUgedato.årstal != this.årstal;
+        }
+
     }
 }
