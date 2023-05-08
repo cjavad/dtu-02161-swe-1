@@ -3,18 +3,18 @@ package application;
 import internal.Projekt;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import internal.Aktivitet;
 import internal.Medarbejder;
+import internal.SystemAppException;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import javax.swing.text.html.Option;
 
 public class ProjektUI {
 	public HelloFX app;
@@ -74,13 +74,13 @@ public class ProjektUI {
 
 		Button tilføjMedarbejder = new Button("Tilføj medarbejder");
 		tilføjMedarbejder.setOnAction(e -> {
-			tilføjMedarbejderDialog();
+			choiceTilføjMedarbejderDialog();
 		});
 		medarbejderKnapBox.getChildren().add(tilføjMedarbejder);
 
 		Button fjernMedarbejder = new Button("Fjern medarbejder");
 		fjernMedarbejder.setOnAction(e -> {
-			fjernMedarbejderDialog();
+			choiceFjernMedarbejderDialog();
 		});
 		medarbejderKnapBox.getChildren().add(fjernMedarbejder);
 		medarbejderBox.getChildren().add(medarbejderKnapBox);
@@ -120,49 +120,48 @@ public class ProjektUI {
 		return root;
 	}
 
-	public void tilføjMedarbejderDialog() {
-		TextInputDialog dialog = new TextInputDialog("Medarbejder initial");
-		dialog.setTitle("Tilføj medarbejder");
-		dialog.setHeaderText("Tilføj medarbejder til projekt");
+	public void choiceTilføjMedarbejderDialog() {
+		ChoiceDialog<Medarbejder> choiceDialog = new ChoiceDialog<Medarbejder>(
+				null,
+				this.app.system.getMedarbejder().stream().filter(
+						m -> !this.projekt.getMedarbejder().contains(m)
+				).collect(Collectors.toList())
+		);
 
-		Optional<String> result = dialog.showAndWait();
+		choiceDialog.setTitle("Tilføj medarbejder");
+
+		Optional<Medarbejder> result = choiceDialog.showAndWait();
 
 		if (!result.isPresent()) {
-			new Alert(Alert.AlertType.ERROR, "Ingen medarbejder initial indtastet").showAndWait();
 			return;
 		}
 
-		Medarbejder medarbejder = app.system.findMedarbejder(result.get());
-		if (medarbejder != null) {
-			app.system.tilføjMedarbejderTilProjekt(medarbejder, projekt);
-		} else {
-			new Alert(Alert.AlertType.ERROR, "Medarbejder '" + result.get() + "' ikke fundet").showAndWait();
-		}
+		this.app.system.tilføjMedarbejderTilProjekt(result.get(), this.projekt);
 
-		app.visBrugerflade();
+		this.app.visBrugerflade();
 	}
 
-	public void fjernMedarbejderDialog() {
-		TextInputDialog dialog = new TextInputDialog("Medarbejder initial");
-		dialog.setTitle("Fjern medarbejder");
-		dialog.setHeaderText("Fjern medarbejder fra projekt");
+	public void choiceFjernMedarbejderDialog() {
+		ChoiceDialog choiceDialog = new ChoiceDialog(
+				null,
+				this.app.projekt.getMedarbejder()
+		);
 
-		Optional<String> result = dialog.showAndWait();
+		choiceDialog.setTitle("Fjern medarbejder");
+
+		Optional<Medarbejder> result = choiceDialog.showAndWait();
 
 		if (!result.isPresent()) {
-			new Alert(Alert.AlertType.ERROR, "Ingen medarbejder initial indtastet").showAndWait();
 			return;
 		}
 
-		Medarbejder medarbejder = app.system.findMedarbejder(result.get());
-
 		try {
-			app.system.fjernMedarbejderFraProjekt(medarbejder, projekt);
-		} catch (Exception e) {
-			new Alert(Alert.AlertType.ERROR, "Medarbejder '" + result.get() + "' ikke fundet").showAndWait();
+			this.app.system.fjernMedarbejderFraProjekt(result.get(), this.projekt);
+		} catch (SystemAppException e) {
+			throw new RuntimeException(e);
 		}
 
-		app.visBrugerflade();
+		this.app.visBrugerflade();
 	}
 
 	public void tilføjAktivitetDialog() {
