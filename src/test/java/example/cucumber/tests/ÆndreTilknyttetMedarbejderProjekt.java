@@ -10,6 +10,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ÆndreTilknyttetMedarbejderProjekt {
@@ -94,6 +95,6 @@ public class ÆndreTilknyttetMedarbejderProjekt {
 
     @Then("medarbejderen bliver vist en fejlmeddelelse {string}")
     public void medarbejderenBliverVistEnFejlmeddelelse(String arg0) {
-        assertTrue( this.error.getMessage().equals(arg0) );
+        assertEquals(arg0, this.error.getMessage());
     }
 }

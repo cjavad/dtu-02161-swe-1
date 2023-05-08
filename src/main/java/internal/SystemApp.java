@@ -114,14 +114,14 @@ public class SystemApp implements Serializable {
 
     public void tilføjMedarbejderTilProjekt(Medarbejder medarbejder, Projekt projekt) throws SystemAppException {
         if (!isLoggedIn()) return;
-        if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("Du har ikke rettigheder til at tilknytte en medarbejdere til dette projekt");
+        if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("Du har ikke rettigheder til at tilknytte en medarbejder til dette projekt");
 
         this.planner.tilføjMedarbejderTilProjekt(medarbejder, projekt);
     }
 
     public void fjernMedarbejderFraProjekt(Medarbejder medarbejder, Projekt projekt) throws SystemAppException {
         if (!isLoggedIn()) return;
-        if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("du kan ikke fjerne medarbejdere fra projektet");
+        if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("du kan ikke fjerne medarbejder fra projektet");
 
         this.planner.fjernMedarbejderFraProjekt(medarbejder, projekt);
     }
@@ -129,10 +129,10 @@ public class SystemApp implements Serializable {
     public void tilføjMedarbejderTilAktivitet(Medarbejder medarbejder, Aktivitet aktivitet) throws SystemAppException {
         if (!isLoggedIn()) return;
         if (!this.isAdmin && aktivitet.getProjekt().getProjektLeder() != null && !isProjektleder(aktivitet.getProjekt())) {
-            throw new SystemAppException("du kan ikke anføre en medarbejdere til en aktivitet");
+            throw new SystemAppException("du kan ikke anføre en medarbejder til en aktivitet");
         }
 
-        if (!aktivitet.iSammeProjektSomMedarbejder(medarbejder)) throw new SystemAppException("du kan ikke anføre en medarbejdere til en aktivitet som ikke er på projektet");
+        if (!aktivitet.iSammeProjektSomMedarbejder(medarbejder)) throw new SystemAppException("du kan ikke anføre en medarbejder til en aktivitet som ikke er på projektet");
 
         this.planner.tilføjMedarbjederTilAktivitet(medarbejder, aktivitet);
     }
