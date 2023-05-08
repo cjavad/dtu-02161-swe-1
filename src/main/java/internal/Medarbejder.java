@@ -144,22 +144,22 @@ public class Medarbejder implements Serializable {
 
     /**
      Precondition: Aktivitet er ikke en null pointer
-     Postcondition: forekomster = |{a_i \in this.anførteAktiviteter | a_i = a }|
+     Postcondition: forekomster = |{a_i \in this.anførteAktiviteter | a_i = aktivitet }|
      */
 
-    public int forekomsterAfAktivitet(Aktivitet a) {
-        assert (a != null); //precondition
+    public int forekomsterAfAktivitet(Aktivitet aktivitet) {
+        assert (aktivitet != null); //precondition
 
         Iterator<Aktivitet> aktivitetIterator = this.anførteAktiviteter.iterator();
         int forekomster = 0;
 
         while (aktivitetIterator.hasNext()) { //1
-            if (aktivitetIterator.next() == a) { //2
+            if (aktivitetIterator.next() == aktivitet) { //2
                 forekomster++; //2a
             }
         }
 
-        assert (this.anførteAktiviteter.contains(a) == (forekomster > 0)); //postcondition
+        assert (this.anførteAktiviteter.contains(aktivitet) == (forekomster > 0)); //postcondition
         return forekomster;
     }
 }
