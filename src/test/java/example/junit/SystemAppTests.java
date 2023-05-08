@@ -52,4 +52,25 @@ public class SystemAppTests {
 		Medarbejder medarbejder = systemApp.findMedarbejder("MEB");
 		systemApp.sletMedarbejder(medarbejder);
 	}
+
+	@org.junit.Test()
+	public void testGetterAndSetters() {
+		systemApp.isAdmin();	
+		systemApp.getUser();
+		systemApp.getProjektListeView();
+		systemApp.getProjekter();
+		systemApp.getMedarbejder();
+	}
+
+	@org.junit.Test()
+	public void testIsProjektLeder() {
+		try {
+			Assert.assertTrue(systemApp.lavNytProjekt("Projekt 1"));
+		} catch (Exception e) {
+			Assert.assertTrue(false);
+		}
+
+		Projekt projekt = systemApp.findProjektMedNavn("Projekt 1");
+		Assert.assertTrue(systemApp.isProjektleder(projekt));	
+	}
 }
