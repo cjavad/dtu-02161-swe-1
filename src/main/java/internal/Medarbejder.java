@@ -100,7 +100,6 @@ public class Medarbejder implements Serializable {
     }
 
     public void fjernProjekt(Projekt projekt) {
-
         this.projektLederFor.remove(projekt);
         this.projekter.remove(projekt);
 

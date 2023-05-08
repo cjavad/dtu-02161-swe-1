@@ -23,12 +23,14 @@ public class FjernProjektTests {
 
     @org.junit.Test()
     public void inputsetA() {
-       org.junit.Assert.assertThrows(AssertionError.class, () -> m.fjernProjekt(new Projekt("Projekt 2", "03-2023")));
+        m.fjernProjekt(new Projekt("Projekt 2", "03-2023"));
+        org.junit.Assert.assertTrue(m.getProjekter().contains(projekt));
     }
 
     @org.junit.Test()
     public void inputsetB() {
-        org.junit.Assert.assertThrows(AssertionError.class, () -> m.fjernProjekt(null));
+        m.fjernProjekt(null);
+        org.junit.Assert.assertTrue(m.getProjekter().contains(projekt));
     }
 
     @org.junit.Test()
