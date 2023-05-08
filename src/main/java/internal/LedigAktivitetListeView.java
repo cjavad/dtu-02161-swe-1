@@ -1,15 +1,31 @@
 package internal;
 
 import javafx.util.Pair;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LedigAktivitetListeView extends ListeView<Medarbejder> {
+public class LedigAktivitetListeView implements Serializable {
+    public Medarbejder valgteObjekt;
+    public List<Medarbejder> højreListe;
+    public List<Medarbejder> venstreListe;
     public Pair<UgeDato, UgeDato> datoer;
 
-    public LedigAktivitetListeView(Pair<UgeDato, UgeDato> datoer, ArrayList<Medarbejder> højreListe, ArrayList<Medarbejder> venstreListe) {
-        super(højreListe, venstreListe);
+    public LedigAktivitetListeView(Pair<UgeDato, UgeDato> datoer, List<Medarbejder> højreListe, List<Medarbejder> venstreListe) {
+        this.højreListe = højreListe;
+        this.venstreListe = venstreListe;
         this.datoer = datoer;
+    }
+
+    public void fraVenstreTilHøjre(Medarbejder objekt) {
+        venstreListe.remove(objekt);
+        højreListe.add(objekt);
+    }
+
+    public void fraHøjreTilVenstre(Medarbejder objekt) {
+        højreListe.remove(objekt);
+        venstreListe.add(objekt);
     }
 
     public boolean isA(List<Integer> fritid) {
@@ -106,5 +122,29 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
     public void sorterHøjreListe() {
         // Sorter listen efter klassificeringen af sublisterne og derefter efter antal timer med fritid.
         højreListe.sort((o1, o2) -> opdelPåBaggrundAfFritid(o1).compareTo(opdelPåBaggrundAfFritid(o2)));
+    }
+
+    public List<Medarbejder> getHøjreListe() {
+        return højreListe;
+    }
+
+    public List<Medarbejder> getVenstreListe() {
+        return venstreListe;
+    }
+
+    public Medarbejder getValgteObjekt() {
+        return valgteObjekt;
+    }
+
+    public void setHøjreListe(List<Medarbejder> højreListe) {
+        this.højreListe = højreListe;
+    }
+
+    public void setValgteObjekt(Medarbejder valgteObjekt) {
+        this.valgteObjekt = valgteObjekt;
+    }
+
+    public void setVenstreListe(List<Medarbejder> venstreListe) {
+        this.venstreListe = venstreListe;
     }
 }

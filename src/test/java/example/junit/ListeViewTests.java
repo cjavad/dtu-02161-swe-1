@@ -3,39 +3,46 @@ package	example.junit;
 import java.util.ArrayList;
 import java.util.List;
 
+import internal.LedigAktivitetListeView;
+import internal.Medarbejder;
 import org.junit.Assert;
 
-import internal.ListeView;
 
 public class ListeViewTests {
-	ListeView<String> listeView;
+	LedigAktivitetListeView listeView;
+
+
+	Medarbejder mA = new Medarbejder("A");
+	Medarbejder mB = new Medarbejder("B");
+	Medarbejder mC = new Medarbejder("C");
+	Medarbejder mD = new Medarbejder("D");
 
 	@org.junit.Before()
 	public void testConstructor() {
-		List<String> venstre = new ArrayList<>();
-		List<String> højre = new ArrayList<>();
+		List<Medarbejder> venstre = new ArrayList<>();
+		List<Medarbejder> højre = new ArrayList<>();
 
-		venstre.add("A");
-		venstre.add("B");
+		venstre.add(mA);
+		venstre.add(mB);
 
-		højre.add("C");
-		højre.add("D");
+		højre.add(mC);
+		højre.add(mD);
 
-		listeView = new ListeView<>(venstre, højre);
+		listeView = new LedigAktivitetListeView(null, venstre, højre);
 	}
 
 	@org.junit.Test()
 	public void testFraVenstreTilHøjre() {
-		listeView.fraVenstreTilHøjre("B");
-		Assert.assertTrue(listeView.højreListe.contains("B"));
-		Assert.assertFalse(listeView.venstreListe.contains("B"));
+		listeView.fraVenstreTilHøjre(mB);
+		Assert.assertTrue(listeView.højreListe.contains(mB));
+		Assert.assertFalse(listeView.venstreListe.contains(mB));
 	}
 
 	@org.junit.Test()
 	public void testFraHøjreTilVenstre() {
-		listeView.fraHøjreTilVenstre("C");
-		Assert.assertTrue(listeView.venstreListe.contains("C"));
-		Assert.assertFalse(listeView.højreListe.contains("C"));
+		listeView.fraHøjreTilVenstre(mC);
+		Assert.assertTrue(listeView.venstreListe.contains(mC));
+		Assert.assertFalse(listeView.højreListe.contains(mC));
 	}
 
 	@org.junit.Test()
@@ -50,22 +57,22 @@ public class ListeViewTests {
 
 	@org.junit.Test()
 	public void testValgteObjekt() {
-		listeView.setValgteObjekt("A");
-		Assert.assertTrue(listeView.getValgteObjekt().equals("A"));
+		listeView.setValgteObjekt(mA);
+		Assert.assertTrue(listeView.getValgteObjekt().equals(mA));
 	}
 
 	@org.junit.Test()
 	public void testSetHøjreListe() {
-		List<String> højre = new ArrayList<>();
-		højre.add("E");
+		List<Medarbejder> højre = new ArrayList<>();
+		højre.add(new Medarbejder("E"));
 		listeView.setHøjreListe(højre);
 		Assert.assertTrue(listeView.getHøjreListe().equals(højre));
 	}
 
 	@org.junit.Test()
 	public void testSetVenstreListe() {
-		List<String> venstre = new ArrayList<>();
-		venstre.add("F");
+		List<Medarbejder> venstre = new ArrayList<>();
+		venstre.add(new Medarbejder("F"));
 		listeView.setVenstreListe(venstre);
 		Assert.assertTrue(listeView.getVenstreListe().equals(venstre));
 	}
