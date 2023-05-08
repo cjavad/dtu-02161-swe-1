@@ -54,9 +54,12 @@ public class UgeDato implements Comparable<UgeDato>, Serializable {
     }
 
     /**
-    Precondition: objekt != null && type(objekt) == UgeDato
-     Postcondition: (result == true => objekt.uge == this.uge && objekt.årstal == this.årstal) && (result == false => objekt.uge != this.uge || objekt.årstal != this.årstal)
+     Precondition: objekt != null && type(objekt) == UgeDato
+     Postcondition:
+        (result == true => objekt.uge == this.uge && objekt.årstal == this.årstal) &&
+        (result == false => objekt.uge != this.uge || objekt.årstal != this.årstal)
      */
+
     @Override
     public boolean equals(Object o) {
         assert(o != null && (o instanceof UgeDato)); //precondition
