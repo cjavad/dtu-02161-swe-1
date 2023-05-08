@@ -23,7 +23,7 @@ public class ÆndreTilknyttetMedarbejderProjekt {
         this.error = error;
     }
 
-    @Given("en medarbejdere {string} eksistere")
+    @Given("en medarbejder {string} eksistere")
     public void enMedarbejderEksistere(String arg0) {
         this.system.login("admin");
         this.system.opretNyMedarbejder(arg0);

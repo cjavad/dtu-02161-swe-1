@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+import java.io.*;
+
 public class HelloFX extends Application {
 	public SystemApp system;
 	public Projekt projekt;
@@ -23,11 +25,31 @@ public class HelloFX extends Application {
     public void start(Stage stage) {
 		this.stage = stage;
 
-		this.system = new SystemApp();
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream("./system.ser"));
+			this.system = (SystemApp) in.readObject();
+			in.close();
+
+		} catch (Exception e) {
+			this.system = new SystemApp();
+		}
+
 
 		appStage = AppStage.Start;
 		visBrugerflade();
     }
+
+	public void stop() {
+		// Try to write this.system to './system.ser'
+		try {
+			this.system.logout(); // Ensure that the user is logged out before saving
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("./system.ser"));
+			out.writeObject(this.system);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public Parent lavStartBrugerflade() {
 		StartUI ui = new StartUI(this);

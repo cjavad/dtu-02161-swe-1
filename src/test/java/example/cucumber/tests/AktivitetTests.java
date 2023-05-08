@@ -87,7 +87,7 @@ public class AktivitetTests {
         assertTrue(this.system.findProjektMedID(string).getAktiviteter().size() == 1);
     }
 
-    @Given("en medarbejdere er logget ind som {string} på projektet {string}")
+    @Given("en medarbejder er logget ind som {string} på projektet {string}")
     public void enMedarbejderErLoggetIndSomPåProjektet(String string, String string2) {
         this.system.login(string);
         this.aktiv.setProjekt(this.system.findProjektMedID(string2));

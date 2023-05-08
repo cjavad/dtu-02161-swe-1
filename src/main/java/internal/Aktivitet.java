@@ -63,6 +63,8 @@ public class Aktivitet implements Serializable {
 
         //Da vi har et set, behøver vi ikke at tjekke, om medarbejderen allerede tilhører settet
         this.anførteMedarbjedere.add(medarbejder);
+
+        assert(this.anførteMedarbjedere.contains(medarbejder));
     }
 
     public void fjernMedarbejder(Medarbejder medarbejder) {
