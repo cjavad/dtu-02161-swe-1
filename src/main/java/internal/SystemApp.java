@@ -8,8 +8,6 @@ public class SystemApp implements Serializable {
     public Medarbejder user;
 
     public IDGenerator recorder;
-    public ListeView<Projekt> projektListeView;
-    public ListeView<Medarbejder> medarbejderListeView;
     public ProjektPlanningApp planner;
 
     public DateServer dateServer;
@@ -200,14 +198,6 @@ public class SystemApp implements Serializable {
 
     public Medarbejder getUser() {
         return user;
-    }
-
-    public ListeView<Projekt> getProjektListeView() {
-        return projektListeView;
-    }
-
-    public ListeView<Medarbejder> getMedarbejderListeView() {
-        return medarbejderListeView;
     }
 
     public Set<Projekt> fåProjekter() {

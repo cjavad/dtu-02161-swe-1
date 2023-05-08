@@ -57,10 +57,8 @@ public class SystemAppTests {
 	public void testGetterAndSetters() {
 		systemApp.isAdmin();	
 		systemApp.getUser();
-		systemApp.getProjektListeView();
 		systemApp.fåProjekter();
 		systemApp.fåMedarbejdere();
-		systemApp.getMedarbejderListeView();	
 		systemApp.hvorMangeProjekter();
 	}
 
