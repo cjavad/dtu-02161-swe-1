@@ -144,10 +144,13 @@ public class Medarbejder implements Serializable {
     }
 
     /**
-    Precondition: Aktivitet er ikke en null pointer
+     Precondition: Aktivitet er ikke en null pointer
      Postcondition: forekomster er lige antallet af forekomster af refferencer til a i anførteAktiviteter
      */
+
     public int forekomsterAfAktivitet(Aktivitet a) {
+        assert a != null;
+
         Iterator<Aktivitet> aktivitetIterator = this.anførteAktiviteter.iterator();
         int forekomster = 0;
 
@@ -156,6 +159,8 @@ public class Medarbejder implements Serializable {
                 forekomster++; //2a
             }
         }
+
+        assert this.anførteAktiviteter.contains(a) == (forekomster > 0);
         return forekomster;
     }
 }

@@ -185,10 +185,6 @@ public class Aktivitet implements Serializable {
         return (this.projekt != null && this.projekt.getMedarbejder().contains(medarbejder));
     }
 
-	// FIXME: hvad er dette? hvorfor findes dette? hvad? hvor? 
-	// det er et sæt, der kan ikke være mere end én af hver medarbejdere
-	//
-	// bliver den brugt?
     public int forekomsterAfMedarbejder(Medarbejder m) {
         Iterator<Medarbejder> medarbejderIterator = this.anførteMedarbjedere.iterator();
         int forekomster = 0;
