@@ -21,10 +21,7 @@ public class Aktivitet implements Serializable {
         this.anførteMedarbjedere = new HashSet<Medarbejder>();
     }
 
-    /**
-     * Precondition: Medarbejderen er ikke null, aktiviteten tilhører et projekt, medarbejderen tilhører samme projekt som aktiviteten
-     * Postcondition: Der eksisterer nu én refference til aktiviteten i medarbejderens anførteAktiviteter
-     */
+
 
     public void tilføjMedarbjederTilAktivitet(Medarbejder medarbejder) {
 
