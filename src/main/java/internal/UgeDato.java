@@ -1,6 +1,8 @@
 package internal;
 
-public class UgeDato implements Comparable<UgeDato> {
+import java.io.Serializable;
+
+public class UgeDato implements Comparable<UgeDato>, Serializable {
     int årstal;
     int uge;
 

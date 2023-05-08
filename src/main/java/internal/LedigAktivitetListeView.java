@@ -1,11 +1,8 @@
 package internal;
 
 import javafx.util.Pair;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class LedigAktivitetListeView extends ListeView<Medarbejder> {
     public Pair<UgeDato, UgeDato> datoer;

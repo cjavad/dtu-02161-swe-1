@@ -1,9 +1,10 @@
 package internal;
 
+import java.io.Serializable;
 import java.util.*;
 import javafx.util.Pair;
 
-public class Medarbejder {
+public class Medarbejder implements Serializable {
 
     private final String initial;
     private Set<Projekt> projekter;

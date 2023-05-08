@@ -1,8 +1,9 @@
 package internal;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ListeView<T> {
+public class ListeView<T> implements Serializable {
     public T valgteObjekt;
     public List<T> højreListe;
     public List<T> venstreListe;

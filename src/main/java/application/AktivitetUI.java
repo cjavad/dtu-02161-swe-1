@@ -6,11 +6,7 @@ import internal.Aktivitet;
 import internal.Medarbejder;
 import internal.UgeDato;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -164,9 +160,16 @@ public class AktivitetUI {
 	public void tilføjMedarbejderDialog() {
 		TextInputDialog dialog = new TextInputDialog("Initialer");
 		dialog.setTitle("Tilføj medarbejder");
-		dialog.setHeaderText("Tilføj medarbejder til aktivitet");
+
+		DialogPane customDialogPane = dialog.getDialogPane();
+		// Inject custom ListView content to select medarbejdere
+		ListeView lw = new ListeView(app, aktivitet.getProjekt().getProjektID(), aktivitet.getNavn());
+		customDialogPane.getChildren().clear();
+		customDialogPane.getChildren().add(lw.lavBrugerflade());
+		lw.sync();
 
 		Optional<String> result = dialog.showAndWait();
+
 
 		if (!result.isPresent()) {
 			new Alert(Alert.AlertType.ERROR, "Ingen medarbejder valgt").showAndWait();

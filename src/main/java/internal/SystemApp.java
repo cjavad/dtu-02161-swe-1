@@ -1,10 +1,10 @@
 package internal;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SystemApp {
-
+public class SystemApp implements Serializable {
     public boolean isAdmin;
     public Medarbejder user;
 

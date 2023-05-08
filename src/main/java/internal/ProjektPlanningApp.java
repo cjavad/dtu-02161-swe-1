@@ -1,6 +1,8 @@
 package internal;
 
-public class ProjektPlanningApp {
+import java.io.Serializable;
+
+public class ProjektPlanningApp implements Serializable {
 
     public void ændreProjektleder(Projekt p, Medarbejder m) {
         if (p == null) {

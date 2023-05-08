@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -125,6 +126,11 @@ public class ProjektUI {
 		TextInputDialog dialog = new TextInputDialog("Medarbejder initial");
 		dialog.setTitle("Tilføj medarbejder");
 		dialog.setHeaderText("Tilføj medarbejder til projekt");
+
+		DialogPane customDialogPane = dialog.getDialogPane();
+		// Inject custom ListView content to select medarbejdere
+		ListeView lw = new ListeView(app, projekt.getProjektID(), null);
+		customDialogPane.getChildren().add(lw.lavBrugerflade());
 
 		Optional<String> result = dialog.showAndWait();
 
