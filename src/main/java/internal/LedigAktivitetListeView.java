@@ -57,13 +57,15 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
      * (kategori == "A" || kategori == "B" || kategori == "C")
      */
 
-    public String opdelPåBaggrundAfFritid(Medarbejder o) {
+    public String opdelPåBaggrundAfFritid(Medarbejder medarbejder) {
+        UgeDato startDato = datoer.getKey();
+        UgeDato slutDato = datoer.getValue();
 
-        assert o != null && datoer.getKey() != null && datoer.getValue() != null && datoer.getValue().compareTo(datoer.getKey()) >= 0; //precondition
+        assert medarbejder != null && startDato != null && slutDato != null && slutDato.compareTo(startDato) >= 0; //precondition
 
         // Find sublisten listen af fritid for medarbejderen tilhører ved at tælle længden af listen
         // For at sammenligne med antal af elementer i listen der er større end 0, aka. hvor der er fritid.
-        List<Integer> fritidPerUge = o.beregnFritidForPeriode(datoer);
+        List<Integer> fritidPerUge = medarbejder.beregnFritidForPeriode(datoer);
 
         // Hvis antallet af elementer i listen er det samme som antal uger med fritid, er det liste A.
         // Hvis der er nogen uger med fritid er det liste B.
@@ -86,16 +88,16 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
     }
 
     public boolean postconditionOpdelPåBaggrundAfFritid(List<Integer> fritidPerUge,String kategori){
-        if(kategori != null){
-            switch(kategori){
-                case "A":
-                    return fritidPerUge.stream().noneMatch(i -> i<=0);
-                case "B":
-                    return fritidPerUge.stream().anyMatch(i -> i<=0) && fritidPerUge.stream().anyMatch(j -> j>0);
-                case "C":
-                    return fritidPerUge.stream().noneMatch(i -> i>0);
-            }
+
+        switch(kategori){
+            case "A":
+                return fritidPerUge.stream().noneMatch(i -> i<=0);
+            case "B":
+                return fritidPerUge.stream().anyMatch(i -> i<=0) && fritidPerUge.stream().anyMatch(j -> j>0);
+            case "C":
+                return fritidPerUge.stream().noneMatch(i -> i>0);
         }
+
 
         return false;
     }

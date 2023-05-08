@@ -59,11 +59,11 @@ public class UgeDato implements Comparable<UgeDato>, Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        assert(o != null && (o instanceof UgeDato));
+        assert(o != null && (o instanceof UgeDato)); //precondition
 
         UgeDato obj = (UgeDato) o;
 
-        boolean result = obj.uge == this.uge && obj.årstal == this.årstal;
+        boolean result = obj.uge == this.uge && obj.årstal == this.årstal; //1
 
 
         return result;

@@ -149,7 +149,7 @@ public class Medarbejder implements Serializable {
      */
 
     public int forekomsterAfAktivitet(Aktivitet a) {
-        assert (a != null);
+        assert (a != null); //precondition
 
         Iterator<Aktivitet> aktivitetIterator = this.anførteAktiviteter.iterator();
         int forekomster = 0;
@@ -160,7 +160,7 @@ public class Medarbejder implements Serializable {
             }
         }
 
-        assert (this.anførteAktiviteter.contains(a) == (forekomster > 0));
+        assert (this.anførteAktiviteter.contains(a) == (forekomster > 0)); //postcondition
         return forekomster;
     }
 }
