@@ -144,7 +144,7 @@ public class Medarbejder implements Serializable {
 
     /**
      Precondition: Aktivitet er ikke en null pointer
-     Postcondition: forekomster er lige antallet af forekomster af refferencer til a i anførteAktiviteter
+     Postcondition: forekomster = |{a_i \in this.anførteAktiviteter | a_i = a }|
      */
 
     public int forekomsterAfAktivitet(Aktivitet a) {
