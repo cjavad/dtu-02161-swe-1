@@ -26,7 +26,7 @@ Feature: fjern medarbejder fra projekt
     When brugeren vælger at se medarbejderer på projektet
     Then er "aaaa" og "bbbb" vist i medarbejderlisten
     When brugeren vælger at fjerne medarbejderen "bbbb" fra projektet
-    Then er der 2 bruger tilbage i medarbejderlisten
+    Then er der 1 bruger tilbage i medarbejderlisten
 
   Scenario:
     Given brugeren er logget ind som "bbbb" på "Projekt 1"
@@ -41,4 +41,4 @@ Feature: fjern medarbejder fra projekt
     When brugeren vælger at se medarbejderer på projektet
     Then er "cccc" og "dddd" vist i medarbejderlisten
     When brugeren vælger at fjerne medarbejderen "dddd" fra projektet
-    Then er der 2 bruger tilbage i medarbejderlisten
+    Then er der 1 bruger tilbage i medarbejderlisten

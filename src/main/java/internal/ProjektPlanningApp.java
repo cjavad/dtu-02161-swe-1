@@ -21,7 +21,6 @@ public class ProjektPlanningApp {
      * Postcondition: Der eksisterer nu én reference til aktiviteten i medarbejderens anførteAktiviteter og én reference til medarbejderen i aktivitetens anførteMedarbejdere
      */
     public void tilføjMedarbjederTilAktivitet(Medarbejder m, Aktivitet a) {
-
         assert(a != null && m != null && a.iSammeProjektSomMedarbejder(m));
 
         a.tilføjMedarbjederTilAktivitet(m);
