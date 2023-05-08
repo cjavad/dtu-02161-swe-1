@@ -139,7 +139,7 @@ public class ProjektPlanningAppTest {
             Medarbejder m = new Medarbejder("abcd");
             Projekt p = new Projekt("test","2023-01");
 
-            app.fjernMedarbejderFraProjekt(m, p);
+            org.junit.Assert.assertThrows(AssertionError.class, () -> app.fjernMedarbejderFraProjekt(m, p));
 
             org.junit.Assert.assertFalse(m.getProjekter().contains(p));
             org.junit.Assert.assertFalse(p.getMedarbejder().contains(m));
