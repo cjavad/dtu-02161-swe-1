@@ -1,8 +1,22 @@
 package internal;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class ProjektPlanningApp implements Serializable {
+
+
+    public Set<Projekt> projekter;
+    public Set<Medarbejder> medarbejdere;
+
+    public ProjektPlanningApp(){
+
+        this.projekter = new HashSet<Projekt>();
+        this.medarbejdere = new HashSet<Medarbejder>();
+
+    }
 
     public void ændreProjektleder(Projekt p, Medarbejder m) {
         if (p == null) {
@@ -59,4 +73,11 @@ public class ProjektPlanningApp implements Serializable {
         p.fjernAktivitetFraProjekt(a);
     }
 
+    public Set<Projekt> fåProjekter() {
+        return projekter;
+    }
+
+    public Set<Medarbejder> fåMedarbejdere() {
+        return medarbejdere;
+    }
 }

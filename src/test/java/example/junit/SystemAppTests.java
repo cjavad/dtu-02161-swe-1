@@ -58,8 +58,8 @@ public class SystemAppTests {
 		systemApp.isAdmin();	
 		systemApp.getUser();
 		systemApp.getProjektListeView();
-		systemApp.getProjekter();
-		systemApp.getMedarbejder();
+		systemApp.fåProjekter();
+		systemApp.fåMedarbejdere();
 	}
 
 	@org.junit.Test()

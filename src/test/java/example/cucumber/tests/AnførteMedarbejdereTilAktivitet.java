@@ -26,14 +26,14 @@ public class AnførteMedarbejdereTilAktivitet {
 
     @Given("projektet {string} er oprettet med løbenummer {int} og årstal {int}")
     public void projektetErOprettetMedLøbenummerOgÅrstal(String navn, Integer løbenummer, Integer år) {
-        this.system.projekter.add(new Projekt(
+        this.system.fåProjekter().add(new Projekt(
                 navn,
                 this.system.recorder.formatProjektID(år, løbenummer)
         ));
     }
-    @Given("en medarbejder {string} eksisterer og er tilknyttet projektet {string}")
+    @Given("en medarbejdere {string} eksisterer og er tilknyttet projektet {string}")
     public void enMedarbejderEksistererOgErTilknyttetProjektet(String navn, String projekt) {
-        this.system.medarbejder.add(new Medarbejder(navn));
+        this.system.fåMedarbejdere().add(new Medarbejder(navn));
         this.system.planner.tilføjMedarbejderTilProjekt(
                 this.system.findMedarbejder(navn),
                 this.system.findProjektMedNavn(projekt)
@@ -97,7 +97,7 @@ public class AnførteMedarbejdereTilAktivitet {
             this.error.setMessage(e.getMessage());
         }
     }
-    @Then("er der {int} medarbejder anført {string}")
+    @Then("er der {int} medarbejdere anført {string}")
     public void erDerMedarbejderAnført(Integer count, String aktivitet) {
         assertTrue(this.aktiv.getProjekt().findAktivitet(aktivitet).getAnførteMedarbejdere().size() == count);
     }

@@ -23,7 +23,7 @@ public class AktivitetTests {
 
     @Given("brugeren {string} findes")
     public void brugerenFindes(String string) {
-        this.system.medarbejder.add(new Medarbejder(string));
+        this.system.fåMedarbejdere().add(new Medarbejder(string));
     }
     @Given("Medarbejderen er logget ind som Softwarehuset A\\/S")
     public void medarbejderenErLoggetIndSomSoftwarehusetAS() {
@@ -32,9 +32,9 @@ public class AktivitetTests {
     @Given("Medarbejderen opretter et projekt {string}")
     public void medarbejderenOpretterEtProjekt(String projektID) {
         // Check if projektID already exist
-        this.system.projekter.stream().filter(p -> p.getProjektID().equals(projektID)).findFirst().ifPresentOrElse(
+        this.system.fåProjekter().stream().filter(p -> p.getProjektID().equals(projektID)).findFirst().ifPresentOrElse(
                 p -> assertTrue(false),
-                () -> this.system.projekter.add(new Projekt("", projektID))
+                () -> this.system.fåProjekter().add(new Projekt("", projektID))
         );
     }
 
@@ -47,9 +47,9 @@ public class AktivitetTests {
     }
     @Given("Medarbejderen opretter et projekt {string} \\(Uden projektleder)")
     public void medarbejderenOpretterEtProjektUdenProjektleder(String projektID) {
-        this.system.projekter.stream().filter(p -> p.getProjektID().equals(projektID)).findFirst().ifPresentOrElse(
+        this.system.fåProjekter().stream().filter(p -> p.getProjektID().equals(projektID)).findFirst().ifPresentOrElse(
                 p -> assertTrue(true), // Simply ignore
-                () -> this.system.projekter.add(new Projekt("", projektID))
+                () -> this.system.fåProjekter().add(new Projekt("", projektID))
         );
     }
 
@@ -87,7 +87,7 @@ public class AktivitetTests {
         assertTrue(this.system.findProjektMedID(string).getAktiviteter().size() == 1);
     }
 
-    @Given("en medarbejder er logget ind som {string} på projektet {string}")
+    @Given("en medarbejdere er logget ind som {string} på projektet {string}")
     public void enMedarbejderErLoggetIndSomPåProjektet(String string, String string2) {
         this.system.login(string);
         this.aktiv.setProjekt(this.system.findProjektMedID(string2));

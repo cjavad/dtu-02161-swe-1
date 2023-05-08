@@ -1,7 +1,6 @@
 package internal;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 public class SystemApp implements Serializable {
@@ -15,14 +14,10 @@ public class SystemApp implements Serializable {
 
     public DateServer dateServer;
 
-    public Set<Projekt> projekter;
-    public Set<Medarbejder> medarbejder;
 
     public SystemApp() {
         this.dateServer = new SystemDateServer(new UgeDato(1, 2024));
 
-        this.projekter = new HashSet<Projekt>();
-        this.medarbejder = new HashSet<Medarbejder>();
 
         this.planner = new ProjektPlanningApp();
         this.recorder = new IDGenerator();
@@ -34,16 +29,21 @@ public class SystemApp implements Serializable {
     public boolean lavNytProjekt(String navn) throws SystemAppException {
         if (!isLoggedIn()) return false;
         if (!isAdmin) throw new SystemAppException("Du kan ikke oprette et projekt, da du ikke er admin");
+        Set<Projekt> projekter = this.fåProjekter();
 
-        this.projekter.add(
+        projekter.add(
 			new Projekt(
 				navn,
 				this.recorder.getProjektID(this.dateServer.getUgeDato())
             )
         );
 
+
+
         return true;
     }
+
+
 
     public void opretNyMedarbejder(String initials) {
         if (!isLoggedIn()) return;
@@ -51,7 +51,9 @@ public class SystemApp implements Serializable {
         if (initials.length() > 4) return;
         if (findMedarbejder(initials) != null) return;
 
-        this.medarbejder.add(
+        Set<Medarbejder> medarbejdere = this.fåMedarbejdere();
+
+        medarbejdere.add(
                 new Medarbejder(initials)
         );
     }
@@ -63,7 +65,7 @@ public class SystemApp implements Serializable {
         medarbejder.getProjekter().forEach(
                 projekt -> this.planner.fjernMedarbejderFraProjekt(medarbejder, projekt)
         );
-        this.medarbejder.remove(medarbejder);
+        this.fåMedarbejdere().remove(medarbejder);
     }
 
     public void sletProjekt(Projekt projekt) {
@@ -76,7 +78,8 @@ public class SystemApp implements Serializable {
         projekt.getAktiviteter().forEach(
                 aktivitet -> this.planner.fjernAktivitetFraProjekt(aktivitet, projekt)
         );
-        this.projekter.remove(projekt);
+
+        this.fåProjekter().remove(projekt);
     }
 
     public void lavAktivitet(String navn, Projekt projekt) throws SystemAppException {
@@ -111,14 +114,14 @@ public class SystemApp implements Serializable {
 
     public void tilføjMedarbejderTilProjekt(Medarbejder medarbejder, Projekt projekt) throws SystemAppException {
         if (!isLoggedIn()) return;
-        if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("Du har ikke rettigheder til at tilknytte en medarbejder til dette projekt");
+        if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("Du har ikke rettigheder til at tilknytte en medarbejdere til dette projekt");
 
         this.planner.tilføjMedarbejderTilProjekt(medarbejder, projekt);
     }
 
     public void fjernMedarbejderFraProjekt(Medarbejder medarbejder, Projekt projekt) throws SystemAppException {
         if (!isLoggedIn()) return;
-        if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("du kan ikke fjerne medarbejder fra projektet");
+        if (!this.isAdmin && !isProjektleder(projekt) && projekt.getProjektLeder() != null) throw new SystemAppException("du kan ikke fjerne medarbejdere fra projektet");
 
         this.planner.fjernMedarbejderFraProjekt(medarbejder, projekt);
     }
@@ -126,10 +129,10 @@ public class SystemApp implements Serializable {
     public void tilføjMedarbejderTilAktivitet(Medarbejder medarbejder, Aktivitet aktivitet) throws SystemAppException {
         if (!isLoggedIn()) return;
         if (!this.isAdmin && aktivitet.getProjekt().getProjektLeder() != null && !isProjektleder(aktivitet.getProjekt())) {
-            throw new SystemAppException("du kan ikke anføre en medarbejder til en aktivitet");
+            throw new SystemAppException("du kan ikke anføre en medarbejdere til en aktivitet");
         }
 
-        if (!aktivitet.iSammeProjektSomMedarbejder(medarbejder)) throw new SystemAppException("du kan ikke anføre en medarbejder til en aktivitet som ikke er på projektet");
+        if (!aktivitet.iSammeProjektSomMedarbejder(medarbejder)) throw new SystemAppException("du kan ikke anføre en medarbejdere til en aktivitet som ikke er på projektet");
 
         this.planner.tilføjMedarbjederTilAktivitet(medarbejder, aktivitet);
     }
@@ -166,21 +169,21 @@ public class SystemApp implements Serializable {
     }
 
     public Medarbejder findMedarbejder(String initials) {
-        for (Medarbejder m : this.medarbejder) {
+        for (Medarbejder m : this.fåMedarbejdere()) {
             if (m.getInitial().equals(initials)) return m;
         }
         return null;
     }
 
     public Projekt findProjektMedID(String id) {
-        for (Projekt p : this.projekter) {
+        for (Projekt p : this.fåProjekter()) {
             if (p.getProjektID().equals(id)) return p;
         }
         return null;
     }
 
     public Projekt findProjektMedNavn(String navn) {
-        for (Projekt p : this.projekter) {
+        for (Projekt p : this.fåProjekter()) {
             if (p.getNavn().equals(navn)) return p;
         }
         return null;
@@ -208,11 +211,21 @@ public class SystemApp implements Serializable {
         return medarbejderListeView;
     }
 
-    public Set<Projekt> getProjekter() {
-        return projekter;
+    public Set<Projekt> fåProjekter() {
+        return this.planner.fåProjekter();
     }
 
-    public Set<Medarbejder> getMedarbejder() {
-        return medarbejder;
+    public Set<Medarbejder> fåMedarbejdere() {
+        return this.planner.fåMedarbejdere();
     }
+
+    public boolean harProjekter(){
+        return this.fåProjekter().isEmpty();
+    }
+
+    public int hvorMangeProjekter(){
+        return this.fåProjekter().size();
+    }
+
+
 }

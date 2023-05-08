@@ -23,7 +23,7 @@ public class ÆndreTilknyttetMedarbejderProjekt {
         this.error = error;
     }
 
-    @Given("en medarbejder {string} eksistere")
+    @Given("en medarbejdere {string} eksistere")
     public void enMedarbejderEksistere(String arg0) {
         this.system.login("admin");
         this.system.opretNyMedarbejder(arg0);
@@ -31,7 +31,7 @@ public class ÆndreTilknyttetMedarbejderProjekt {
 
     @And("projektet {string} eksistere")
     public void projektetEksistere(String arg0) {
-        this.system.projekter.add(new Projekt("", arg0));
+        this.system.fåProjekter().add(new Projekt("", arg0));
     }
 
     @And("medarbejderen {string} er tilknyttet projektet {string}")

@@ -169,7 +169,7 @@ public class Aktivitet implements Serializable {
     }
 
 	// FIXME: hvad er dette? hvorfor findes dette? hvad? hvor? 
-	// det er et sæt, der kan ikke være mere end én af hver medarbejder
+	// det er et sæt, der kan ikke være mere end én af hver medarbejdere
 	//
 	// bliver den brugt?
     public int forekomsterAfMedarbejder(Medarbejder m) {

@@ -5,7 +5,6 @@ import java.util.Optional;
 import internal.Aktivitet;
 import internal.Medarbejder;
 import internal.Projekt;
-import internal.SystemAppException;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -61,7 +60,7 @@ public class StartUI {
 
 		// projekt liste
 		ListView<Button> projektListe = new ListView<Button>();
-		for (Projekt projekt : app.system.getProjekter()) {
+		for (Projekt projekt : app.system.fåProjekter()) {
 			Button projektButton = new Button(projekt.getNavn());
 			projektButton.setOnAction(e -> {
 				app.visProjekt(projekt);
@@ -90,9 +89,9 @@ public class StartUI {
 
 		dataGrid.add(projetkBox, 0, 2);
 
-		// medarbejder liste
+		// medarbejdere liste
 		ListView<Button> medarbejderListe = new ListView<Button>();
-		for (Medarbejder medarbejder : app.system.getMedarbejder()) {
+		for (Medarbejder medarbejder : app.system.fåMedarbejdere()) {
 			Button medarbejderButton = new Button(medarbejder.getInitial());
 			medarbejderButton.setOnAction(e -> {
 				app.visMedarbejder(medarbejder);
@@ -184,7 +183,7 @@ public class StartUI {
 	public void sletProjektDialog() {
 		ChoiceDialog choiceDialog = new ChoiceDialog<Projekt>(
 				null,
-				this.app.system.getProjekter()
+				this.app.system.fåProjekter()
 		);
 
 		choiceDialog.setTitle("Slet projekt");
@@ -203,7 +202,7 @@ public class StartUI {
 	public void sletMedarbejderDialog() {
 		ChoiceDialog choiceDialog = new ChoiceDialog<Medarbejder>(
 				null,
-				this.app.system.getMedarbejder()
+				this.app.system.fåMedarbejdere()
 		);
 
 		choiceDialog.setTitle("Slet medarbejder");

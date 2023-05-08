@@ -29,7 +29,7 @@ public class AktivitetUI {
 		root.add(app.lavTilbageKnap(), 0, 0);
 		root.add(new Label("Navn: " + aktivitet.getNavn()), 1, 0);
 
-		// medarbejder
+		// medarbejdere
 		VBox medarbejderBox = new VBox();
 		medarbejderBox.setMinWidth(256);
 

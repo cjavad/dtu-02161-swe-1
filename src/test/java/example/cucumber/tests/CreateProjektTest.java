@@ -6,7 +6,6 @@ import internal.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -46,14 +45,14 @@ public class CreateProjektTest {
 
     @Given("brugeren er logget ind som {string}")
     public void brugerenErLoggetIndSom(String string) {
-        if (this.system.getMedarbejder().stream().noneMatch(m -> m.getInitial().equals(string))) {
-            this.system.getMedarbejder().add(new Medarbejder(string));
+        if (this.system.fåMedarbejdere().stream().noneMatch(m -> m.getInitial().equals(string))) {
+            this.system.fåMedarbejdere().add(new Medarbejder(string));
         }
         this.system.login(string);
     }
     @Then("kan brugeren se en tom liste over projekter")
     public void kanBrugerenSeEnTomListeOverProjekter() {
-        assertTrue(this.system.projekter.isEmpty());
+        assertTrue(this.system.harProjekter());
     }
     @Then("kan brugeren se en fejlmeddelelse {string}")
     public void kanBrugerenSeEnFejlmeddelelse(String message) {

@@ -22,7 +22,7 @@ public class OpdelPåBaggrundAfFritidTests {
 
     @org.junit.Before()
     public void setup() {
-        // Instantiate the medarbejder and aktivitet objects
+        // Instantiate the medarbejdere and aktivitet objects
         medarbejdere.get(0).setUgentligeTimer(2);
         medarbejdere.get(1).setUgentligeTimer(2);
         medarbejdere.get(2).setUgentligeTimer(2);

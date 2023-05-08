@@ -38,7 +38,7 @@ public class ProjektPlanningAppTest {
 
     @org.junit.Test
     public void tilføjMedarbjederTilAktivitetTest() {
-        // null medarbejder
+        // null medarbejdere
         {
             Projekt p = new Projekt("test","2023-01");
             Aktivitet a = new Aktivitet("ak");
@@ -57,7 +57,7 @@ public class ProjektPlanningAppTest {
                 app.tilføjMedarbjederTilAktivitet(m, null);
             });
         }
-        // medarbejder not in projekt
+        // medarbejdere not in projekt
         {
             Medarbejder m = new Medarbejder("abcd");
             Projekt p = new Projekt("test","2023-01");
@@ -71,7 +71,7 @@ public class ProjektPlanningAppTest {
             org.junit.Assert.assertFalse(m.getAnførteAktiviteter().contains(a));
             org.junit.Assert.assertFalse(a.getAnførteMedarbejdere().contains(m));
         }
-        // medarbejder in projekt
+        // medarbejdere in projekt
         {
             Medarbejder m = new Medarbejder("abcd");
             Projekt p = new Projekt("test","2023-01");
@@ -150,7 +150,7 @@ public class ProjektPlanningAppTest {
 
     @org.junit.Test
     public void fjernMedarbejderFraAktivitetTest() {
-        // null medarbejder
+        // null medarbejdere
         {
             Projekt p = new Projekt("test","2023-01");
             Aktivitet a = new Aktivitet("ak");

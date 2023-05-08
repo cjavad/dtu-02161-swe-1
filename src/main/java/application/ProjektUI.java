@@ -2,13 +2,11 @@ package application;
 
 import internal.Projekt;
 
-import java.awt.*;
 import java.util.Optional;
 
 import internal.Aktivitet;
 import internal.Medarbejder;
 import internal.SystemAppException;
-import io.cucumber.java.ht.Ak;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -50,14 +48,14 @@ public class ProjektUI {
 		});
 		infoBox.getChildren().add(vælgProjektLeder);
 
-		// medarbejder
+		// medarbejdere
 		VBox medarbejderBox = new VBox();
 		medarbejderBox.setMinWidth(256);
 
 		ListeView mview = new ListeView(
 				this.app,
 				this.projekt.getMedarbejder(),
-				this.app.system.getMedarbejder(),
+				this.app.system.fåMedarbejdere(),
 				(m) -> {
 					try {
 						this.app.system.tilføjMedarbejderTilProjekt(m, this.projekt);
