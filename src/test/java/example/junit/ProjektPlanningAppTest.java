@@ -4,6 +4,7 @@ import internal.Aktivitet;
 import internal.Medarbejder;
 import internal.Projekt;
 import internal.ProjektPlanningApp;
+import org.junit.Assert;
 
 public class ProjektPlanningAppTest {
 
@@ -146,6 +147,9 @@ public class ProjektPlanningAppTest {
         }
 
         // TODO :: with aktivities
+        {
+
+        }
     }
 
     @org.junit.Test
@@ -231,4 +235,29 @@ public class ProjektPlanningAppTest {
         }
     }
 
+    @org.junit.Test
+    public void projektLeder() {
+        {
+            Medarbejder m1 = new Medarbejder("aaaa");
+            Medarbejder m2 = new Medarbejder("bbbb");
+            Projekt p = new Projekt("test", "2023-01");
+            app.tilføjMedarbejderTilProjekt(m1, p);
+            app.tilføjMedarbejderTilProjekt(m2, p);
+
+            app.ændreProjektleder(p, m1);
+            Assert.assertEquals(m1, p.getProjektLeder());
+            app.ændreProjektleder(p, m2);
+            Assert.assertEquals(m2, p.getProjektLeder());
+            // Fjern projekt leder ved at sætte til null
+            app.ændreProjektleder(p, null);
+            Assert.assertEquals(null, p.getProjektLeder());
+            // Projekt er null
+            Assert.assertThrows(NullPointerException.class, () -> app.ændreProjektleder(null, null));
+
+            app.ændreProjektleder(p, m1);
+            Assert.assertEquals(m1, p.getProjektLeder());
+            p.fjernMedarbejder(m1);
+            Assert.assertNull(p.getProjektLeder());
+        }
+    }
 }

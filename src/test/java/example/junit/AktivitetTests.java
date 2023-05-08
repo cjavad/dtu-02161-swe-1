@@ -40,14 +40,25 @@ public class AktivitetTests {
 		    aktivitet.tilføjMedarbjeder(medarbejder);
 		});
 
-
 		aktivitet.setProjekt(projekt);
 		projekt.tilføjMedarbejder(medarbejder);
 		aktivitet.tilføjMedarbjeder(medarbejder);
+
+		Assert.assertTrue(aktivitet.getAnførteMedarbejdere().contains(medarbejder));
+		Assert.assertTrue(projekt.findMedarbejder(medarbejder.toString()).equals(medarbejder));
 	}
 
 	@org.junit.Test()
 	public void testIsLegalDatoAssignment() {
-		Assert.assertTrue(aktivitet.isLegalDatoAssignment(new UgeDato(2017, 1), new UgeDato(2018, 1)));
+		UgeDato startdato = new UgeDato(2017, 1);
+		UgeDato slutdato = new UgeDato(2018, 1);
+		Assert.assertTrue(aktivitet.isLegalDatoAssignment(startdato, slutdato));
+		Assert.assertFalse(aktivitet.isLegalDatoAssignment(slutdato, startdato));
+		Assert.assertEquals(0, aktivitet.beregnArbejdePerMedarbejder());
+
+		aktivitet.setStartDato(slutdato);
+		Assert.assertThrows(Error.class, () -> aktivitet.setSlutDato(startdato));
+		aktivitet.setSlutDato(slutdato);
+		Assert.assertThrows(Error.class, () -> aktivitet.setStartDato(new UgeDato(2019, 1)));
 	}
 }

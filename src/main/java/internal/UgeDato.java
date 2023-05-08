@@ -66,6 +66,7 @@ public class UgeDato implements Comparable<UgeDato>, Serializable {
         boolean result = obj.uge == this.uge && obj.årstal == this.årstal; //1
 
 
+        assert postConditionEquals(obj, result); //postcondition
         return result;
     }
 

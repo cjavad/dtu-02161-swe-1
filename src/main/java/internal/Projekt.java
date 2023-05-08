@@ -21,18 +21,18 @@ public class Projekt implements Serializable {
 
     public void ændreProjektleder(Medarbejder medarbejder) {
         this.setProjektLeder(medarbejder);
+
         if (this.getProjektLeder() != null) {
             this.getProjektLeder().fjernProjektleder(this);
         }
+
         if (medarbejder != null) {
             medarbejder.tilføjProjektleder(this);
         }
     }
 
     public void tilføjAktivitetTilProjekt(Aktivitet aktivitet) {
-        if (aktivitet == null) {
-            throw new NullPointerException();
-        }
+        assert medarbejder != null;
         this.tilføjAktivitet(aktivitet);
         aktivitet.tilføjProjekt(this);
     }
@@ -56,11 +56,9 @@ public class Projekt implements Serializable {
 
 
     public void fjernMedarbejderFraProjekt(Medarbejder medarbejder) {
-        if (medarbejder == null) {
-            throw new NullPointerException();
-        }
-        medarbejder.fjernProjekt(this);
-        this.fjernMedarbejder(medarbejder);
+        assert medarbejder != null;
+        medarbejder.fjernProjekt(this); // 2
+        this.fjernMedarbejder(medarbejder); // 3
     }
 
     public void tilføjMedarbejder(Medarbejder medarbejder) {
@@ -129,11 +127,6 @@ public class Projekt implements Serializable {
         return aktiviteter;
     }
 
-	// FIXME: er denne metode nødvendig? hvorfor ville man ikke bare bruge getProjektID?
-    public String toString() {
-        return getProjektID() + " (" + getNavn() + ")";
-    }
-
     public String getNavn() {
         return navn;
     }
@@ -146,6 +139,7 @@ public class Projekt implements Serializable {
         for (Aktivitet aktivitet : this.aktiviteter) {
             if (aktivitet.getNavn().equals(navn)) return aktivitet;
         }
+
         return null;
     }
 
@@ -153,6 +147,7 @@ public class Projekt implements Serializable {
         for (Medarbejder medarbejder : this.medarbejder) {
             if (medarbejder.getInitial().equals(initial)) return medarbejder;
         }
+
         return null;
     }
 }

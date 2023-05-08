@@ -12,7 +12,6 @@ public class SystemApp implements Serializable {
 
     public DateServer dateServer;
 
-
     public SystemApp() {
         this.dateServer = new SystemDateServer(new UgeDato(1, 2024));
 
@@ -34,8 +33,6 @@ public class SystemApp implements Serializable {
 				this.recorder.getProjektID(this.dateServer.getUgeDato())
             )
         );
-
-
 
         return true;
     }
@@ -62,6 +59,7 @@ public class SystemApp implements Serializable {
         medarbejder.getProjekter().forEach(
                 projekt -> this.planner.fjernMedarbejderFraProjekt(medarbejder, projekt)
         );
+
         this.fåMedarbejdere().remove(medarbejder);
     }
 
@@ -148,11 +146,14 @@ public class SystemApp implements Serializable {
             this.user = null;
             return true;
         }
+
         this.user = findMedarbejder(initials);
+
         if (this.user != null) {
             this.isAdmin = false;
             return true;
         }
+
         return false;
     }
 
@@ -215,6 +216,4 @@ public class SystemApp implements Serializable {
     public int hvorMangeProjekter(){
         return this.fåProjekter().size();
     }
-
-
 }

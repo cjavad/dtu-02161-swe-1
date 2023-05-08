@@ -137,7 +137,6 @@ public class Medarbejder implements Serializable {
         return initial;
     }
 
-
     private Boolean iSammeProjektSomAktivitet(Aktivitet aktivitet){
 
         return aktivitet.iSammeProjektSomMedarbejder(this);

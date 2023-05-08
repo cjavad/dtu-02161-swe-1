@@ -79,7 +79,7 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
             kategori = "B";
         } else if (isC(fritidPerUge)) { // 3 - Der eksisterer ingen uger med fritid
             kategori = "C";
-        } else { // 4
+        } else { // 4 is not logically possible
             kategori = null;
         }
 

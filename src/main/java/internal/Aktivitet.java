@@ -151,13 +151,13 @@ public class Aktivitet implements Serializable {
     public void setStartDato(UgeDato startDato) {
         assert(startDato != null);
 
-        if(isLegalDatoAssignment(startDato,this.slutDato) )
-        {
+        if (isLegalDatoAssignment(startDato, this.slutDato)) {
             this.startDato = startDato;
-        }
-        else{
+        } else {
             throw new Error("slutDato er mindre end startDato");
         }
+
+        assert isLegalDatoAssignment(startDato, this.slutDato);
     }
 
     public UgeDato getSlutDato() {
@@ -166,15 +166,11 @@ public class Aktivitet implements Serializable {
 
     public void setSlutDato(UgeDato slutDato) {
 
-        if( isLegalDatoAssignment(this.startDato,slutDato) )
-        {
+        if (isLegalDatoAssignment(this.startDato,slutDato)) {
             this.slutDato = slutDato;
-        }
-        else{
+        } else {
             throw new Error("slutDato er mindre end startDato");
         }
-
-
     }
 
     public Set<Medarbejder> getAnførteMedarbejdere() {

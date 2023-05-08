@@ -39,12 +39,19 @@ public class ForekomsterAfAktiviterTests {
     public void inputsetC() {
         m = new Medarbejder("m");
         app.tilføjMedarbejderTilProjekt(m, projekt);
-        app.tilføjMedarbjederTilAktivitet(m, aktiviteter.get(1));
         org.junit.Assert.assertEquals(0, m.forekomsterAfAktivitet(aktiviteter.get(0)));
     }
 
     @org.junit.Test()
     public void inputsetD() {
+        m = new Medarbejder("m");
+        app.tilføjMedarbejderTilProjekt(m, projekt);
+        app.tilføjMedarbjederTilAktivitet(m, aktiviteter.get(1));
+        org.junit.Assert.assertEquals(0, m.forekomsterAfAktivitet(aktiviteter.get(0)));
+    }
+
+    @org.junit.Test()
+    public void inputsetE() {
         m = new Medarbejder("m");
         app.tilføjMedarbejderTilProjekt(m, projekt);
         app.tilføjMedarbjederTilAktivitet(m, aktiviteter.get(0));
@@ -53,7 +60,7 @@ public class ForekomsterAfAktiviterTests {
     }
 
     @org.junit.Test()
-    public void inputsetE() {
+    public void inputsetF() {
         m = new Medarbejder("m");
         app.tilføjMedarbejderTilProjekt(m, projekt);
         app.tilføjMedarbjederTilAktivitet(m, aktiviteter.get(0));

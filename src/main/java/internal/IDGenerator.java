@@ -15,7 +15,7 @@ public class IDGenerator implements Serializable {
     }
 
     public String formatProjektID(int år, int løbenummer) {
-        return år + "-" + String.format("%02d", løbenummer);
+        return String.format("%04d", år) + "-" + String.format("%02d", løbenummer);
     }
 
     public Løbenummer getLøbenummer() {

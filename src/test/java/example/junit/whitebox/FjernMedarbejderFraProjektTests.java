@@ -34,6 +34,11 @@ public class FjernMedarbejderFraProjektTests {
 
     @org.junit.Test()
     public void inputsetC() {
+        org.junit.Assert.assertThrows(AssertionError.class, () -> systemApp.planner.fjernMedarbejderFraProjekt(null, null));
+    }
+
+    @org.junit.Test()
+    public void inputsetD() {
         systemApp.planner.fjernMedarbejderFraProjekt(m, projekt);
         org.junit.Assert.assertTrue(m.getProjekter().isEmpty());
         org.junit.Assert.assertTrue(projekt.getMedarbejder().isEmpty());
