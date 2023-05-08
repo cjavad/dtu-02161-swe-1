@@ -71,7 +71,6 @@ public class LedigAktivitetListeView extends ListeView<Medarbejder> {
 
         String kategori = "";
 
-
         if (isA(fritidPerUge)) { // 1 - Ingen har en uge med fritid på 0 eller under
             kategori = "A";
         } else if (isB(fritidPerUge)) { // 2 - Der eksisterer uger med fritid og uger uden

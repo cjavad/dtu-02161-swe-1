@@ -24,7 +24,7 @@ public class ForekomsterAfAktiviterTests {
     @org.junit.Test()
     public void inputsetA() {   
         m = new Medarbejder("m");
-        org.junit.Assert.assertEquals(0, m.forekomsterAfAktivitet(null));
+        org.junit.Assert.assertThrows(AssertionError.class, () -> m.forekomsterAfAktivitet(null));
     }
 
     @org.junit.Test()
