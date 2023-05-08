@@ -134,18 +134,20 @@ public class Aktivitet implements Serializable {
             result = startDato.compareTo(slutDato) <= 0; // 3a, 3b
         }
 
-        assert(result == postconditionIsLegalDatoAssignment(startDato,slutDato));
+        assert(postconditionIsLegalDatoAssignment(result,startDato,slutDato));
         return result;
     }
 
-    public boolean postconditionIsLegalDatoAssignment(UgeDato startDato,UgeDato slutDato){
+    public boolean postconditionIsLegalDatoAssignment(boolean result,UgeDato startDato,UgeDato slutDato){
+        boolean resultBurdeVære;
         if(slutDato == null || startDato == null){ //2
-            return true;
+            resultBurdeVære = true;
         }
         else{
-            return startDato.compareTo(slutDato) <= 0;
+            resultBurdeVære = startDato.compareTo(slutDato) <= 0;
         }
 
+        return resultBurdeVære == result;
     }
 
     public void setStartDato(UgeDato startDato) {
