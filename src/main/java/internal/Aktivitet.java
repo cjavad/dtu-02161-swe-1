@@ -1,10 +1,11 @@
 package internal;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Aktivitet {
+public class Aktivitet implements Serializable {
     private int bugetteretTid;
     private Projekt projekt;
     private final String navn;

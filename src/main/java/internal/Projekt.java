@@ -1,9 +1,10 @@
 package internal;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Projekt {
+public class Projekt implements Serializable {
     private String navn;
     private final String projektID;
     private Medarbejder projektLeder;

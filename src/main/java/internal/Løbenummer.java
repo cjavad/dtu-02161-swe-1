@@ -1,6 +1,8 @@
 package internal;
 
-public class Løbenummer {
+import java.io.Serializable;
+
+public class Løbenummer implements Serializable {
     private int nuværendeLøbenummer;
 
     public Løbenummer() {

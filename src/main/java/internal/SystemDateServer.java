@@ -1,6 +1,8 @@
 package internal;
 
-public class SystemDateServer implements DateServer {
+import java.io.Serializable;
+
+public class SystemDateServer implements DateServer, Serializable {
 	UgeDato ugeDato;
 
 	public SystemDateServer(UgeDato ugeDato) {

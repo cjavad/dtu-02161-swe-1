@@ -1,6 +1,8 @@
 package internal;
 
-public class IDGenerator {
+import java.io.Serializable;
+
+public class IDGenerator implements Serializable {
     public Løbenummer løbenummer;
 
     public IDGenerator() {

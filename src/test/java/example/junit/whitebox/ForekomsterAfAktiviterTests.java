@@ -22,7 +22,7 @@ public class ForekomsterAfAktiviterTests {
     }
 
     @org.junit.Test()
-    public void inputsetA() {
+    public void inputsetA() {   
         m = new Medarbejder("m");
         org.junit.Assert.assertEquals(0, m.forekomsterAfAktivitet(null));
     }
