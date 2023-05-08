@@ -100,7 +100,6 @@ public class Medarbejder implements Serializable {
     }
 
     public void fjernProjekt(Projekt projekt) {
-        assert(this.projekter.contains(projekt));
 
         this.projektLederFor.remove(projekt);
         this.projekter.remove(projekt);
@@ -109,6 +108,7 @@ public class Medarbejder implements Serializable {
                 .filter(a -> a.getProjekt() == projekt)
                 .forEach(a -> this.anførteAktiviteter.remove(a));
     }
+
 
     public String getInitial() {
         return initial;

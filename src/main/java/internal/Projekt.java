@@ -54,6 +54,7 @@ public class Projekt implements Serializable {
         this.tilføjMedarbejder(medarbejder);
     }
 
+
     public void fjernMedarbejderFraProjekt(Medarbejder medarbejder) {
         if (medarbejder == null) {
             throw new NullPointerException();

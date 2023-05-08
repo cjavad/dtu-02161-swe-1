@@ -44,12 +44,24 @@ public class ProjektPlanningApp implements Serializable {
         assert(a.forekomsterAfMedarbejder(m) == 1 && m.forekomsterAfAktivitet(a) == 1);
     }
 
+    public boolean postconditionFjernMedarbejderFraProjekt(Medarbejder medarbejder,Projekt projekt){
+        boolean condition1 = medarbejder.getAnførteAktiviteter().stream().noneMatch(a -> a.getProjekt() == projekt);
+        boolean condition2 = projekt.getAktiviteter().stream().noneMatch(a -> a.getAnførteMedarbejdere().contains(medarbejder));
+        boolean condition3 = !medarbejder.getProjekter().contains(projekt);
+        boolean condition4 = !projekt.getMedarbejder().contains(medarbejder);
+
+        return condition1 && condition2 && condition3 && condition4;
+
+    }
 
     public void fjernMedarbejderFraProjekt(Medarbejder m, Projekt p) {
+        assert(m.getProjekter().contains(p) && p.getMedarbejder().contains(m));
+
         if (p == null) {
             throw new NullPointerException();
         }
         p.fjernMedarbejderFraProjekt(m);
+        assert postconditionFjernMedarbejderFraProjekt(m,p);
     }
 
     public void fjernMedarbejderFraAktivitet(Medarbejder m, Aktivitet a) {
