@@ -22,15 +22,15 @@ For at fjerne anførelsen kan du trykke på ">>" knappen efter du har markeret d
 
 Herefter kan du sætte en projekt leder til projektet som kan fører flere handlinger, men det betyder også at den normale medarbejder ikke kan tilføje aktiviteter.
 
-For at oprette en aktivit kan du enten som admin, projektleder eller hvis ingen projektleder er anført, en normal medarbejder på projektet, oprette en aktivitet i højresiden af projekt siden.
+For at oprette en aktivitet kan du enten som admin, projektleder eller hvis ingen projektleder er anført, en normal medarbejder på projektet, oprette en aktivitet i højresiden af projekt siden.
 
 Her kan du trykke på aktivitet for at komme til aktivitets siden hvor man kan sætte budgetteret tid, start og slut dato.
 
-Ved at give aktiviten et valid sæt af start og slut datoer ville medarbejder listen blive annoteret af 3 farver.
+Ved at give aktiviteten et valid sæt af start og slut datoer ville medarbejder listen blive annoteret af 3 farver.
 
-Grønne uanførte medarbejdere er medarbejderer med hele perioden af aktiviten ledig med mere end 0 timer om ugen.
+Grønne uanførte medarbejdere er medarbejderen med hele perioden af aktiviten ledig med mere end 0 timer om ugen.
 
-Gule medarbejderer har nogle uger med mere end 0 timer
+Gule medarbejdere har nogle uger med mere end 0 timer
 
 Og røde har ingen uger i perioden med timer til overs.
 
