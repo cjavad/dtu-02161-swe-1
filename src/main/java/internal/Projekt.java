@@ -130,7 +130,7 @@ public class Projekt implements Serializable {
 
 	// FIXME: er denne metode nødvendig? hvorfor ville man ikke bare bruge getProjektID?
     public String toString() {
-        return getProjektID();
+        return getProjektID() + " (" + getNavn() + ")";
     }
 
     public String getNavn() {

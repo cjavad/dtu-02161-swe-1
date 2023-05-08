@@ -2,16 +2,14 @@ package application;
 
 import java.util.Optional;
 
+import internal.Aktivitet;
 import internal.Medarbejder;
 import internal.Projekt;
 import internal.SystemAppException;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
 public class StartUI {
 	public HelloFX app;
@@ -41,10 +39,10 @@ public class StartUI {
 
 		if (app.system.isAdmin) {
 			loginGrid.add(new Label("admin"), 1, 0);
-			loginGrid.add(logout, 2, 0);	
+			loginGrid.add(logout, 0, 0);
 		} else if (app.system.user != null) {	
-			loginGrid.add(new Label(app.system.user.getInitial()), 0, 0);
-			loginGrid.add(logout, 1, 0);	
+			loginGrid.add(new Label(app.system.user.getInitial()), 1, 0);
+			loginGrid.add(logout, 0, 0);
 		} else {
 			Button login = new Button("Login");
 
@@ -74,12 +72,23 @@ public class StartUI {
 		dataGrid.add(new Label("Projekter"), 0, 0);
 		dataGrid.add(projektListe, 0, 1);
 
+		HBox projetkBox = new HBox();
+
 		// nyt projekt knap
 		Button nytProjekt = new Button("Nyt projekt");
 		nytProjekt.setOnAction(e -> {
 			nytProjektDialog();
 		});
-		dataGrid.add(nytProjekt, 0, 2);
+
+		Button sletProjekt = new Button("Slet projekt");
+		sletProjekt.setOnAction(e -> {
+			sletProjektDialog();
+		});
+
+		projetkBox.getChildren().add(nytProjekt);
+		projetkBox.getChildren().add(sletProjekt);
+
+		dataGrid.add(projetkBox, 0, 2);
 
 		// medarbejder liste
 		ListView<Button> medarbejderListe = new ListView<Button>();
@@ -94,12 +103,23 @@ public class StartUI {
 		dataGrid.add(new Label("Medarbejdere"), 1, 0);
 		dataGrid.add(medarbejderListe, 1, 1);
 
+		HBox medarbejderBox = new HBox();
+
 		// ny medarbejder knap
 		Button nyMedarbejder = new Button("Ny medarbejder");
 		nyMedarbejder.setOnAction(e -> {
 			nyMedarbejderDialog();
 		});
-		dataGrid.add(nyMedarbejder, 1, 2);
+
+		Button sletMedarbejder = new Button("Slet medarbejder");
+		sletMedarbejder.setOnAction(e -> {
+			sletMedarbejderDialog();
+		});
+
+		medarbejderBox.getChildren().add(nyMedarbejder);
+		medarbejderBox.getChildren().add(sletMedarbejder);
+
+		dataGrid.add(medarbejderBox, 1, 2);
 
 		return dataGrid;
 	}
@@ -159,5 +179,43 @@ public class StartUI {
 		}
 
 		app.visBrugerflade();
+	}
+
+	public void sletProjektDialog() {
+		ChoiceDialog choiceDialog = new ChoiceDialog<Projekt>(
+				null,
+				this.app.system.getProjekter()
+		);
+
+		choiceDialog.setTitle("Slet projekt");
+
+		Optional<Projekt> result = choiceDialog.showAndWait();
+
+		if (!result.isPresent()) {
+			return;
+		}
+
+		this.app.system.sletProjekt(result.get());
+
+		this.app.visBrugerflade();
+	}
+
+	public void sletMedarbejderDialog() {
+		ChoiceDialog choiceDialog = new ChoiceDialog<Medarbejder>(
+				null,
+				this.app.system.getMedarbejder()
+		);
+
+		choiceDialog.setTitle("Slet medarbejder");
+
+		Optional<Medarbejder> result = choiceDialog.showAndWait();
+
+		if (!result.isPresent()) {
+			return;
+		}
+
+		this.app.system.sletMedarbejder(result.get());
+
+		this.app.visBrugerflade();
 	}
 }
