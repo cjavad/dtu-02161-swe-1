@@ -63,9 +63,9 @@ public class ListeView {
                 vs.getItems().add(medarbejder);
             } else {
                 var l = new Label(medarbejder.getInitial());
-                l.setTextFill(javafx.scene.paint.Color.WHITE);
 
                 if (this.ledigAktivitetListeView != null) {
+
                     var kategori = this.ledigAktivitetListeView.opdelPåBaggrundAfFritid(medarbejder);
                     // Select color based on kategori (A, B eller C) = (Green, Yellow, Red)
                     if (Objects.equals(kategori, "A")) {
@@ -75,6 +75,8 @@ public class ListeView {
                     } else if (Objects.equals(kategori, "C")) {
                         l.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.RED, null, null)));
                     }
+
+                    l.setTextFill(javafx.scene.paint.Color.WHITE);
                 }
 
                 hs.getItems().add(l);
