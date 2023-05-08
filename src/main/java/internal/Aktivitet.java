@@ -183,12 +183,10 @@ public class Aktivitet implements Serializable {
         }
 
         return forekomster;
-    }
+	}
 
     @Override
     public String toString() {
         return this.navn;
     }
-
 }
-
